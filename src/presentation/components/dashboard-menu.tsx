@@ -14,12 +14,12 @@ export function DashboardMenu() {
       padding={{ lg: '2rem 2rem' }}
     >
       <Box
-        width={'119px'}
+        width={'150px'}
         height={'37px'}
         position={'relative'}
       >
         <Image
-          src='/promogate-logo.png'
+          src='/promogate.png'
           alt='Logo Promogate'
           fill
         />
@@ -53,7 +53,7 @@ export function DashboardMenu() {
           </Flex>
           <Flex
             as={Link}
-            href={'/promocoes'}
+            href={'/dashboard/promocoes'}
             alignItems={'center'}
             gap={'8px'}
             color={'gray.600'}
@@ -63,7 +63,7 @@ export function DashboardMenu() {
           </Flex>
           <Flex
             as={Link}
-            href={'/promocoes'}
+            href={'/dashboard/api'}
             alignItems={'center'}
             gap={'8px'}
             color={'gray.600'}
