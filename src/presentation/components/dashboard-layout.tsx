@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { DashboardMenu } from './dashboard-menu';
 
@@ -23,7 +23,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <GridItem
         padding={{ lg: '2rem' }}
       >
-        {children}
+        <Box>
+          {children}
+        </Box>
       </GridItem>
     </Grid>
   )
