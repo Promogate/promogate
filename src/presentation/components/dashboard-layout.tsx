@@ -19,7 +19,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <DashboardMenu />
       </GridItem>
       <GridItem
-        padding={{ lg: '2rem' }}
+        padding={{ lg: '2rem 2rem 2rem 0' }}
       >
         <Box>
           {children}

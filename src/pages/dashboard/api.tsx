@@ -91,6 +91,7 @@ export default function APIsPage() {
           <Button
             variant={'outline'}
             onClick={handleCreateToken}
+            isLoading={createApi.isLoading}
           >
             Adicionar nova chave
           </Button>
@@ -127,6 +128,7 @@ export default function APIsPage() {
                       color={'red.300'}
                       size={'sm'}
                       onClick={() => handleDeleteToken(key.id)}
+                      isLoading={deleteApiKey.isLoading}
                     >
                       Excluir chave
                     </Button>
