@@ -1,4 +1,5 @@
 import { api } from '@/config'
+import { OfferData } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import {
   Box,
@@ -17,16 +18,6 @@ import { parseCookies } from 'nookies'
 import React, { Fragment, useState } from 'react'
 import { TfiAngleLeft } from 'react-icons/tfi'
 import { useMutation } from 'react-query'
-
-type OfferData = {
-  image: string,
-  title: string,
-  price: string,
-  oldPrice: string,
-  destinationLink: string,
-  storeImage: string,
-  expirationDate: string
-}
 
 export default function AddOffersPage() {
   const cookies = parseCookies();
