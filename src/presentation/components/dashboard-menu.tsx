@@ -8,18 +8,20 @@ import { TbDiscount2 } from 'react-icons/tb';
 export function DashboardMenu() {
   return (
     <Flex
-      width={'100%'}
-      height={'100%'}
+      backgroundColor={'#FFFFFF'}
+      height={'100vh'}
+      borderRadius={{ lg: '0 16px 16px 0' }}
       flexDirection={'column'}
       padding={{ lg: '2rem 2rem' }}
+      position={'fixed'}
     >
       <Box
-        width={'150px'}
-        height={'37px'}
+        width={'120px'}
+        height={'32px'}
         position={'relative'}
       >
         <Image
-          src='/promogate.png'
+          src='/promogate.svg'
           alt='Logo Promogate'
           fill
         />

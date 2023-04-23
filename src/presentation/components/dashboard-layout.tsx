@@ -13,10 +13,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       backgroundColor={'#F5F4F7'}
     >
       <GridItem
-        backgroundColor={'#FFFFFF'}
         height={'100vh'}
-        position={'sticky'}
-        borderRadius={{ lg: '0 16px 16px 0' }}
+        position={'relative'}
       >
         <DashboardMenu />
       </GridItem>
