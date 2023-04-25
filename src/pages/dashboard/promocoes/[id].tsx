@@ -3,13 +3,18 @@ import { Offer } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
 import {
   Box,
+  Button,
   Flex,
-  Heading
+  Grid,
+  Heading,
+  IconButton
 } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { parseCookies } from 'nookies';
 import { Fragment } from 'react';
+import { TfiAngleLeft } from 'react-icons/tfi';
 
 type RouterQueryProps = {
   id: string
@@ -24,7 +29,7 @@ export default function OfferSinglePage({ offerData }: OfferSinglePageProps) {
   return (
     <Fragment>
       <Head>
-        <title>Oferta</title>
+        <title>Oferta - {offerData.title}</title>
       </Head>
       <DashboardLayout>
         <Box>
@@ -32,34 +37,82 @@ export default function OfferSinglePage({ offerData }: OfferSinglePageProps) {
             width={'100%'}
             justifyContent={'space-between'}
             alignItems={'center'}
+            marginBottom={{ xl: '1rem' }}
+          >
+            <IconButton
+              as={Link}
+              href='/dashboard/promocoes'
+              aria-label='create'
+              variant={'outline'}
+            >
+              <TfiAngleLeft />
+            </IconButton>
+          </Flex>
+          <Flex
+            width={'100%'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
           >
             <Heading
               as={'h2'}
-              fontSize={{ lg: '2xl' }}
+              fontSize={{ xl: '2xl' }}
               color={'gray.600'}
             >
-              Oferta - {offerData.title}
+              Oferta
             </Heading>
           </Flex>
         </Box>
         <Box
-          margin={{ lg: '2rem 0' }}
-          padding={{ lg: '2rem' }}
+          margin={{ xl: '2rem 0' }}
+          padding={{ xl: '2rem' }}
           backgroundColor={'white'}
-          borderRadius={{ lg: '1rem' }}
+          borderRadius={{ xl: '1rem' }}
         >
           <Flex
             justifyContent={'space-between'}
           >
-            <Box
-              width={'120px'}
-              height={'auto'}
+            <Grid
+              gridTemplateColumns={'1fr auto'}
+              gap={{ xl: '1rem' }}
             >
-              <img
-                src={offerData.image}
-                alt={offerData.title}
-              />
-            </Box>
+              <Box
+                width={'120px'}
+                height={'auto'}
+              >
+                <img
+                  src={offerData.image}
+                  alt={offerData.title}
+                />
+              </Box>
+              <Box>
+                <Heading
+                  as={'h2'}
+                  fontSize={{ xl: '2xl' }}
+                  color={'gray.600'}
+                >
+                  {offerData.title}
+                </Heading>
+                <Flex
+                  padding={{ xl: '1rem 0' }}
+                  gap={{ xl: '1rem' }}
+                >
+                  <Button
+                    variant={'outline'}
+                  >
+                    Excluir oferta
+                  </Button>
+                  <Button
+                    backgroundColor={'black'}
+                    color={'white'}
+                    _hover={{
+                      backgroundColor: 'black'
+                    }}
+                  >
+                    Editar oferta
+                  </Button>
+                </Flex>
+              </Box>
+            </Grid>
             <Box
               width={'64px'}
               height={'auto'}

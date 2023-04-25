@@ -38,18 +38,6 @@ export default function APIsPage() {
     return data
   });
 
-  const createApi = useMutation(async () => {
-    await api.post('/api-keys/create', null, {
-      headers: {
-        Authorization: `Bearer ${cookies['couponwebsite.access_token']}`
-      }
-    })
-  },{
-    onSuccess: () => {
-      queryClient.invalidateQueries('api-keys');
-    }
-  })
-
   const deleteApiKey = useMutation(async (id: string) => {
     await api.delete(`/api-keys/delete/${id}`, {
       headers: {
@@ -61,10 +49,6 @@ export default function APIsPage() {
       queryClient.invalidateQueries('api-keys');
     }
   })
-
-  const handleCreateToken = () => {
-    createApi.mutateAsync()
-  };
 
   const handleDeleteToken = (id: string) => {
     deleteApiKey.mutateAsync(id)
@@ -83,23 +67,16 @@ export default function APIsPage() {
         >
           <Heading
             as={'h2'}
-            fontSize={{ lg: '2xl' }}
+            fontSize={{ xl: '2xl' }}
             color={'gray.600'}
           >
             Chaves API
           </Heading>
-          <Button
-            variant={'outline'}
-            onClick={handleCreateToken}
-            isLoading={createApi.isLoading}
-          >
-            Adicionar nova chave
-          </Button>
         </Flex>
         <Grid
-          padding={{ lg: '1.5rem 0' }}
-          gridTemplateColumns={{ lg: 'repeat(3, 1fr)' }}
-          gap={{ lg: '1rem' }}
+          padding={{ xl: '1.5rem 0' }}
+          gridTemplateColumns={{ xl: 'repeat(3, 1fr)' }}
+          gap={{ xl: '1rem' }}
         >
           {
             data?.map((key) => {
@@ -108,8 +85,8 @@ export default function APIsPage() {
                   as={'form'}
                   key={key.id}
                   backgroundColor={'white'}
-                  borderRadius={{ lg: 'lg' }}
-                  padding={{ lg: '1rem' }}
+                  borderRadius={{ xl: 'lg' }}
+                  padding={{ xl: '1rem' }}
                 >
                   <Input
                     name='apiKey'
@@ -118,9 +95,9 @@ export default function APIsPage() {
                   />
                   <Divider orientation='horizontal' />
                   <Flex
-                    marginTop={{ lg: '1rem' }}
+                    marginTop={{ xl: '1rem' }}
                     width={'100%'}
-                    gap={{ lg: '1rem' }}
+                    gap={{ xl: '1rem' }}
                     justifyContent={'flex-end'}
                   >
                     <Button

@@ -2,23 +2,23 @@ import { api } from '@/config'
 import { Offer } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure
+    Box,
+    Flex,
+    Heading,
+    IconButton,
+    Popover,
+    PopoverArrow,
+    PopoverBody,
+    PopoverContent,
+    PopoverTrigger,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+    useDisclosure
 } from '@chakra-ui/react'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -56,7 +56,7 @@ export default function OffersPage() {
         >
           <Heading
             as={'h2'}
-            fontSize={{ lg: '2xl' }}
+            fontSize={{ xl: '2xl' }}
             color={'gray.600'}
           >
             Promoções
@@ -85,8 +85,8 @@ export default function OffersPage() {
                   href='/dashboard/promocoes/adicionar'
                 >
                   <Text
-                    padding={{ lg: '0.5rem' }}
-                    borderRadius={{ lg: 'md' }}
+                    padding={{ xl: '0.5rem' }}
+                    borderRadius={{ xl: 'md' }}
                     _hover={{
                       backgroundColor: 'gray.100',
                       transition: '300ms ease-out'
@@ -100,12 +100,12 @@ export default function OffersPage() {
           </Popover>
         </Flex>
         <Box
-          padding={{ lg: '2rem 0' }}
+          padding={{ xl: '2rem 0' }}
         >
           <Box
             backgroundColor={'white'}
-            padding={{ lg: '2rem 1rem' }}
-            borderRadius={{ lg: '1rem' }}
+            padding={{ xl: '2rem 1rem' }}
+            borderRadius={{ xl: '1rem' }}
           >
             <Table size={'sm'}>
               <Thead>

@@ -93,23 +93,23 @@ export default function AddOffersPage() {
           </IconButton>
           <Heading
             as={'h2'}
-            fontSize={{ lg: '2xl' }}
+            fontSize={{ xl: '2xl' }}
             color={'gray.600'}
           >
             Adicionar oferta
           </Heading>
         </Flex>
         <Box
-          padding={{ lg: '2rem 0' }}
+          padding={{ xl: '2rem 0' }}
         >
           <Box
             as={'form'}
             display={'grid'}
-            gridTemplateColumns={{ lg: '1fr 1fr' }}
-            gap={{ lg: '1rem' }}
+            gridTemplateColumns={{ xl: '1fr 1fr' }}
+            gap={{ xl: '1rem' }}
             backgroundColor={'white'}
-            padding={{ lg: '1.5rem' }}
-            borderRadius={{ lg: '1rem' }}
+            padding={{ xl: '1.5rem' }}
+            borderRadius={{ xl: '1rem' }}
           >
             <FormControl>
               <FormLabel>Image da oferta</FormLabel>
@@ -177,7 +177,7 @@ export default function AddOffersPage() {
           </Box>
           <Flex
             justifyContent={'flex-end'}
-            padding={{ lg: '1rem 0' }}
+            padding={{ xl: '1rem 0' }}
           >
             <Button
               size={'lg'}

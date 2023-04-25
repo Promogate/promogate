@@ -1,13 +1,13 @@
 import { api } from '@/config';
 import { LoginData, RequestError } from '@/domain/models';
 import {
-  Button,
-  FormControl,
-  FormLabel,
-  Grid,
-  Input,
-  VStack,
-  useToast
+    Button,
+    FormControl,
+    FormLabel,
+    Grid,
+    Input,
+    VStack,
+    useToast
 } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
@@ -59,7 +59,7 @@ export default function LoginPage() {
       >
         <VStack
           as='form'
-          gap={{ lg: '2' }}
+          gap={{ xl: '2' }}
         >
           <FormControl>
             <FormLabel>Email</FormLabel>

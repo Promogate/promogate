@@ -8,11 +8,9 @@ import { TbDiscount2 } from 'react-icons/tb';
 export function DashboardMenu() {
   return (
     <Flex
-      backgroundColor={'#FFFFFF'}
       height={'100vh'}
-      borderRadius={{ lg: '0 16px 16px 0' }}
       flexDirection={'column'}
-      padding={{ lg: '2rem 2rem' }}
+      padding={{ xl: '2rem 2rem' }}
       position={'fixed'}
     >
       <Box
@@ -27,21 +25,21 @@ export function DashboardMenu() {
         />
       </Box>
       <Box
-        padding={{ lg: '2rem 0' }}
+        padding={{ xl: '2rem 0' }}
       >
         <Heading
           textTransform={'uppercase'}
           fontWeight={'medium'}
-          fontSize={{ lg: '0.625rem' }}
-          letterSpacing={{ lg: '2px' }}
+          fontSize={{ xl: '0.625rem' }}
+          letterSpacing={{ xl: '2px' }}
           color={'gray.400'}
-          paddingBottom={{ lg: '1rem' }}
+          paddingBottom={{ xl: '1rem' }}
         >
           Menu principal
         </Heading>
         <Flex
           flexDirection={'column'}
-          gap={{ lg: '16px' }}
+          gap={{ xl: '16px' }}
         >
           <Flex
             as={Link}

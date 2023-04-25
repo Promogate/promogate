@@ -9,17 +9,18 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <Grid
-      gridTemplateColumns={{ lg: '2fr 10fr' }}
-      backgroundColor={'#F5F4F7'}
+      gridTemplateColumns={{ xl: '2fr 10fr'}}
     >
       <GridItem
         height={'100vh'}
         position={'relative'}
+        borderRadius={{ xl: '0 16px 16px 0' }}
       >
         <DashboardMenu />
       </GridItem>
       <GridItem
-        padding={{ lg: '2rem 2rem 2rem 0' }}
+        padding={{ xl: '2rem' }}
+        backgroundColor={'#F5F4F7'}
       >
         <Box>
           {children}
