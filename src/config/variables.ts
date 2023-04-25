@@ -1,4 +1,4 @@
-const API_KEY = process.env.API_KEY as string;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY as string;
 
 export {
   API_KEY
