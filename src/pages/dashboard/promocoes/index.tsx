@@ -2,23 +2,23 @@ import { api } from '@/config'
 import { Offer } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import {
-    Box,
-    Flex,
-    Heading,
-    IconButton,
-    Popover,
-    PopoverArrow,
-    PopoverBody,
-    PopoverContent,
-    PopoverTrigger,
-    Table,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tr,
-    useDisclosure
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure
 } from '@chakra-ui/react'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -33,7 +33,7 @@ export default function OffersPage() {
   const { onOpen, onClose, isOpen } = useDisclosure()
 
   const { data } = useQuery('offers', async () => {
-    const { data } = await api.get<Offer[]>('/resources/offers', {
+    const { data } = await api.get<Offer[]>('/dashboard/resources/offers', {
       headers: {
         'X-API-KEY': 'BRSEW0QC5N4VCAGS5572H85JV7W2',
         Authorization: `Bearer ${cookies['couponwebsite.access_token']}`
