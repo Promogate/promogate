@@ -1,4 +1,4 @@
-import { api } from '@/config';
+import { internalApiClient } from '@/config';
 import { LoginData, RequestError } from '@/domain/models';
 import {
   Box,
@@ -36,7 +36,7 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    api.post<{ token: string }>('/users/signin', loginData).then((success) => {
+    internalApiClient.post<{ token: string }>('/users/signin', loginData).then((success) => {
       setCookie(null, 'promogate.token', success.data.token);
       setLoginData({
         email: '',

@@ -1,5 +1,4 @@
-import { api } from '@/config';
-import { queryClient } from '@/pages/_app';
+import { internalApiClient } from '@/config';
 import { DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
@@ -16,7 +15,7 @@ import Head from 'next/head';
 import { parseCookies } from 'nookies';
 import { Fragment } from 'react';
 import { RiFileCopyLine } from 'react-icons/ri';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
 type Key = {
   id: string,
@@ -30,7 +29,7 @@ export default function APIsPage() {
   const cookies = parseCookies();
 
   const { data } = useQuery('api-keys', async () => {
-    const { data } = await api.get<Key[]>('/api-keys/all', {
+    const { data } = await internalApiClient.get<Key[]>('/api-keys/all', {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
@@ -38,22 +37,6 @@ export default function APIsPage() {
 
     return data
   });
-
-  const deleteApiKey = useMutation(async (id: string) => {
-    await api.delete(`/api-keys/delete/${id}`, {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
-  },{
-    onSuccess: () => {
-      queryClient.invalidateQueries('api-keys');
-    }
-  })
-
-  const handleDeleteToken = (id: string) => {
-    deleteApiKey.mutateAsync(id)
-  }
 
   return (
     <Fragment>
@@ -101,15 +84,6 @@ export default function APIsPage() {
                     gap={{ xl: '1rem' }}
                     justifyContent={'flex-end'}
                   >
-                    <Button
-                      variant={'outline'}
-                      color={'red.300'}
-                      size={'sm'}
-                      onClick={() => handleDeleteToken(key.id)}
-                      isLoading={deleteApiKey.isLoading}
-                    >
-                      Excluir chave
-                    </Button>
                     <Button
                       backgroundColor={'black'}
                       color={'white'}
