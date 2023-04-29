@@ -1,19 +1,25 @@
 import { api } from '@/config';
 import { LoginData, RequestError } from '@/domain/models';
 import {
-    Button,
-    FormControl,
-    FormLabel,
-    Grid,
-    Input,
-    VStack,
-    useToast
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Grid,
+  Input,
+  Text,
+  useToast
 } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
+import { Inter } from 'next/font/google';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
 import React, { useState } from 'react';
+
+const inter = Inter({ subsets: ['latin'] })
 
 export default function LoginPage() {
   const toast = useToast();
@@ -25,7 +31,7 @@ export default function LoginPage() {
   });
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
-    setLoginData({...loginData, [e.currentTarget.name]: e.currentTarget.value});
+    setLoginData({ ...loginData, [e.currentTarget.name]: e.currentTarget.value });
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -49,44 +55,96 @@ export default function LoginPage() {
   return (
     <>
       <Head>
-        <title>Coupon Website</title>
+        <title>Promogate - Login</title>
       </Head>
       <Grid
         as='main'
         height={'100vh'}
         alignItems={'center'}
         justifyContent={'center'}
+        gridTemplateColumns={{ xl: '1fr 1fr' }}
       >
-        <VStack
-          as='form'
-          gap={{ xl: '2' }}
+        <Box
+          margin={'0 auto'}
         >
-          <FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input 
-              type='text'
-              name='email'
-              value={loginData.email}  
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input 
-              type='password'
-              name='password'
-              value={loginData.password}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <Button
-            type={'submit'}
-            width={'100%'}
-            onClick={handleLogin}
+          <Flex
+            as='form'
+            minWidth={{ xl: '400px' }}
+            flexDirection={'column'}
+            gap={{ xl: '1.175rem' }}
           >
-            Entrar
-          </Button>
-        </VStack>
+            <FormControl>
+              <FormLabel
+                fontFamily={inter.style.fontFamily}
+              >
+                Email
+              </FormLabel>
+              <Input
+                type='text'
+                name='email'
+                value={loginData.email}
+                onChange={handleChange}
+                fontFamily={inter.style.fontFamily}
+                size={'lg'}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel
+                fontFamily={inter.style.fontFamily}
+              >
+                Senha
+              </FormLabel>
+              <Input
+                type='password'
+                name='password'
+                value={loginData.password}
+                onChange={handleChange}
+                size={'lg'}
+              />
+            </FormControl>
+            <Button
+              type={'submit'}
+              width={'100%'}
+              onClick={handleLogin}
+              size={'lg'}
+              backgroundColor={'#571770'}
+              color={'white'}
+              transition={'375ms ease-out'}
+              _hover={{
+                backgroundColor: '#7e2b9e'
+              }}
+              fontFamily={inter.style.fontFamily}
+            >
+              Entrar
+            </Button>
+          </Flex>
+          <Flex
+            margin={{ xl: '1rem 0 0 0' }}
+            fontFamily={inter.style.fontFamily}
+            fontSize={{ xl: '0.825rem' }}
+            gap={'2px'}
+            alignItems={'center'}
+          >
+            <Text>Ainda não é cadastrado?</Text>
+            <Text
+              as={Link} href={'/cadastre-se'}
+              fontWeight={'semibold'}
+              color={'#571770'}
+            >
+              Cadastre-se
+            </Text>
+          </Flex>
+        </Box>
+        <Box
+          backgroundColor={'#F5F4F7'}
+          height={'100vh'}
+          backgroundImage={'/login.jpg'}
+          backgroundSize={'cover'}
+          backgroundPosition={'center'}
+          backgroundRepeat={'no-repeat'}
+        >
+
+        </Box>
       </Grid>
     </>
   )
