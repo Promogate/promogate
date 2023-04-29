@@ -14,7 +14,7 @@ type WithSSRAuthOptions = {
 export function withSSRAuth<P extends { [key: string]: any; }>(fn: GetServerSideProps<P>, options?: WithSSRAuthOptions) {
   return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P> | undefined> => {
     const cookies = parseCookies(ctx);
-    const token = cookies['redsterna.token'];
+    const token = cookies['promogate.token'];
 
     if (!token) {
       return {
@@ -29,7 +29,7 @@ export function withSSRAuth<P extends { [key: string]: any; }>(fn: GetServerSide
       return await fn(ctx);
     } catch (err) {
       if (err instanceof AuthTokenError) {
-        destroyCookie(ctx, 'redsterna.token');
+        destroyCookie(ctx, 'promogate.token');
 
         return {
           redirect: {
