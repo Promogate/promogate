@@ -1,4 +1,4 @@
-import { api } from '@/config'
+import { internalApiClient } from '@/config'
 import { Offer } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
@@ -34,7 +34,7 @@ export default function OffersPage() {
   const { onOpen, onClose, isOpen } = useDisclosure()
 
   const { data } = useQuery('offers', async () => {
-    const { data } = await api.get<Offer[]>('/dashboard/resources/offers', {
+    const { data } = await internalApiClient.get<Offer[]>('/dashboard/resources/offers', {
       headers: {
         'X-API-KEY': 'BRSEW0QC5N4VCAGS5572H85JV7W2',
         Authorization: `Bearer ${cookies['promogate.token']}`

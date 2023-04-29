@@ -1,4 +1,4 @@
-import { api } from '@/config'
+import { internalApiClient } from '@/config'
 import { OfferWithClicks } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
@@ -31,7 +31,7 @@ export default function Dashboard() {
   const cookies = parseCookies();
 
   const { data, isLoading } = useQuery(['analytics', cookies['promogate.token']], async () => {
-    const { data } = await api.get<{ clicks: number }>('/dashboard/analytics/clicks', {
+    const { data } = await internalApiClient.get<{ clicks: number }>('/dashboard/analytics/clicks', {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
@@ -44,7 +44,7 @@ export default function Dashboard() {
   })
 
   const offers = useQuery(['offers', 'dashboard'], async () => {
-    const { data } = await api.get<OfferWithClicks[]>('/dashboard/analytics/offers/clicks', {
+    const { data } = await internalApiClient.get<OfferWithClicks[]>('/dashboard/analytics/offers/clicks', {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }

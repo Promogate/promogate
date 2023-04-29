@@ -1,4 +1,4 @@
-import { api } from '@/config';
+import { internalApiClient } from '@/config';
 import { Offer } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
@@ -133,7 +133,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   const cookies = parseCookies(ctx)
   const { id } = ctx.query as RouterQueryProps;
 
-  const { data } = await api.get(`/resources/offers/${id}`, {
+  const { data } = await internalApiClient.get(`/resources/offers/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
