@@ -1,6 +1,7 @@
 import { api } from '@/config';
 import { queryClient } from '@/pages/_app';
 import { DashboardLayout } from '@/presentation/components';
+import { withSSRAuth } from '@/utils';
 import {
   Box,
   Button,
@@ -132,3 +133,9 @@ export default function APIsPage() {
     </Fragment>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  return {
+    props: {}
+  }
+}) 

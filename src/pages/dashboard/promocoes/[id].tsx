@@ -1,6 +1,7 @@
 import { API_KEY, api } from '@/config';
 import { Offer } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
+import { withSSRAuth } from '@/utils';
 import {
   Box,
   Button,
@@ -9,7 +10,6 @@ import {
   Heading,
   IconButton
 } from '@chakra-ui/react';
-import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { parseCookies } from 'nookies';
@@ -129,20 +129,21 @@ export default function OfferSinglePage({ offerData }: OfferSinglePageProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = withSSRAuth(async (ctx) => {
   const cookies = parseCookies(ctx)
   const { id } = ctx.query as RouterQueryProps;
 
   const { data } = await api.get(`/resources/offers/${id}`, {
     headers: {
-      Authorization: `Beaber ${cookies['promogate.token']}`,
+      Authorization: `Bearer ${cookies['promogate.token']}`,
       'X-API-KEY': API_KEY
     }
   })
+
 
   return {
     props: {
       offerData: data
     }
   }
-}
+})

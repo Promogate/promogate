@@ -1,6 +1,7 @@
 import { api } from '@/config'
 import { Offer } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
+import { withSSRAuth } from '@/utils'
 import {
   Box,
   Flex,
@@ -188,3 +189,9 @@ export default function OffersPage() {
     </Fragment>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  return {
+    props: {}
+  }
+}) 

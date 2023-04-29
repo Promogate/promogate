@@ -1,6 +1,7 @@
 import { api } from '@/config'
 import { OfferWithClicks } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
+import { withSSRAuth } from '@/utils'
 import {
   Box,
   Flex,
@@ -198,3 +199,9 @@ export default function Dashboard() {
     </Fragment>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  return {
+    props: {}
+  }
+}) 
