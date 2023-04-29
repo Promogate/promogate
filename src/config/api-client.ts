@@ -1,9 +1,6 @@
 import axios from 'axios';
-import { API_KEY } from './variables';
+import { API_URL } from './variables';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:8080',
-  headers:{
-    'X-API-KEY': API_KEY
-  }
+  baseURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : API_URL),
 })
