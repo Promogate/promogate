@@ -1,56 +1,63 @@
-import { api } from '@/config';
-import { LoginData, RequestError } from '@/domain/models';
+import { registerUser } from '@/application/remote';
+import { RegisterFormProps, RequestError } from '@/domain/models';
 import {
   Box,
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Grid,
   Input,
   Text,
   useToast
 } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from 'axios';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
-import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
+import * as yup from 'yup';
 
 const inter = Inter({ subsets: ['latin'] })
+
+const schema = yup.object({
+  name: yup.string().required(),
+  email: yup.string().email('Você deve inserir um email válido').required(),
+  password: yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/, 'Sua senha deve ao menos conter 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.'),
+  passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'As senhas não combinam')
+})
 
 export default function RegisterPage() {
   const toast = useToast();
   const router = useRouter();
 
-  const [loginData, setLoginData] = useState<LoginData>({
-    email: '',
-    password: ''
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormProps>({
+    resolver: yupResolver(schema),
+    mode: 'onBlur'
   });
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
-    setLoginData({ ...loginData, [e.currentTarget.name]: e.currentTarget.value });
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    api.post<{ token: string }>('/users/signin', loginData).then((success) => {
-      setCookie(null, 'couponwebsite.access_token', success.data.token);
-      setLoginData({
-        email: '',
-        password: ''
-      });
+  const mutation = useMutation(async (values: RegisterFormProps) => await registerUser(values), {
+    onSuccess: () => {
+      toast({
+        status: 'success',
+        description: 'Cadastrado com sucesso'
+      })
       router.push('/dashboard')
-    }).catch((error: AxiosError<RequestError>) => {
+    }, onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        position: 'top-right',
-        description: error.response?.data.message
+        description: err.response?.data.message
       })
-    })
-  };
+    }
+  });
+
+  const handleRegister: SubmitHandler<RegisterFormProps> = (values) => {
+    mutation.mutateAsync(values)
+  }
 
   return (
     <>
@@ -69,11 +76,12 @@ export default function RegisterPage() {
         >
           <Flex
             as='form'
-            minWidth={{ xl: '400px' }}
+            onSubmit={handleSubmit(handleRegister)}
+            width={{ xl: '400px' }}
             flexDirection={'column'}
             gap={{ xl: '1.175rem' }}
           >
-            <FormControl>
+            <FormControl isInvalid={!!errors.name}>
               <FormLabel
                 fontFamily={inter.style.fontFamily}
               >
@@ -81,14 +89,15 @@ export default function RegisterPage() {
               </FormLabel>
               <Input
                 type='text'
-                name='nome'
-                value={loginData.email}
-                onChange={handleChange}
                 fontFamily={inter.style.fontFamily}
-                size={'lg'}
+                size={'md'}
+                {...register('name')}
               />
+              <FormErrorMessage wordBreak={'break-word'}>
+                {errors.name && errors.name.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!errors.email}>
               <FormLabel
                 fontFamily={inter.style.fontFamily}
               >
@@ -96,14 +105,15 @@ export default function RegisterPage() {
               </FormLabel>
               <Input
                 type='text'
-                name='email'
-                value={loginData.email}
-                onChange={handleChange}
+                {...register('email')}
                 fontFamily={inter.style.fontFamily}
-                size={'lg'}
+                size={'md'}
               />
+              <FormErrorMessage wordBreak={'break-word'}>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!errors.password}>
               <FormLabel
                 fontFamily={inter.style.fontFamily}
               >
@@ -111,16 +121,31 @@ export default function RegisterPage() {
               </FormLabel>
               <Input
                 type='password'
-                name='password'
-                value={loginData.password}
-                onChange={handleChange}
-                size={'lg'}
+                {...register('password')}
+                size={'md'}
               />
+              <FormErrorMessage wordBreak={'break-word'} position={'relative'}>
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={!!errors.passwordConfirmation}>
+              <FormLabel
+                fontFamily={inter.style.fontFamily}
+              >
+                Confirme a senha
+              </FormLabel>
+              <Input
+                type='password'
+                {...register('passwordConfirmation')}
+                size={'md'}
+              />
+              <FormErrorMessage wordBreak={'break-word'}>
+                {errors.passwordConfirmation && errors.passwordConfirmation.message}
+              </FormErrorMessage>
             </FormControl>
             <Button
               type={'submit'}
               width={'100%'}
-              onClick={handleLogin}
               size={'lg'}
               backgroundColor={'#571770'}
               color={'white'}
@@ -129,6 +154,7 @@ export default function RegisterPage() {
                 backgroundColor: '#7e2b9e'
               }}
               fontFamily={inter.style.fontFamily}
+              isLoading={isSubmitting}
             >
               Entrar
             </Button>
