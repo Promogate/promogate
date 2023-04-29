@@ -1,2 +1,3 @@
-export * from './api-client';
+export * from './external-api-client';
+export * from './internal-api-client';
 export * from './variables';
