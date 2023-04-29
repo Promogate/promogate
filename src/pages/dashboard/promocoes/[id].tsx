@@ -135,7 +135,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { data } = await api.get(`/resources/offers/${id}`, {
     headers: {
-      Authorization: `Beaber ${cookies['couponwebsite.access_token']}`,
+      Authorization: `Beaber ${cookies['promogate.token']}`,
       'X-API-KEY': API_KEY
     }
   })

@@ -37,7 +37,7 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     api.post<{ token: string }>('/users/signin', loginData).then((success) => {
-      setCookie(null, 'couponwebsite.access_token', success.data.token);
+      setCookie(null, 'promogate.token', success.data.token);
       setLoginData({
         email: '',
         password: ''

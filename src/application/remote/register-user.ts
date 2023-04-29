@@ -4,5 +4,5 @@ import { setCookie } from 'nookies';
 
 export async function registerUser (values: RegisterFormProps) {
     const { data } = await api.post<{ token: string }>('/users/create', values)
-    setCookie(null, 'couponwebsite.access_token', data.token);
+    setCookie(null, 'promogate.token', data.token);
 }

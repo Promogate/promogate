@@ -31,7 +31,7 @@ export default function APIsPage() {
   const { data } = useQuery('api-keys', async () => {
     const { data } = await api.get<Key[]>('/api-keys/all', {
       headers: {
-        Authorization: `Bearer ${cookies['couponwebsite.access_token']}`
+        Authorization: `Bearer ${cookies['promogate.token']}`
       }
     });
 
@@ -41,7 +41,7 @@ export default function APIsPage() {
   const deleteApiKey = useMutation(async (id: string) => {
     await api.delete(`/api-keys/delete/${id}`, {
       headers: {
-        Authorization: `Bearer ${cookies['couponwebsite.access_token']}`
+        Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
   },{

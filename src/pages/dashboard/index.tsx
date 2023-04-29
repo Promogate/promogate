@@ -29,10 +29,10 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Dashboard() {
   const cookies = parseCookies();
 
-  const { data, isLoading } = useQuery(['analytics', cookies['couponwebsite.access_token']], async () => {
+  const { data, isLoading } = useQuery(['analytics', cookies['promogate.token']], async () => {
     const { data } = await api.get<{ clicks: number }>('/dashboard/analytics/clicks', {
       headers: {
-        Authorization: `Bearer ${cookies['couponwebsite.access_token']}`
+        Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
 
@@ -45,7 +45,7 @@ export default function Dashboard() {
   const offers = useQuery(['offers', 'dashboard'], async () => {
     const { data } = await api.get<OfferWithClicks[]>('/dashboard/analytics/offers/clicks', {
       headers: {
-        Authorization: `Bearer ${cookies['couponwebsite.access_token']}`
+        Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
 

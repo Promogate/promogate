@@ -41,7 +41,7 @@ export default function AddOffersPage() {
     await api.post('/resources/offer/create', offerData, {
       headers: {
         'X-API-KEY': 'BRSEW0QC5N4VCAGS5572H85JV7W2',
-        Authorization: `Bearer ${cookies['couponwebsite.access_token']}`
+        Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
   }, {
