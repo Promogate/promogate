@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const internalApiClient = axios.create({
-  baseURL: '/api'
+  baseURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : '/api')
 })

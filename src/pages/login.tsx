@@ -127,7 +127,7 @@ export default function LoginPage() {
           >
             <Text>Ainda não é cadastrado?</Text>
             <Text
-              as={Link} href={'/cadastre-se'}
+              as={Link} href={'/cadastrar-se'}
               fontWeight={'semibold'}
               color={'#571770'}
             >
