@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://coupon-website-api-production.up.railway.app/:path*'
+        destination: 'https://promogate.herokuapp.com/:path*'
       }
     ]
   }
