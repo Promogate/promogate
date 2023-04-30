@@ -1,9 +1,10 @@
-import { api } from '@/config'
-import { Offer } from '@/domain/models'
-import { DashboardLayout } from '@/presentation/components'
-import { withSSRAuth } from '@/utils'
+import { api } from '@/config';
+import { Offer } from '@/domain/models';
+import { DashboardLayout } from '@/presentation/components';
+import { withSSRAuth } from '@/utils';
 import {
   Box,
+  Divider,
   Flex,
   Heading,
   IconButton,
@@ -20,13 +21,18 @@ import {
   Thead,
   Tr,
   useDisclosure
-} from '@chakra-ui/react'
-import Head from 'next/head'
-import Link from 'next/link'
-import { parseCookies } from 'nookies'
-import { Fragment } from 'react'
-import { RxPlus } from 'react-icons/rx'
-import { useQuery } from 'react-query'
+} from '@chakra-ui/react';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import Link from 'next/link';
+import { parseCookies } from 'nookies';
+import { Fragment } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { CiViewTable } from 'react-icons/ci';
+import { RxPlus } from 'react-icons/rx';
+import { useQuery } from 'react-query';
+
+const inter = Inter({ subsets: ['latin'] })
 
 /* eslint-disable @next/next/no-img-element */
 export default function OffersPage() {
@@ -34,20 +40,22 @@ export default function OffersPage() {
   const { onOpen, onClose, isOpen } = useDisclosure()
 
   const { data } = useQuery('offers', async () => {
-    const { data } = await api.get<Offer[]>('/dashboard/resources/offers', {
+    const { data } = await api.get<Offer[]>('/dashboard/offers', {
       headers: {
-        'X-API-KEY': 'BRSEW0QC5N4VCAGS5572H85JV7W2',
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
 
     return data
+  }, {
+    cacheTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 5,
   })
 
   return (
     <Fragment>
       <Head>
-        <title>Dashboard</title>
+        <title>Promogate - Promoções</title>
       </Head>
       <DashboardLayout>
         <Flex
@@ -59,6 +67,7 @@ export default function OffersPage() {
             as={'h2'}
             fontSize={{ xl: '2xl' }}
             color={'gray.600'}
+            fontStyle={inter.style.fontFamily}
           >
             Promoções
           </Heading>
@@ -66,7 +75,7 @@ export default function OffersPage() {
             returnFocusOnClose={false}
             isOpen={isOpen}
             onClose={onClose}
-            placement='right'
+            placement={'right-start'}
             closeOnBlur={false}
           >
             <PopoverTrigger>
@@ -92,8 +101,34 @@ export default function OffersPage() {
                       backgroundColor: 'gray.100',
                       transition: '300ms ease-out'
                     }}
+                    display={'flex'}
+                    alignItems={'center'}
+                    gap={{ xl: '8px' }}
+                    fontStyle={inter.style.fontFamily}
                   >
+                    <AiOutlinePlus />
                     Adicionar promoção
+                  </Text>
+                </Box>
+                <Divider orientation='horizontal' margin={{ xl: '4px 0' }} />
+                <Box
+                  as={Link}
+                  href='/dashboard/promocoes/importar'
+                >
+                  <Text
+                    padding={{ xl: '0.5rem' }}
+                    borderRadius={{ xl: 'md' }}
+                    _hover={{
+                      backgroundColor: 'gray.100',
+                      transition: '300ms ease-out'
+                    }}
+                    display={'flex'}
+                    alignItems={'center'}
+                    gap={{ xl: '8px' }}
+                    fontStyle={inter.style.fontFamily}
+                  >
+                    <CiViewTable />
+                    Importar via CSV
                   </Text>
                 </Box>
               </PopoverBody>
@@ -111,13 +146,10 @@ export default function OffersPage() {
             <Table size={'sm'}>
               <Thead>
                 <Tr>
-                  <Th>Imagem do produto</Th>
+                  <Th fontStyle={inter.style.fontFamily}>Imagem do produto</Th>
                   <Th>Título do produto</Th>
                   <Th>Preço antigo</Th>
                   <Th>Novo preço</Th>
-                  <Th>Link de destino</Th>
-                  <Th>Image da loja</Th>
-                  <Th>Data de expiração</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -144,39 +176,23 @@ export default function OffersPage() {
                         </Link>
                       </Td>
                       <Td>
-                        <Text>
-                          {offer.title}
-                        </Text>
+                        <Link
+                          href={`/dashboard/promocoes/${offer.id}`}
+                        >
+                          <Text fontStyle={inter.style.fontFamily}>
+                            {offer.title}
+                          </Text>
+                        </Link>
                       </Td>
                       <Td>
-                        <Text>
+                        <Text fontStyle={inter.style.fontFamily}>
                           {offer.old_price}
                         </Text>
                       </Td>
                       <Td>
-                        <Text>
+                        <Text fontStyle={inter.style.fontFamily}>
                           {offer.price}
                         </Text>
-                      </Td>
-                      <Td>
-                        <Text>
-                          {offer.destination_link}
-                        </Text>
-                      </Td>
-                      <Td>
-                        <Box
-                          position={'relative'}
-                          width={'64px'}
-                          height={'auto'}
-                        >
-                          <img
-                            src={offer.store_image}
-                            alt={offer.title}
-                          />
-                        </Box>
-                      </Td>
-                      <Td>
-                        {offer.expiration_date}
                       </Td>
                     </Tr>
                   )

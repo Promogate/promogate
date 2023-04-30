@@ -1,9 +1,8 @@
+import { queryClient } from '@/config';
 import '@/styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
-import { QueryClient, QueryClientProvider } from 'react-query';
-
-export const queryClient = new QueryClient();
+import { QueryClientProvider } from 'react-query';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

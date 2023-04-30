@@ -62,7 +62,7 @@ export default function RegisterPage() {
   return (
     <>
       <Head>
-        <title>Promogate - Login</title>
+        <title>Promogate - Cadastro</title>
       </Head>
       <Grid
         as='main'
