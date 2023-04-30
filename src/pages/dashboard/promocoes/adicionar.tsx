@@ -1,4 +1,4 @@
-import { internalApiClient } from '@/config'
+import { api } from '@/config'
 import { OfferData } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
@@ -39,7 +39,7 @@ export default function AddOffersPage() {
   }
 
   const createOffer = useMutation(async () => {
-    await internalApiClient.post('/resources/offer/create', offerData, {
+    await api.post('/resources/offer/create', offerData, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }

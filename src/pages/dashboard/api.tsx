@@ -1,4 +1,4 @@
-import { internalApiClient } from '@/config';
+import { api } from '@/config';
 import { DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
@@ -29,7 +29,7 @@ export default function APIsPage() {
   const cookies = parseCookies();
 
   const { data } = useQuery('api-keys', async () => {
-    const { data } = await internalApiClient.get<Key[]>('/api-keys/all', {
+    const { data } = await api.get<Key[]>('/api-keys/all', {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
