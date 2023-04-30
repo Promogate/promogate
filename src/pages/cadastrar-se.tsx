@@ -50,7 +50,7 @@ export default function RegisterPage() {
     }, onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        description: err.response?.data.message
+        description: err.response?.data.message + ' ' + err.message + ' ' + err.name
       })
     }
   });
