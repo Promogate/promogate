@@ -1,11 +1,21 @@
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { destroyCookie } from 'nookies';
 import { AiOutlineApi } from 'react-icons/ai';
+import { RiLogoutCircleLine } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
 import { TbDiscount2 } from 'react-icons/tb';
 
 export function DashboardMenu() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    destroyCookie(null, 'promogate.token');
+    router.push('/login');
+  }
+
   return (
     <Flex
       height={'100vh'}
@@ -72,6 +82,22 @@ export function DashboardMenu() {
             API
           </Flex>
         </Flex>
+        <Box
+          padding={{ xl: '2rem 0' }}
+          height={'100%'}
+        >
+          <Flex
+            height={'100%'}
+            onClick={handleLogout}
+            alignItems={'center'}
+            gap={'8px'}
+            color={'gray.600'}
+            cursor={'pointer'}
+          >
+            <RiLogoutCircleLine />
+            Logout
+          </Flex>
+        </Box>
       </Box>
     </Flex>
   )
