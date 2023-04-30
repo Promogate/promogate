@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const internalApiClient = axios.create({
-  baseURL: (process.env.NODE_ENV === 'development' ? 'https://api.promogate.app/': 'https://api.promogate.app/')
+  baseURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:8080': 'https://api.promogate.app/')
 })
