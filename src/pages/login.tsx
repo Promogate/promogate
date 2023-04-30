@@ -196,9 +196,18 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
 
-  return {
-    props: {
-      isLogged: cookies['promogate.token']
+  if (cookies['promogate.token']) {
+    return {
+      props: {
+        isLogged: cookies['promogate.token']
+      }
     }
   }
+
+  return {
+    props: {
+      isLogged: null
+    }
+  }
+
 }
