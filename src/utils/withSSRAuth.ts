@@ -27,8 +27,8 @@ export function withSSRAuth<P extends { [key: string]: any; }>(fn: GetServerSide
 
     try {
       return await fn(ctx);
-    } catch (err) {
-      if (err instanceof AuthTokenError) {
+    } catch (err: any) {
+      if (err instanceof AuthTokenError || err.response.status === 401) {
         destroyCookie(ctx, 'promogate.token');
 
         return {

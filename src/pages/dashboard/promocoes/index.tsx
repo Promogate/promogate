@@ -13,6 +13,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -25,7 +26,6 @@ import {
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
-import { parseCookies } from 'nookies';
 import { Fragment } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { CiViewTable } from 'react-icons/ci';
@@ -36,15 +36,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 /* eslint-disable @next/next/no-img-element */
 export default function OffersPage() {
-  const cookies = parseCookies();
   const { onOpen, onClose, isOpen } = useDisclosure()
 
-  const { data } = useQuery('offers', async () => {
-    const { data } = await api.get<Offer[]>('/dashboard/offers', {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
+  const { data, isLoading } = useQuery('offers', async () => {
+    const { data } = await api.get<Offer[]>('/dashboard/offers')
 
     return data
   }, {
@@ -143,62 +138,80 @@ export default function OffersPage() {
             padding={{ xl: '2rem 1rem' }}
             borderRadius={{ xl: '1rem' }}
           >
-            <Table size={'sm'}>
-              <Thead>
-                <Tr>
-                  <Th fontStyle={inter.style.fontFamily}>Imagem do produto</Th>
-                  <Th>Título do produto</Th>
-                  <Th>Preço antigo</Th>
-                  <Th>Novo preço</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {data?.map((offer) => {
-                  return (
-                    <Tr
-                      key={offer.id}
-                      backgroundColor={'white'}
-                    >
-                      <Td>
-                        <Link
-                          href={`/dashboard/promocoes/${offer.id}`}
-                        >
-                          <Box
-                            position={'relative'}
-                            width={'64px'}
-                            height={'auto'}
-                          >
-                            <img
-                              src={offer.image}
-                              alt={offer.title}
-                            />
-                          </Box>
-                        </Link>
-                      </Td>
-                      <Td>
-                        <Link
-                          href={`/dashboard/promocoes/${offer.id}`}
-                        >
-                          <Text fontStyle={inter.style.fontFamily}>
-                            {offer.title}
-                          </Text>
-                        </Link>
-                      </Td>
-                      <Td>
-                        <Text fontStyle={inter.style.fontFamily}>
-                          {offer.old_price}
-                        </Text>
-                      </Td>
-                      <Td>
-                        <Text fontStyle={inter.style.fontFamily}>
-                          {offer.price}
-                        </Text>
-                      </Td>
+            {
+              isLoading ? (
+                <Spinner />
+              ) : (data?.length === 0) ? (
+                <Box margin={'0 auto'} textAlign={'center'} alignItems={'center'}>
+                  <Heading
+                    as={'h2'}
+                    fontSize={{ xl: 'lg' }}
+                    fontWeight={'normal'}
+                    fontFamily={inter.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Você ainda não tem ofertas cadastradas
+                  </Heading>
+                </Box>
+              ) : (
+                <Table size={'sm'}>
+                  <Thead>
+                    <Tr>
+                      <Th fontStyle={inter.style.fontFamily}>Imagem do produto</Th>
+                      <Th>Título do produto</Th>
+                      <Th>Preço antigo</Th>
+                      <Th>Novo preço</Th>
                     </Tr>
-                  )
-                })}
-              </Tbody>
-            </Table>
+                  </Thead>
+                  <Tbody>
+                    {data?.map((offer) => {
+                      return (
+                        <Tr
+                          key={offer.id}
+                          backgroundColor={'white'}
+                        >
+                          <Td>
+                            <Link
+                              href={`/dashboard/promocoes/${offer.id}`}
+                            >
+                              <Box
+                                position={'relative'}
+                                width={'64px'}
+                                height={'auto'}
+                              >
+                                <img
+                                  src={offer.image}
+                                  alt={offer.title}
+                                />
+                              </Box>
+                            </Link>
+                          </Td>
+                          <Td>
+                            <Link
+                              href={`/dashboard/promocoes/${offer.id}`}
+                            >
+                              <Text fontStyle={inter.style.fontFamily}>
+                                {offer.title}
+                              </Text>
+                            </Link>
+                          </Td>
+                          <Td>
+                            <Text fontStyle={inter.style.fontFamily}>
+                              {offer.old_price}
+                            </Text>
+                          </Td>
+                          <Td>
+                            <Text fontStyle={inter.style.fontFamily}>
+                              {offer.price}
+                            </Text>
+                          </Td>
+                        </Tr>
+                      )
+                    })}
+                  </Tbody>
+                </Table>
+              )
+            }
           </Box>
         </Box>
       </DashboardLayout>

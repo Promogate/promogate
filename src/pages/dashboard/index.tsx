@@ -1,5 +1,5 @@
+import { getOffersWithAnalytics } from '@/application/remote'
 import { api } from '@/config'
-import { OfferWithClicks } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
 import {
@@ -32,11 +32,7 @@ export default function Dashboard() {
   const cookies = parseCookies();
 
   const { data, isLoading } = useQuery(['analytics', cookies['promogate.token']], async () => {
-    const { data } = await api.get<{ clicks: number }>('/dashboard/analytics/clicks', {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
+    const { data } = await api.get<{ clicks: number }>('/dashboard/analytics/clicks')
 
     return data
   }, {
@@ -44,15 +40,7 @@ export default function Dashboard() {
     cacheTime: 1000 * 5
   })
 
-  const offers = useQuery(['offers', 'dashboard'], async () => {
-    const { data } = await api.get<OfferWithClicks[]>('/dashboard/analytics/offers/clicks', {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
-
-    return data
-  }, {
+  const offers = useQuery(['offers', 'dashboard'], getOffersWithAnalytics, {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 5
   })
@@ -135,14 +123,35 @@ export default function Dashboard() {
         <Box
           padding={{ xl: '2rem 0' }}
         >
+          <Heading
+            as={'h2'}
+            fontSize={{ xl: 'xl' }}
+            fontFamily={inter.style.fontFamily}
+            color={'gray.600'}
+            marginBottom={{ xl: '1rem' }}
+          >
+            Top 10 produtos mais clicados
+          </Heading>
           <Box
             backgroundColor={'white'}
             padding={{ xl: '1rem 0' }}
-            borderRadius={{ xl: '1rem' }}
+            borderRadius={{ xl: '0.5rem' }}
           >
             {
-              isLoading ? (
+              offers.isLoading ? (
                 <Spinner />
+              ) : (offers.data?.length === 0) ? (
+                <Box margin={'0 auto'} textAlign={'center'} alignItems={'center'}>
+                  <Heading
+                    as={'h2'}
+                    fontSize={{ xl: 'lg' }}
+                    fontWeight={'normal'}
+                    fontFamily={inter.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Você ainda não tem ofertas cadastradas
+                  </Heading>
+                </Box>
               ) : (
                 <Table size={'sm'}>
                   <Thead>
