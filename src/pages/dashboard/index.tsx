@@ -10,6 +10,7 @@ import {
   Heading,
   Link,
   Skeleton,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -51,6 +52,9 @@ export default function Dashboard() {
     })
 
     return data
+  }, {
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 5
   })
 
   return (
@@ -103,7 +107,14 @@ export default function Dashboard() {
             borderRadius={{ xl: '0.5rem' }}
             padding={{ xl: '1rem' }}
           >
-            2
+            <Heading
+              as='h3'
+              fontFamily={inter.style.fontFamily}
+              fontSize={{ xl: '0.825rem' }}
+              color={'gray.400'}
+            >
+              Em Breve
+            </Heading>
           </GridItem>
           <GridItem
             backgroundColor={'white'}
@@ -111,7 +122,14 @@ export default function Dashboard() {
             borderRadius={{ xl: '0.5rem' }}
             padding={{ xl: '1rem' }}
           >
-            3
+            <Heading
+              as='h3'
+              fontFamily={inter.style.fontFamily}
+              fontSize={{ xl: '0.825rem' }}
+              color={'gray.400'}
+            >
+              Em Breve
+            </Heading>
           </GridItem>
         </Grid>
         <Box
@@ -122,77 +140,75 @@ export default function Dashboard() {
             padding={{ xl: '1rem 0' }}
             borderRadius={{ xl: '1rem' }}
           >
-            <Table size={'sm'}>
-              <Thead>
-                <Tr>
-                  <Th>Imagem do produto</Th>
-                  <Th>Título do produto</Th>
-                  <Th>Loja</Th>
-                  <Th>Cliques</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {offers.data?.map((offer) => {
-                  return (
-                    <Tr
-                      key={offer.id}
-                      backgroundColor={'white'}
-                    >
-                      <Td>
-                        <Link
-                          href={`/dashboard/promocoes/${offer.id}`}
-                        >
-                          <Box
-                            position={'relative'}
-                            width={'64px'}
-                            height={'auto'}
-                          >
-                            <img
-                              src={offer.image}
-                              alt={offer.title}
-                            />
-                          </Box>
-                        </Link>
-                      </Td>
-                      <Td>
-                        <Text
-                          fontStyle={inter.style.fontStyle}
-                          fontWeight={'medium'}
-                          color={'gray.600'}
-                        >
-                          {offer.title}
-                        </Text>
-                      </Td>
-                      <Td>
-                        <Box
-                          position={'relative'}
-                          width={'64px'}
-                          height={'auto'}
-                        >
-                          <img
-                            src={offer.store_image}
-                            alt={offer.title}
-                          />
-                        </Box>
-                      </Td>
-                      <Td>
-                        <Flex
-                          width={'100%'}
-                        >
-                          <Text
-                            fontStyle={inter.style.fontStyle}
-                            fontWeight={'medium'}
-                            color={'gray.600'}
-                          >
-                            {offer._count.offer_clicks}
-                          </Text>
-                        </Flex>
-                      </Td>
+            {
+              isLoading ? (
+                <Spinner />
+              ) : (
+                <Table size={'sm'}>
+                  <Thead>
+                    <Tr>
+                      <Th>Imagem do produto</Th>
+                      <Th>Título do produto</Th>
+                      <Th>Cliques</Th>
                     </Tr>
-                  )
-                })}
-              </Tbody>
-            </Table>
+                  </Thead>
+                  <Tbody>
+                    {offers.data?.map((offer) => {
+                      return (
+                        <Tr
+                          key={offer.id}
+                          backgroundColor={'white'}
+                        >
+                          <Td>
+                            <Link
+                              href={`/dashboard/promocoes/${offer.id}`}
+                            >
+                              <Box
+                                position={'relative'}
+                                width={'64px'}
+                                height={'auto'}
+                              >
+                                <img
+                                  src={offer.image}
+                                  alt={offer.title}
+                                />
+                              </Box>
+                            </Link>
+                          </Td>
+                          <Td>
+                            <Link
+                              href={`/dashboard/promocoes/${offer.id}`}
+                            >
+                              <Text
+                                fontStyle={inter.style.fontStyle}
+                                fontWeight={'medium'}
+                                color={'gray.600'}
+                              >
+                                {offer.title}
+                              </Text>
+                            </Link>
+                          </Td>
+                          <Td>
+                            <Flex
+                              width={'100%'}
+                            >
+                              <Text
+                                fontStyle={inter.style.fontStyle}
+                                fontWeight={'medium'}
+                                color={'gray.600'}
+                              >
+                                {offer._count.offer_clicks}
+                              </Text>
+                            </Flex>
+                          </Td>
+                        </Tr>
+                      )
+                    })
+                    }
+                  </Tbody>
+                </Table>
+              )
+            }
           </Box>
         </Box>
       </DashboardLayout>

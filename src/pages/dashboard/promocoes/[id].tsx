@@ -1,35 +1,35 @@
 import { api } from '@/config';
 import { Offer } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
-import { withSSRAuth } from '@/utils';
 import {
   Box,
   Button,
   Flex,
   Grid,
   Heading,
-  IconButton
+  IconButton,
+  Skeleton
 } from '@chakra-ui/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { parseCookies } from 'nookies';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { TfiAngleLeft } from 'react-icons/tfi';
-
-type RouterQueryProps = {
-  id: string
-}
-
-type OfferSinglePageProps = {
-  offerData: Offer
-}
+import { useQuery } from 'react-query';
 
 /* eslint-disable @next/next/no-img-element */
-export default function OfferSinglePage({ offerData }: OfferSinglePageProps) {
+export default function OfferSinglePage() {
+  const { id } = useRouter().query as { id: string };
+
+  const { data, isLoading } = useQuery(['offer', id], async () => {
+    const { data } = await api.get<Offer>(`/dashboard/offers/${id}`)
+    return data
+  })
+
   return (
     <Fragment>
       <Head>
-        <title>Oferta - {offerData.title}</title>
+        <title>Oferta - {data?.title}</title>
       </Head>
       <DashboardLayout>
         <Box>
@@ -75,74 +75,55 @@ export default function OfferSinglePage({ offerData }: OfferSinglePageProps) {
               gridTemplateColumns={'1fr auto'}
               gap={{ xl: '1rem' }}
             >
-              <Box
-                width={'120px'}
-                height={'auto'}
-              >
-                <img
-                  src={offerData.image}
-                  alt={offerData.title}
-                />
-              </Box>
-              <Box>
-                <Heading
-                  as={'h2'}
-                  fontSize={{ xl: '2xl' }}
-                  color={'gray.600'}
+              <Skeleton isLoaded={!isLoading}>
+                <Box
+                  width={'120px'}
+                  height={'auto'}
                 >
-                  {offerData.title}
-                </Heading>
+                  <img
+                    src={data?.image}
+                    alt={data?.title}
+                  />
+                </Box>
+              </Skeleton>
+              <Box>
+                <Skeleton isLoaded={!isLoading}>
+                  <Heading
+                    as={'h2'}
+                    fontSize={{ xl: '2xl' }}
+                    color={'gray.600'}
+                  >
+                    {data?.title}
+                  </Heading>
+                </Skeleton>
                 <Flex
                   padding={{ xl: '1rem 0' }}
                   gap={{ xl: '1rem' }}
                 >
-                  <Button
-                    variant={'outline'}
-                  >
-                    Excluir oferta
-                  </Button>
-                  <Button
-                    backgroundColor={'black'}
-                    color={'white'}
-                    _hover={{
-                      backgroundColor: 'black'
-                    }}
-                  >
-                    Editar oferta
-                  </Button>
+                  <Skeleton isLoaded={!isLoading}>
+                    <Button
+                      variant={'outline'}
+                    >
+                      Excluir oferta
+                    </Button>
+                  </Skeleton>
+                  <Skeleton isLoaded={!isLoading}>
+                    <Button
+                      backgroundColor={'black'}
+                      color={'white'}
+                      _hover={{
+                        backgroundColor: 'black'
+                      }}
+                    >
+                      Editar oferta
+                    </Button>
+                  </Skeleton>
                 </Flex>
               </Box>
             </Grid>
-            <Box
-              width={'64px'}
-              height={'auto'}
-            >
-              <img
-                src={offerData.store_image}
-                alt={offerData.title}
-              />
-            </Box>
           </Flex>
         </Box>
       </DashboardLayout>
     </Fragment>
   )
 }
-
-export const getServerSideProps = withSSRAuth(async (ctx) => {
-  const cookies = parseCookies(ctx)
-  const { id } = ctx.query as RouterQueryProps;
-
-  const { data } = await api.get(`/resources/offers/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies['promogate.token']}`
-    }
-  })
-
-
-  return {
-    props: {
-      offerData: data
-    }
-  }
-})
