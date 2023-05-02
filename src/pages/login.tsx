@@ -1,5 +1,5 @@
-import { api } from '@/config';
-import { LoginData, RequestError } from '@/domain/models';
+import { AuthContext } from '@/application/contexts';
+import { RequestError } from '@/domain/models';
 import {
   Box,
   Button,
@@ -17,10 +17,11 @@ import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { parseCookies, setCookie } from 'nookies';
-import React, { useState } from 'react';
+import { parseCookies } from 'nookies';
+import { useContext } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsArrowRightShort } from 'react-icons/bs';
+import { useMutation } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,36 +29,29 @@ type LoginPageProps = {
   isLogged: string | undefined
 }
 
+type LoginProps = {
+  email: string;
+  password: string;
+}
+
 export default function LoginPage({ isLogged }: LoginPageProps) {
   const toast = useToast();
-  const router = useRouter();
+  const { signIn } = useContext(AuthContext)
 
-  const [loginData, setLoginData] = useState<LoginData>({
-    email: '',
-    password: ''
-  });
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm<LoginProps>()
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
-    setLoginData({ ...loginData, [e.currentTarget.name]: e.currentTarget.value });
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    api.post<{ token: string }>('/users/signin', loginData).then((success) => {
-      setCookie(null, 'promogate.token', success.data.token);
-      setLoginData({
-        email: '',
-        password: ''
-      });
-      router.push('/dashboard')
-    }).catch((error: AxiosError<RequestError>) => {
+  const mutation = useMutation(async (values: LoginProps) => await signIn(values), {
+    onError: (error: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        position: 'top-right',
         description: error.response?.data.message
       })
-    })
-  };
+    }
+  })
+
+  const handleLogin: SubmitHandler<LoginProps> = async (values) => {
+    await mutation.mutateAsync(values)
+  }
 
   return (
     <>
@@ -112,6 +106,7 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
                   minWidth={{ xl: '400px' }}
                   flexDirection={'column'}
                   gap={{ xl: '1.175rem' }}
+                  onSubmit={handleSubmit(handleLogin)}
                 >
                   <FormControl>
                     <FormLabel
@@ -121,9 +116,7 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
                     </FormLabel>
                     <Input
                       type='text'
-                      name='email'
-                      value={loginData.email}
-                      onChange={handleChange}
+                      {...register('email')}
                       fontFamily={inter.style.fontFamily}
                       size={'lg'}
                     />
@@ -136,16 +129,13 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
                     </FormLabel>
                     <Input
                       type='password'
-                      name='password'
-                      value={loginData.password}
-                      onChange={handleChange}
+                      {...register('password')}
                       size={'lg'}
                     />
                   </FormControl>
                   <Button
                     type={'submit'}
                     width={'100%'}
-                    onClick={handleLogin}
                     size={'lg'}
                     backgroundColor={'#571770'}
                     color={'white'}
@@ -154,6 +144,7 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
                       backgroundColor: '#7e2b9e'
                     }}
                     fontFamily={inter.style.fontFamily}
+                    isLoading={isSubmitting}
                   >
                     Entrar
                   </Button>
