@@ -1,22 +1,66 @@
 import { api } from '@/config';
-import { Offer } from '@/domain/models';
+import { Offer, RequestError } from '@/domain/models';
+import { useToast } from '@chakra-ui/react';
+import { AxiosError } from 'axios';
 import { ReactNode, createContext } from 'react';
+import { useRecoilState } from 'recoil';
+import { userAtom } from '../states/atoms';
+
+type CreateProfileInput = {
+  store_name: string;
+  store_image: string;
+  user_id: string
+}
+
+type CreateProfileOutput = {
+  profile: string;
+}
 
 interface PromogateContextProps {
-  fetchOffers(): Promise<Offer[]>
+  createUserProfile(input: CreateProfileInput): Promise<void>
+  fetchOffers(): Promise<Offer[]>;
+  fetchUserData(): Promise<any>;
 }
 
 export const PromogateContext = createContext<PromogateContextProps>({} as PromogateContextProps);
 
+/*eslint-disable react-hooks/exhaustive-deps*/
 export function PromogateContextProvider ({ children }: { children: ReactNode }) {
+  const [user,setUser] = useRecoilState(userAtom);
+  const toast = useToast();
 
   async function fetchOffers(): Promise<Offer[]> {
     const { data } = await api.get<Offer[]>('/resources/offers');
     return data
   }
 
+  async function fetchUserData(): Promise<any> {
+    const { data } = await api.get<{ clicks: number }>('/dashboard/analytics/clicks')
+  
+    return data
+  }
+
+  async function createUserProfile(input: CreateProfileInput): Promise<void> {
+    api.post<CreateProfileOutput>(`/users/profile/create/${input.user_id}`, { 
+      store_name: input.store_name,
+      store_image: input.store_image
+    }).then((fullfiled) => {
+      const { data } = fullfiled;
+      setUser({ user: input.user_id, profile: data.profile })
+      toast({
+        status: 'success',
+        description: 'Loja criada com sucesso!'
+      })
+    }).catch((err: AxiosError<RequestError>) => {
+      toast({
+        status: 'error',
+        description: err.response?.data.message
+      })
+    })
+  }
+
   return (
-    <PromogateContext.Provider value={{ fetchOffers }}>
+    <PromogateContext.Provider value={{ fetchOffers, fetchUserData, createUserProfile }}>
       {children}
     </PromogateContext.Provider>
   )
