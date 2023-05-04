@@ -48,7 +48,7 @@ export default function RegisterPage() {
         status: 'success',
         description: 'Cadastrado com sucesso'
       })
-      router.push('/criar-loja')
+      router.push('/cadastrar-se/criar-loja')
     }, onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
