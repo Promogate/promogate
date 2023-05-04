@@ -26,8 +26,12 @@ import * as yup from 'yup';
 const inter = Inter({ subsets: ['latin'] })
 
 const schema = yup.object({
-  name: yup.string().required(),
-  email: yup.string().email('Você deve inserir um email válido').required(),
+  name: yup.string().required(
+    'O nome é obrigatório'
+  ),
+  email: yup.string().email('Você deve inserir um email válido').required(
+    'Email é obrigatório.'
+  ),
   password: yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/, 'Sua senha deve ao menos conter 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.'),
   passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'As senhas não combinam')
 })
@@ -186,7 +190,6 @@ export default function RegisterPage() {
           backgroundPosition={'center'}
           backgroundRepeat={'no-repeat'}
         >
-
         </Box>
       </Grid>
     </>
