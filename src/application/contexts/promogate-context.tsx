@@ -26,7 +26,7 @@ export const PromogateContext = createContext<PromogateContextProps>({} as Promo
 
 /*eslint-disable react-hooks/exhaustive-deps*/
 export function PromogateContextProvider ({ children }: { children: ReactNode }) {
-  const [user,setUser] = useRecoilState(userAtom);
+  const [,setUser] = useRecoilState(userAtom);
   const toast = useToast();
 
   async function fetchOffers(): Promise<Offer[]> {
@@ -41,7 +41,7 @@ export function PromogateContextProvider ({ children }: { children: ReactNode })
   }
 
   async function createUserProfile(input: CreateProfileInput): Promise<void> {
-    api.post<CreateProfileOutput>(`/users/profile/create/${input.user_id}`, { 
+    api.post<CreateProfileOutput>(`/users/${input.user_id}/profile/create`, { 
       store_name: input.store_name,
       store_image: input.store_image
     }).then((fullfiled) => {
