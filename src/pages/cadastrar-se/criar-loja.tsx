@@ -1,7 +1,7 @@
 import { PromogateContext } from '@/application/contexts';
 import { AWSUploadService } from '@/application/services';
-import { userAtom } from '@/application/states/atoms';
 import { api } from '@/config';
+import { UserData } from '@/domain/models';
 import {
   Box,
   Button,
@@ -31,12 +31,11 @@ import {
 } from 'react-hook-form';
 import { BsUpload } from 'react-icons/bs';
 import { useMutation } from 'react-query';
-import { useRecoilValue } from 'recoil';
 
 const inter = Inter({ subsets: ['latin'] })
 
 type CreateStoreProps = {
-  user: string
+  user: UserData
 }
 
 type RegisterStoreProps = {
@@ -50,7 +49,6 @@ const s3Upload = new AWSUploadService();
 export default function CreateStore({ user }: CreateStoreProps) {
   const [localImageUrl, setLocalImageUrl] = useState('');
   const [sampleUrl, setSampleUrl] = useState('');
-  const userData = useRecoilValue(userAtom);
   const router = useRouter();
 
   const { createUserProfile } = useContext(PromogateContext);
@@ -72,7 +70,7 @@ export default function CreateStore({ user }: CreateStoreProps) {
   const mutation = useMutation(async (values: RegisterStoreProps) => await createUserProfile({ 
     store_name: values.store_name,
     store_image: values.store_image,
-    user_id: userData.user
+    user_id: user.id
   }), {
     onSuccess: () => {
       router.push('/dashboard');
@@ -235,7 +233,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   //TODO: return profile_id to verify if the user already have it
-  const { data } = await api.get<{ user: string }>('/users/me', {
+  const { data } = await api.get<UserData>('/users/me', {
     headers: {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
@@ -243,7 +241,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      user: data.user
+      user: data
     }
   }
 }
