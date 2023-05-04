@@ -3,8 +3,6 @@ import { Offer, RequestError } from '@/domain/models';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { ReactNode, createContext } from 'react';
-import { useRecoilState } from 'recoil';
-import { userAtom } from '../states/atoms';
 
 type CreateProfileInput = {
   store_name: string;
@@ -26,7 +24,6 @@ export const PromogateContext = createContext<PromogateContextProps>({} as Promo
 
 /*eslint-disable react-hooks/exhaustive-deps*/
 export function PromogateContextProvider ({ children }: { children: ReactNode }) {
-  const [,setUser] = useRecoilState(userAtom);
   const toast = useToast();
 
   async function fetchOffers(): Promise<Offer[]> {
@@ -46,7 +43,6 @@ export function PromogateContextProvider ({ children }: { children: ReactNode })
       store_image: input.store_image
     }).then((fullfiled) => {
       const { data } = fullfiled;
-      setUser({ user: input.user_id, profile: data.profile })
       toast({
         status: 'success',
         description: 'Loja criada com sucesso!'
