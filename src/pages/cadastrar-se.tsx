@@ -1,4 +1,4 @@
-import { registerUser } from '@/application/remote';
+import { AuthContext } from '@/application/contexts';
 import { RegisterFormProps, RequestError } from '@/domain/models';
 import {
   Box,
@@ -18,6 +18,7 @@ import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import * as yup from 'yup';
@@ -34,23 +35,24 @@ const schema = yup.object({
 export default function RegisterPage() {
   const toast = useToast();
   const router = useRouter();
+  const { signUp } = useContext(AuthContext);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormProps>({
     resolver: yupResolver(schema),
     mode: 'onBlur'
   });
 
-  const mutation = useMutation(async (values: RegisterFormProps) => await registerUser(values), {
+  const mutation = useMutation(async (values: RegisterFormProps) => await signUp(values), {
     onSuccess: () => {
       toast({
         status: 'success',
         description: 'Cadastrado com sucesso'
       })
-      router.push('/dashboard')
+      router.push('/criar-loja')
     }, onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        description: err.response?.data.message + ' ' + err.message + ' ' + err.name
+        description: err.response?.data.message
       })
     }
   });
