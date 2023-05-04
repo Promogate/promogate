@@ -8,8 +8,8 @@ import { RecoilRoot } from 'recoil';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
           <PromogateContextProvider>
             <ChakraProvider>
@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </ChakraProvider>
           </PromogateContextProvider>
         </AuthContextProvider>
-      </RecoilRoot>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </RecoilRoot>
   )
 }
