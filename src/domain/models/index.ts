@@ -1,3 +1,4 @@
+export * from './dashboard-data';
 export * from './login-data';
 export * from './offer-data';
 export * from './register-form-props';
