@@ -5,6 +5,7 @@ import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
 import {
   Box,
+  Button,
   Flex,
   Grid,
   GridItem,
@@ -34,15 +35,13 @@ type DashboardProps = {
 
 /* eslint-disable @next/next/no-img-element */
 export default function Dashboard({ user }: DashboardProps) {
-  const { fetchOffers} = useContext(PromogateContext);
+  const { fetchDashboardData } = useContext(PromogateContext);
 
-  const { data, isLoading, isError } = useQuery(['offers', user.id], fetchOffers, {
+  const { data, isLoading, isError } = useQuery(['offers', user.id], async () => await fetchDashboardData(user.user_profile.id), {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 5,
   })
 
-  const offers: any = Array<any>
-  
   return (
     <Fragment>
       <Head>
@@ -86,7 +85,7 @@ export default function Dashboard({ user }: DashboardProps) {
                     color={'gray.600'}
                   >
                     <Skeleton isLoaded={!isLoading}>
-                      {data?.clicks}
+                      {data?.analytics._count.offer_clicks}
                     </Skeleton>
                   </Heading>
                 </GridItem>
@@ -133,27 +132,62 @@ export default function Dashboard({ user }: DashboardProps) {
                 >
                   Top 10 produtos mais clicados
                 </Heading>
-                <Box
-                  backgroundColor={'white'}
-                  padding={{ xl: '1rem 0' }}
-                  borderRadius={{ xl: '0.5rem' }}
-                >
-                  {
-                    offers.isLoading ? (
-                      <Spinner />
-                    ) : (offers.data?.length === 0) ? (
-                      <Box margin={'0 auto'} textAlign={'center'} alignItems={'center'}>
-                        <Heading
-                          as={'h2'}
-                          fontSize={{ xl: 'lg' }}
-                          fontWeight={'normal'}
-                          fontFamily={inter.style.fontFamily}
-                          color={'gray.300'}
+                {
+                  isLoading ? (
+                    <Spinner />
+                  ) : (data?.resources.offers.length === 0) ? (
+                    <Box
+                      margin={'0 auto'}
+                      textAlign={'center'}
+                      alignItems={'center'}
+                      border={'1px'}
+                      borderRadius={{ xl: '1rem' }}
+                      borderColor={'yellow.200'}
+                      backgroundColor={'yellow.50'}
+                      padding={{ xl: '2rem' }}
+                    >
+                      <Heading
+                        as={'h2'}
+                        fontSize={{ xl: 'lg' }}
+                        fontWeight={'normal'}
+                        fontFamily={inter.style.fontFamily}
+                        color={'yellow.500'}
+                      >
+                        Você ainda não tem ofertas cadastradas
+                      </Heading>
+                      <Flex
+                      marginTop={{ xl: '1rem' }}
+                        justifyContent={'center'}
+                        gap={{ xl: '1rem' }}
+                      >
+                        <Button
+                          as={Link}
+                          href={'/dashboard/promocoes/adicionar'}
+                          colorScheme='orange'
+                          _hover={{
+                            textDecoration: 'none'
+                          }}
                         >
-                          Você ainda não tem ofertas cadastradas
-                        </Heading>
-                      </Box>
-                    ) : (
+                          Adicionar oferta
+                        </Button>
+                        <Button
+                          as={Link}
+                          href={'/dashboard/promocoes/importar'}
+                          colorScheme='orange'
+                          _hover={{
+                            textDecoration: 'none'
+                          }}
+                        >
+                          Importar ofertas
+                        </Button>
+                      </Flex>
+                    </Box>
+                  ) : (
+                    <Box
+                      backgroundColor={'white'}
+                      padding={{ xl: '1rem 0' }}
+                      borderRadius={{ xl: '0.5rem' }}
+                    >
                       <Table size={'sm'}>
                         <Thead>
                           <Tr>
@@ -163,7 +197,7 @@ export default function Dashboard({ user }: DashboardProps) {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {offers.data?.map((offer) => {
+                          {data?.resources.offers.map((offer) => {
                             return (
                               <Tr
                                 key={offer.id}
@@ -207,7 +241,7 @@ export default function Dashboard({ user }: DashboardProps) {
                                       fontWeight={'medium'}
                                       color={'gray.600'}
                                     >
-                                      {offer._count.offer_clicks}
+                                      {offer._count.offer_clicks ?? ''}
                                     </Text>
                                   </Flex>
                                 </Td>
@@ -217,9 +251,9 @@ export default function Dashboard({ user }: DashboardProps) {
                           }
                         </Tbody>
                       </Table>
-                    )
-                  }
-                </Box>
+                    </Box>
+                  )
+                }
               </Box>
             </Fragment>
           ) : (
