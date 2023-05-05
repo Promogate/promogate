@@ -16,7 +16,10 @@ export type Offer = {
   old_price: string,
   destination_link: string,
   store_image: string,
-  expiration_date: string
+  expiration_date: string,
+  _count: {
+    offer_clicks: number;
+};
 }
 
 export type OfferWithClicks = Offer & {
