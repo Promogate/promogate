@@ -1,5 +1,5 @@
 import { api } from '@/config';
-import { Offer, RequestError } from '@/domain/models';
+import { DashboardData, RequestError } from '@/domain/models';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { ReactNode, createContext } from 'react';
@@ -16,7 +16,7 @@ type CreateProfileOutput = {
 
 interface PromogateContextProps {
   createUserProfile(input: CreateProfileInput): Promise<void>
-  fetchOffers(): Promise<Offer[]>;
+  fetchDashboardData(profileId: string): Promise<DashboardData>;
   fetchUserData(): Promise<any>;
 }
 
@@ -26,8 +26,8 @@ export const PromogateContext = createContext<PromogateContextProps>({} as Promo
 export function PromogateContextProvider ({ children }: { children: ReactNode }) {
   const toast = useToast();
 
-  async function fetchOffers(): Promise<Offer[]> {
-    const { data } = await api.get<Offer[]>('/resources/offers');
+  async function fetchDashboardData(profileId: string): Promise<DashboardData> {
+    const { data } = await api.get<DashboardData>(`/analytics/profile/${profileId}`);
     return data
   }
 
@@ -56,7 +56,7 @@ export function PromogateContextProvider ({ children }: { children: ReactNode })
   }
 
   return (
-    <PromogateContext.Provider value={{ fetchOffers, fetchUserData, createUserProfile }}>
+    <PromogateContext.Provider value={{ fetchDashboardData, fetchUserData, createUserProfile }}>
       {children}
     </PromogateContext.Provider>
   )
