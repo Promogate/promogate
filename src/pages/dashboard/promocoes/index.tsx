@@ -6,6 +6,7 @@ import {
   Box,
   Divider,
   Flex,
+  HStack,
   Heading,
   IconButton,
   Popover,
@@ -14,12 +15,14 @@ import {
   PopoverContent,
   PopoverTrigger,
   Spinner,
+  Switch,
   Table,
   Tbody,
   Td,
   Text,
   Th,
   Thead,
+  Tooltip,
   Tr,
   useDisclosure
 } from '@chakra-ui/react';
@@ -27,8 +30,10 @@ import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiFillEdit, AiOutlinePlus } from 'react-icons/ai';
+import { BiTrash } from 'react-icons/bi';
 import { CiViewTable } from 'react-icons/ci';
+import { FaFacebook, FaTwitter, FaWhatsapp } from 'react-icons/fa';
 import { RxPlus } from 'react-icons/rx';
 import { useQuery } from 'react-query';
 
@@ -157,10 +162,11 @@ export default function OffersPage() {
                 <Table size={'sm'}>
                   <Thead>
                     <Tr>
-                      <Th fontStyle={inter.style.fontFamily}>Imagem do produto</Th>
+                      <Th>Produto</Th>
                       <Th>Título do produto</Th>
-                      <Th>Preço antigo</Th>
-                      <Th>Novo preço</Th>
+                      <Th>Compartilhar</Th>
+                      <Th></Th>
+                      <Th>Vitrine</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -197,12 +203,62 @@ export default function OffersPage() {
                           </Td>
                           <Td>
                             <Text fontStyle={inter.style.fontFamily}>
-                              {offer.old_price}
+                              <HStack>
+                                <Tooltip label='Compartilhar no Facebook' placement='top' borderRadius={'base'}>
+                                  <IconButton
+                                    aria-label='editar-oferta'
+                                    icon={<FaFacebook />}
+                                    size={'xs'}
+                                    colorScheme={'facebook'}
+                                  />
+                                </Tooltip>
+                                <Tooltip label='Compartilhar no Twitter' placement='top' borderRadius={'base'}>
+                                  <IconButton
+                                    aria-label='editar-oferta'
+                                    colorScheme={'twitter'}
+                                    icon={<FaTwitter />}
+                                    size={'xs'}
+                                  />
+                                </Tooltip>
+                                <Tooltip label='Compartilhar no Whatsapp' placement='top' borderRadius={'base'}>
+                                  <IconButton
+                                    aria-label='editar-oferta'
+                                    colorScheme={'whatsapp'}
+                                    icon={<FaWhatsapp />}
+                                    size={'xs'}
+                                  />
+                                </Tooltip>
+                              </HStack>
                             </Text>
                           </Td>
                           <Td>
                             <Text fontStyle={inter.style.fontFamily}>
-                              {offer.price}
+                              <HStack>
+                                <Tooltip label='Editar' placement='top' borderRadius={'base'}>
+                                  <IconButton
+                                    aria-label='editar-oferta'
+                                    icon={<AiFillEdit />}
+                                    size={'xs'}
+                                    colorScheme={'blue'}
+                                  />
+                                </Tooltip>
+                                <Tooltip label='Excluir' backgroundColor={'red'} placement='top' borderRadius={'base'}>
+                                  <IconButton
+                                    aria-label='editar-oferta'
+                                    colorScheme={'red'}
+                                    variant={'outline'}
+                                    icon={<BiTrash />}
+                                    size={'xs'}
+                                  />
+                                </Tooltip>
+                              </HStack>
+                            </Text>
+                          </Td>
+                          <Td>
+                            <Text>
+                              <Switch
+                                colorScheme='green'
+                              />
                             </Text>
                           </Td>
                         </Tr>

@@ -1,9 +1,11 @@
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Badge, Box, Flex } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { destroyCookie } from 'nookies';
-import { AiOutlineApi } from 'react-icons/ai';
+import { AiOutlineApi, AiOutlineWhatsApp } from 'react-icons/ai';
+import { BiNetworkChart } from 'react-icons/bi';
+import { FiExternalLink } from 'react-icons/fi';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
 import { TbDiscount2 } from 'react-icons/tb';
@@ -34,19 +36,12 @@ export function DashboardMenu() {
           fill
         />
       </Box>
-      <Box
+      <Flex
         padding={{ xl: '2rem 0' }}
+        flexDirection={'column'}
+        justifyContent={'space-between'}
+        height={'100%'}
       >
-        <Heading
-          textTransform={'uppercase'}
-          fontWeight={'medium'}
-          fontSize={{ xl: '0.625rem' }}
-          letterSpacing={{ xl: '2px' }}
-          color={'gray.400'}
-          paddingBottom={{ xl: '1rem' }}
-        >
-          Menu principal
-        </Heading>
         <Flex
           flexDirection={'column'}
           gap={{ xl: '16px' }}
@@ -81,13 +76,47 @@ export function DashboardMenu() {
             <AiOutlineApi />
             API
           </Flex>
+          <Flex
+            alignItems={'center'}
+            gap={'8px'}
+            color={'gray.300'}
+          >
+            <BiNetworkChart />
+            Integrações
+            <Badge ml='1' colorScheme='yellow'>
+              Em breve
+            </Badge>
+          </Flex>
+          <Flex
+            alignItems={'center'}
+            gap={'8px'}
+            color={'gray.300'}
+          >
+            <AiOutlineWhatsApp />
+            Whatsapp
+            <Badge ml='1' colorScheme='yellow'>
+              Em breve
+            </Badge>
+          </Flex>
         </Flex>
-        <Box
+        <Flex
           padding={{ xl: '2rem 0' }}
-          height={'100%'}
+          flexDirection={'column'}
+          gap={{ xl: '16px' }}
+          marginTop={'1'}
         >
           <Flex
-            height={'100%'}
+            as={Link}
+            href={'/dashboard'}
+            alignItems={'center'}
+            gap={'8px'}
+            color={'gray.600'}
+            cursor={'pointer'}
+          >
+            <FiExternalLink />
+            Vitrine
+          </Flex>
+          <Flex
             onClick={handleLogout}
             alignItems={'center'}
             gap={'8px'}
@@ -95,10 +124,10 @@ export function DashboardMenu() {
             cursor={'pointer'}
           >
             <RiLogoutCircleLine />
-            Logout
+            Sair
           </Flex>
-        </Box>
-      </Box>
+        </Flex>
+      </Flex>
     </Flex>
   )
 }
