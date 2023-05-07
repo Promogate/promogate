@@ -1,9 +1,9 @@
 import { api } from '@/config';
-import { DashboardData, RequestError } from '@/domain/models';
+import { DashboardData, Offer, RequestError, UserData } from '@/domain/models';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { parseCookies } from 'nookies';
-import { ReactNode, createContext } from 'react';
+import { ReactNode, createContext, useEffect, useState } from 'react';
 
 type CreateProfileInput = {
   store_name: string;
@@ -15,10 +15,24 @@ type CreateProfileOutput = {
   profile: string;
 }
 
+type FetchStoreOffersResponse = {
+  store: {
+    id: string,
+    role: string,
+    store_image: string,
+    store_name: string,
+    user_id: string,
+  },
+  offers: Offer[]
+}
+
 interface PromogateContextProps {
   createUserProfile(input: CreateProfileInput): Promise<void>
   fetchDashboardData(profileId: string): Promise<DashboardData>;
+  fetchStoreOffers(storeName: string): Promise<FetchStoreOffersResponse>
   fetchUserData(): Promise<any>;
+  fetchStoreData(storeName: string): Promise<any>;
+  user: UserData | null;
 }
 
 export const PromogateContext = createContext<PromogateContextProps>({} as PromogateContextProps);
@@ -27,6 +41,22 @@ export const PromogateContext = createContext<PromogateContextProps>({} as Promo
 export function PromogateContextProvider({ children }: { children: ReactNode }) {
   const toast = useToast();
   const cookies = parseCookies();
+  const [user, setUser] = useState<UserData | null>(null)
+
+  useEffect(() => {
+    const { 'promogate.token': token } = parseCookies();
+
+    if (token) {
+      api.get('/users/me', {
+        headers: {
+          Authorization: `Bearer ${cookies['promogate.token']}`
+        }
+      }).then((fullfiled) => {
+        const { data } = fullfiled;
+        setUser(data);
+      })
+    }
+  }, [])
 
   async function fetchDashboardData(profileId: string): Promise<DashboardData> {
     const { data } = await api.get<DashboardData>(`/analytics/profile/${profileId}`, {
@@ -44,6 +74,11 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
       }
     })
 
+    return data
+  }
+
+  async function fetchStoreOffers(storeName: string): Promise<FetchStoreOffersResponse> {
+    const { data } = await api.get<FetchStoreOffersResponse>(`/resources/offers/${storeName}`)
     return data
   }
 
@@ -65,8 +100,20 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
     })
   }
 
+  async function fetchStoreData(storeName: string): Promise<any> {
+    const { data } = await api.get(`/resources/store/${storeName}`);
+    return data
+  }
+
   return (
-    <PromogateContext.Provider value={{ fetchDashboardData, fetchUserData, createUserProfile }}>
+    <PromogateContext.Provider value={{
+      fetchDashboardData,
+      fetchUserData,
+      createUserProfile,
+      user,
+      fetchStoreOffers,
+      fetchStoreData
+    }}>
       {children}
     </PromogateContext.Provider>
   )

@@ -41,7 +41,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 /* eslint-disable @next/next/no-img-element */
 export default function OffersPage() {
-  const { onOpen, onClose, isOpen } = useDisclosure()
+  const { onOpen, onClose, isOpen } = useDisclosure();
 
   const { data, isLoading } = useQuery('offers', async () => {
     const { data } = await api.get<Offer[]>('/dashboard/offers')

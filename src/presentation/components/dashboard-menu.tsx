@@ -1,8 +1,10 @@
+import { PromogateContext } from '@/application/contexts';
 import { Badge, Box, Flex } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { destroyCookie } from 'nookies';
+import { useContext } from 'react';
 import { AiOutlineApi, AiOutlineWhatsApp } from 'react-icons/ai';
 import { BiNetworkChart } from 'react-icons/bi';
 import { FiExternalLink } from 'react-icons/fi';
@@ -12,6 +14,8 @@ import { TbDiscount2 } from 'react-icons/tb';
 
 export function DashboardMenu() {
   const router = useRouter();
+
+  const { user } = useContext(PromogateContext)
 
   const handleLogout = () => {
     destroyCookie(null, 'promogate.token');
@@ -107,7 +111,7 @@ export function DashboardMenu() {
         >
           <Flex
             as={Link}
-            href={'/dashboard'}
+            href={`/v/${user?.user_profile.store_name}`}
             alignItems={'center'}
             gap={'8px'}
             color={'gray.600'}

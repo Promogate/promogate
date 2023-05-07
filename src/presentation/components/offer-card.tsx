@@ -13,8 +13,6 @@ const inter = Inter({ subsets: ['latin'] });
 
 /*eslint-disable @next/next/no-img-element*/
 export function OfferCard({ data }: OfferCardProps) {
-
-
   return (
     <Flex
       boxShadow={{ xl: 'lg' }}
@@ -43,9 +41,9 @@ export function OfferCard({ data }: OfferCardProps) {
         <Box flex={1}>
           <Heading
             fontFamily={inter.style.fontFamily}
-            fontSize={{ xl: '1rem' }}
+            fontSize={{ xl: '14px' }}
             fontWeight={'medium'}
-            color={'gray.600'}
+            color={'gray.700'}
             wordBreak={'break-word'}
             as={Link}
             href={`/redirecionar/produto/${data.id}`}

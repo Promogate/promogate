@@ -8,6 +8,9 @@ const nextConfig = {
         destination: 'https://api.promogate.app/:path*',
       }
     ]
+  },
+  images: {
+    domains: ['promogate.s3.sa-east-1.amazonaws.com']
   }
 }
 
