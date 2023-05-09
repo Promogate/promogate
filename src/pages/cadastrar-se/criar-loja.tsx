@@ -1,7 +1,6 @@
 import { PromogateContext } from '@/application/contexts';
 import { AWSUploadService } from '@/application/services';
 import { api } from '@/config';
-import { UserData } from '@/domain/models';
 import {
   Box,
   Button,
@@ -10,13 +9,13 @@ import {
   FormLabel,
   Grid,
   Icon,
+  IconButton,
   Input,
   Text
 } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 import React, {
   ChangeEvent,
@@ -30,13 +29,10 @@ import {
   useForm
 } from 'react-hook-form';
 import { BsUpload } from 'react-icons/bs';
+import { TiDelete } from 'react-icons/ti';
 import { useMutation } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
-
-type CreateStoreProps = {
-  user: UserData
-}
 
 type RegisterStoreProps = {
   store_name: string,
@@ -45,11 +41,19 @@ type RegisterStoreProps = {
 
 const s3Upload = new AWSUploadService();
 
+type CreateStoreProps = {
+  user: {
+    id: string,
+    name: string,
+    email: string,
+    created_at: string
+  }
+}
+
 /*eslint-disable @next/next/no-img-element*/
 export default function CreateStore({ user }: CreateStoreProps) {
   const [localImageUrl, setLocalImageUrl] = useState('');
   const [sampleUrl, setSampleUrl] = useState('');
-  const router = useRouter();
 
   const { createUserProfile } = useContext(PromogateContext);
 
@@ -60,26 +64,20 @@ export default function CreateStore({ user }: CreateStoreProps) {
       }
 
       setLocalImageUrl(URL.createObjectURL(event.target.files[0]));
-      console.log(localImageUrl);
-
-    }, [localImageUrl]
+    }, []
   )
 
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<RegisterStoreProps>();
 
-  const mutation = useMutation(async (values: RegisterStoreProps) => await createUserProfile({ 
+  const mutation = useMutation(async (values: RegisterStoreProps) => await createUserProfile({
     store_name: values.store_name,
     store_image: values.store_image,
     user_id: user.id
-  }), {
-    onSuccess: () => {
-      router.push('/dashboard');
-    }
-  })
+  }));
 
   const handleRegisterStore: SubmitHandler<RegisterStoreProps> = async (values) => {
-    const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user}`))
-    const { url } = await s3Upload.uploadImage({ file })
+    const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.id}`))
+    const { url } = await s3Upload.uploadImage({ file, user: user.id })
     await mutation.mutateAsync({ store_name: values.store_name.toLocaleLowerCase().replace(' ', '-'), store_image: url })
   }
 
@@ -112,30 +110,46 @@ export default function CreateStore({ user }: CreateStoreProps) {
           <FormControl margin={'0 auto'}>
             {
               localImageUrl ? (
-                <FormLabel
-                  border={'1px'}
-                  borderColor={'gray.300'}
-                  borderRadius={'full'}
-                  borderStyle={'dashed'}
-                  width={'120px'}
-                  height={'120px'}
-                  cursor={'pointer'}
-                  margin={'0 auto'}
-                  display={'grid'}
-                  placeItems={'center'}
-                  gap={'1px'}
-                  overflow={'hidden'}
-                >
-                  <img
-                    src={localImageUrl}
-                    alt='Store image'
+                <>
+                  <FormLabel
+                    border={'1px'}
+                    borderColor={'gray.300'}
+                    borderRadius={'full'}
+                    borderStyle={'dashed'}
+                    width={'120px'}
+                    height={'120px'}
+                    cursor={'pointer'}
+                    margin={'0 auto'}
+                    display={'grid'}
+                    placeItems={'center'}
+                    gap={'1px'}
+                    overflow={'hidden'}
+                    position={'relative'}
+                  >
+
+                    <img
+                      src={localImageUrl}
+                      alt='Store image'
+                    />
+                    <Input
+                      type='file'
+                      onChange={handleImageUpload}
+                      display={'none'}
+                    />
+                  </FormLabel>
+                  <IconButton
+                    aria-label='deleteImage'
+                    icon={<TiDelete />}
+                    position={'absolute'}
+                    right={'40%'}
+                    top={0}
+                    zIndex={10}
+                    colorScheme={'red'}
+                    rounded={'full'}
+                    size={'xs'}
+                    onClick={() => setLocalImageUrl('')}
                   />
-                  <Input
-                    type='file'
-                    onChange={handleImageUpload}
-                    display={'none'}
-                  />
-                </FormLabel>
+                </>
               ) : (
                 <FormLabel
                   border={'1px'}
@@ -194,7 +208,7 @@ export default function CreateStore({ user }: CreateStoreProps) {
                 fontSize={{ xl: '0.725rem' }}
                 color={'gray.400'}
               >
-                Como será a sua url: /vitrine
+                Como será a sua url: /v
                 {`/${sampleUrl}`}
               </Text>
             </Box>
@@ -218,26 +232,14 @@ export default function CreateStore({ user }: CreateStoreProps) {
   )
 }
 
-
-
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = parseCookies(ctx);
+  const { 'promogate.token': token } = parseCookies(ctx);
 
-  if(!cookies['promogate.token']) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
-  }
-
-  //TODO: return profile_id to verify if the user already have it
-  const { data } = await api.get<UserData>('/users/me', {
+  const { data } = await api.get<CreateStoreProps>('/users/me', {
     headers: {
-      Authorization: `Bearer ${cookies['promogate.token']}`
+      Authorization: `Bearer ${token}`
     }
-  });
+  })
 
   return {
     props: {

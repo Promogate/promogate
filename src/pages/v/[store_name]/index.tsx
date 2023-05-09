@@ -1,15 +1,15 @@
-import { PromogateContext } from '@/application/contexts'
-import { Offer } from '@/domain/models'
-import { OfferCard, StoreFooter, StoreHeader } from '@/presentation/components'
-import { Box, Grid, Heading, Spinner } from '@chakra-ui/react'
-import { Inter } from 'next/font/google'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { Fragment, useContext } from 'react'
-import { useQuery } from 'react-query'
+import { PromogateContext } from '@/application/contexts';
+import { Offer } from '@/domain/models';
+import { OfferCard, StoreFooter, StoreHeader } from '@/presentation/components';
+import { Box, Grid, Heading, Spinner } from '@chakra-ui/react';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { Fragment, useContext } from 'react';
+import { useQuery } from 'react-query';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 const Banner = () => {
   return (
@@ -31,22 +31,29 @@ const Banner = () => {
 export default function Home() {
   const router = useRouter();
   const { store_name } = router.query as { store_name: string };
-  const { fetchStoreOffers } = useContext(PromogateContext)
+  const { fetchStoreOffers } = useContext(PromogateContext);
 
   const { data, isLoading, isError } = useQuery(['showcase', store_name], async () => await fetchStoreOffers(store_name), {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 5
-  })
+  });
 
   console.log(data);
 
   return (
     <Fragment>
       <Head>
-        <title>{String(data?.store.store_name).charAt(0).toUpperCase() + data?.store.store_name.slice(1)}</title>
+        <title>
+          {
+            data?.store.store_name ?
+              String(data?.store.store_name).charAt(0).toUpperCase() +
+              data?.store.store_name.slice(1) :
+              'Loja Parceira'
+          }
+        </title>
       </Head>
       <main>
-        <StoreHeader props={data?.store}/>
+        <StoreHeader props={data?.store} />
         <Grid
           gridTemplateColumns={{ xl: '9fr 3fr' }}
           maxWidth={{ xl: '1250px' }}
@@ -80,13 +87,13 @@ export default function Home() {
                     Destaque
                   </Heading>
                 ) : (
-                  data?.offers.slice(0,8).map((offer: Offer) => {
-                    return <OfferCard key={offer.id} data={offer} />
+                  data?.offers.slice(0, 8).map((offer: Offer) => {
+                    return <OfferCard key={offer.id} data={offer} storeName={store_name} />
                   })
                 )
               }
             </Grid>
-            { (data?.offers.length) && (data?.offers.length >= 9) ? <Banner /> : null}
+            {(data?.offers.length) && (data?.offers.length >= 9) ? <Banner /> : null}
             <Grid
               gridTemplateColumns={{ xl: 'repeat(4, 1fr)' }}
               margin={{ xl: '1rem 0' }}
@@ -106,7 +113,7 @@ export default function Home() {
                   </Heading>
                 ) : (
                   data?.offers.map((offer: Offer) => {
-                    return <OfferCard key={offer.id} data={offer} />
+                    return <OfferCard key={offer.id} data={offer} storeName={store_name} />
                   })
                 )
               }

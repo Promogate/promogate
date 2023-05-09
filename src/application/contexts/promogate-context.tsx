@@ -1,9 +1,10 @@
 import { api } from '@/config';
-import { DashboardData, Offer, RequestError, UserData } from '@/domain/models';
+import { DashboardData, Offer, RequestError } from '@/domain/models';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { ReactNode, createContext } from 'react';
 
 type CreateProfileInput = {
   store_name: string;
@@ -32,7 +33,6 @@ interface PromogateContextProps {
   fetchStoreOffers(storeName: string): Promise<FetchStoreOffersResponse>
   fetchUserData(): Promise<any>;
   fetchStoreData(storeName: string): Promise<any>;
-  user: UserData | null;
 }
 
 export const PromogateContext = createContext<PromogateContextProps>({} as PromogateContextProps);
@@ -41,22 +41,7 @@ export const PromogateContext = createContext<PromogateContextProps>({} as Promo
 export function PromogateContextProvider({ children }: { children: ReactNode }) {
   const toast = useToast();
   const cookies = parseCookies();
-  const [user, setUser] = useState<UserData | null>(null)
-
-  useEffect(() => {
-    const { 'promogate.token': token } = parseCookies();
-
-    if (token) {
-      api.get('/users/me', {
-        headers: {
-          Authorization: `Bearer ${cookies['promogate.token']}`
-        }
-      }).then((fullfiled) => {
-        const { data } = fullfiled;
-        setUser(data);
-      })
-    }
-  }, [])
+  const router = useRouter();
 
   async function fetchDashboardData(profileId: string): Promise<DashboardData> {
     const { data } = await api.get<DashboardData>(`/analytics/profile/${profileId}`, {
@@ -88,10 +73,13 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
       store_image: input.store_image
     }).then((fullfiled) => {
       const { data } = fullfiled;
+
       toast({
         status: 'success',
         description: 'Loja criada com sucesso!'
-      })
+      });
+
+      router.push('/dashboard');
     }).catch((err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
@@ -110,7 +98,6 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
       fetchDashboardData,
       fetchUserData,
       createUserProfile,
-      user,
       fetchStoreOffers,
       fetchStoreData
     }}>

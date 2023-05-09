@@ -6,7 +6,8 @@ export interface IAWSUploadService {
 
 export namespace IAWSUpload {
   export type Input = {
-    file: File
+    file: File,
+    user: string
   }
 
   export type Output = {
@@ -27,8 +28,7 @@ export class AWSUploadService implements IAWSUploadService {
   }
 
   async uploadImage(input: IAWSUpload.Input): Promise<IAWSUpload.Output> {
-    const fileExtension = input.file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExtension}`;
+    const fileName = `${Date.now()}.${input.user}`;
 
     const params = {
       Bucket: 'promogate',

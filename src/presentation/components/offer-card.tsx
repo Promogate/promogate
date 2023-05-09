@@ -1,18 +1,18 @@
 import { Offer } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
-import { Box, Button, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
-import { FiExternalLink } from 'react-icons/fi';
 
 type OfferCardProps = {
-  data: Offer
+  data: Offer;
+  storeName: string;
 }
 
 const inter = Inter({ subsets: ['latin'] });
 
 /*eslint-disable @next/next/no-img-element*/
-export function OfferCard({ data }: OfferCardProps) {
+export function OfferCard({ data, storeName }: OfferCardProps) {
   return (
     <Flex
       boxShadow={{ xl: 'lg' }}
@@ -30,7 +30,11 @@ export function OfferCard({ data }: OfferCardProps) {
         borderRadius={{ xl: '1rem' }}
         overflow={'hidden'}
       >
-        <img src={data.image} alt={data.title} />
+        <Link
+          href={`/v/${storeName}/produto/${data.id}`}
+        >
+          <img src={data.image} alt={data.title} />
+        </Link>
       </Box>
       <Box
         flex={1}
@@ -46,7 +50,7 @@ export function OfferCard({ data }: OfferCardProps) {
             color={'gray.700'}
             wordBreak={'break-word'}
             as={Link}
-            href={`/redirecionar/produto/${data.id}`}
+            href={`/v/${storeName}/produto/${data.id}`}
             target='_blank'
           >
             {data.title}
@@ -63,21 +67,6 @@ export function OfferCard({ data }: OfferCardProps) {
         >
           {parseCurrency(data.price)}
         </Heading>
-        <Button
-          as={Link}
-          href={`/redirecionar/produto/${data.id}`}
-          target='_blank'
-          width={'100%'}
-          backgroundColor={'black'}
-          _hover={{
-            backgroundColor: 'black'
-          }}
-          color='white'
-          rightIcon={<FiExternalLink />}
-          fontFamily={inter.style.fontFamily}
-        >
-          Abrir na loja
-        </Button>
       </Box>
     </Flex>
   )

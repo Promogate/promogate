@@ -28,7 +28,7 @@ export function StoreFooter({ props }: StoreFooterProps) {
         fontWeight={'normal'}
         fontFamily={inter.style.fontFamily}
       >
-        &copy; Promogate.
+        &copy; 2023 Promogate. Todos os direitos reservados.
       </Heading>
     </Grid>
   )
