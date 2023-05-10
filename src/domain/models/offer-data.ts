@@ -12,18 +12,22 @@ export type Offer = {
   id: string,
   image: string,
   title: string,
+  old_price: string | null,
   price: string,
-  old_price: string,
   destination_link: string,
   store_image: string,
+  store_name: string,
+  description: string | null,
   expiration_date: string,
-  _count: {
-    offer_clicks: number;
-};
+  created_at: string,
+  is_on_showcase: boolean,
+  is_featured: boolean,
+  is_free_shipping: boolean,
+  resources_id: string
 }
 
 export type OfferWithClicks = Offer & {
   _count: {
-      offer_clicks: number;
+    offer_clicks: number;
   };
 }
