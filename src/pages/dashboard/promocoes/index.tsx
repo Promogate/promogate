@@ -1,19 +1,14 @@
-import { api } from '@/config';
-import { Offer } from '@/domain/models';
+import { api, queryClient } from '@/config';
+import { MeResponse, Offer, UserData } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
   Box,
-  Divider,
+  Button,
   Flex,
   HStack,
   Heading,
   IconButton,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Spinner,
   Switch,
   Table,
@@ -24,24 +19,33 @@ import {
   Thead,
   Tooltip,
   Tr,
-  useDisclosure
+  useToast
 } from '@chakra-ui/react';
+import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from 'next-share';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Fragment } from 'react';
-import { AiFillEdit, AiOutlinePlus } from 'react-icons/ai';
+import { parseCookies } from 'nookies';
+import { ChangeEvent, Fragment } from 'react';
+import { AiFillEdit } from 'react-icons/ai';
 import { BiTrash } from 'react-icons/bi';
-import { CiViewTable } from 'react-icons/ci';
 import { FaFacebook, FaTwitter, FaWhatsapp } from 'react-icons/fa';
-import { RxPlus } from 'react-icons/rx';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 
+type UpdateOfferShowcase = {
+  is_on_showcase: boolean;
+  offerId: string
+}
+
+type OffersPageProps = {
+  user: UserData
+}
+
 /* eslint-disable @next/next/no-img-element */
-export default function OffersPage() {
-  const { onOpen, onClose, isOpen } = useDisclosure();
+export default function OffersPage({ user }: OffersPageProps) {
+  const toast = useToast();
 
   const { data, isLoading } = useQuery('offers', async () => {
     const { data } = await api.get<Offer[]>('/dashboard/offers')
@@ -51,6 +55,30 @@ export default function OffersPage() {
     cacheTime: 1000 * 60 * 5,
     staleTime: 1000 * 60 * 5,
   })
+
+  const mutation = useMutation(async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
+    await api.put(`/resources/offer/${offerId}/update/showcase`, {
+      is_on_showcase
+    })
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('offers')
+    },
+    onError: () => {
+      toast({
+        status: 'error',
+        description: 'Houve algum erro'
+      })
+    }
+  })
+
+  const handleShowcaseStatus = async (e: ChangeEvent<HTMLInputElement>, offerId: string) => {
+    e.preventDefault();
+    await mutation.mutateAsync({
+      is_on_showcase: e.currentTarget.checked,
+      offerId
+     })
+  }
 
   return (
     <Fragment>
@@ -71,69 +99,13 @@ export default function OffersPage() {
           >
             Promoções
           </Heading>
-          <Popover
-            returnFocusOnClose={false}
-            isOpen={isOpen}
-            onClose={onClose}
-            placement={'right-start'}
-            closeOnBlur={false}
+          <Button
+            as={Link}
+            href={'/dashboard/promocoes/adicionar'}
+            variant={'outline'}
           >
-            <PopoverTrigger>
-              <IconButton
-                aria-label='create'
-                variant={'outline'}
-                onClick={onOpen}
-              >
-                <RxPlus />
-              </IconButton>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverBody>
-                <Box
-                  as={Link}
-                  href='/dashboard/promocoes/adicionar'
-                >
-                  <Text
-                    padding={{ xl: '0.5rem' }}
-                    borderRadius={{ xl: 'md' }}
-                    _hover={{
-                      backgroundColor: 'gray.100',
-                      transition: '300ms ease-out'
-                    }}
-                    display={'flex'}
-                    alignItems={'center'}
-                    gap={{ xl: '8px' }}
-                    fontStyle={inter.style.fontFamily}
-                  >
-                    <AiOutlinePlus />
-                    Adicionar promoção
-                  </Text>
-                </Box>
-                <Divider orientation='horizontal' margin={{ xl: '4px 0' }} />
-                <Box
-                  as={Link}
-                  href='/dashboard/promocoes/importar'
-                >
-                  <Text
-                    padding={{ xl: '0.5rem' }}
-                    borderRadius={{ xl: 'md' }}
-                    _hover={{
-                      backgroundColor: 'gray.100',
-                      transition: '300ms ease-out'
-                    }}
-                    display={'flex'}
-                    alignItems={'center'}
-                    gap={{ xl: '8px' }}
-                    fontStyle={inter.style.fontFamily}
-                  >
-                    <CiViewTable />
-                    Importar via CSV
-                  </Text>
-                </Box>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
+            Adicionar Oferta
+          </Button>
         </Flex>
         <Box
           padding={{ xl: '2rem 0' }}
@@ -206,26 +178,32 @@ export default function OffersPage() {
                               <HStack>
                                 <Tooltip label='Compartilhar no Facebook' placement='top' borderRadius={'base'}>
                                   <IconButton
+                                    as={FacebookShareButton}
                                     aria-label='editar-oferta'
                                     icon={<FaFacebook />}
                                     size={'xs'}
                                     colorScheme={'facebook'}
+                                    url={`/dashboard/promocoes/${offer.id}`}
                                   />
                                 </Tooltip>
                                 <Tooltip label='Compartilhar no Twitter' placement='top' borderRadius={'base'}>
                                   <IconButton
+                                    as={TwitterShareButton}
                                     aria-label='editar-oferta'
                                     colorScheme={'twitter'}
                                     icon={<FaTwitter />}
                                     size={'xs'}
+                                    url={`/dashboard/promocoes/${offer.id}`}
                                   />
                                 </Tooltip>
                                 <Tooltip label='Compartilhar no Whatsapp' placement='top' borderRadius={'base'}>
                                   <IconButton
+                                    as={WhatsappShareButton}
                                     aria-label='editar-oferta'
                                     colorScheme={'whatsapp'}
                                     icon={<FaWhatsapp />}
                                     size={'xs'}
+                                    url={`/dashboard/promocoes/${offer.id}`}
                                   />
                                 </Tooltip>
                               </HStack>
@@ -257,6 +235,9 @@ export default function OffersPage() {
                           <Td>
                             <Text>
                               <Switch
+                                value={String(offer.is_on_showcase) === 'false' ? 'true' : 'false'}
+                                onChange={(e) => handleShowcaseStatus(e, offer.id)}
+                                defaultChecked={offer.is_on_showcase}
                                 colorScheme='green'
                               />
                             </Text>
@@ -276,7 +257,17 @@ export default function OffersPage() {
 }
 
 export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  const { data } = await api.get<MeResponse>('/users/me', {
+    headers: {
+      Authorization: `Bearer ${cookies['promogate.token']}`
+    }
+  })
+
   return {
-    props: {}
+    props: {
+      user: data.user
+    }
   }
 }) 

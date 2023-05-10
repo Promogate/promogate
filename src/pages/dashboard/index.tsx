@@ -1,8 +1,8 @@
-import { PromogateContext } from '@/application/contexts'
-import { api } from '@/config'
-import { UserData } from '@/domain/models'
-import { DashboardLayout } from '@/presentation/components'
-import { withSSRAuth } from '@/utils'
+import { PromogateContext } from '@/application/contexts';
+import { api } from '@/config';
+import { MeResponse, UserData } from '@/domain/models';
+import { DashboardLayout } from '@/presentation/components';
+import { withSSRAuth } from '@/utils';
 import {
   Box,
   Button,
@@ -20,12 +20,12 @@ import {
   Th,
   Thead,
   Tr
-} from '@chakra-ui/react'
-import { Inter } from 'next/font/google'
-import Head from 'next/head'
-import { parseCookies } from 'nookies'
-import { Fragment, useContext } from 'react'
-import { useQuery } from 'react-query'
+} from '@chakra-ui/react';
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import { parseCookies } from 'nookies';
+import { Fragment, useContext } from 'react';
+import { useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -66,7 +66,6 @@ export default function Dashboard({ user }: DashboardProps) {
               >
                 <GridItem
                   backgroundColor={'white'}
-                  boxShadow={'sm'}
                   borderRadius={{ xl: '0.5rem' }}
                   padding={{ xl: '1rem' }}
                 >
@@ -91,32 +90,32 @@ export default function Dashboard({ user }: DashboardProps) {
                 </GridItem>
                 <GridItem
                   backgroundColor={'white'}
-                  boxShadow={'sm'}
                   borderRadius={{ xl: '0.5rem' }}
                   padding={{ xl: '1rem' }}
                 >
                   <Heading
-                    as='h3'
+                    as={'span'}
+                    fontSize={{ xl: 'md' }}
                     fontFamily={inter.style.fontFamily}
-                    fontSize={{ xl: '0.825rem' }}
-                    color={'gray.400'}
+                    fontWeight={'normal'}
+                    color={'gray.500'}
                   >
-                    Em Breve
+                    Sessões
                   </Heading>
                 </GridItem>
                 <GridItem
                   backgroundColor={'white'}
-                  boxShadow={'sm'}
                   borderRadius={{ xl: '0.5rem' }}
                   padding={{ xl: '1rem' }}
                 >
                   <Heading
-                    as='h3'
+                    as={'span'}
+                    fontSize={{ xl: 'md' }}
                     fontFamily={inter.style.fontFamily}
-                    fontSize={{ xl: '0.825rem' }}
-                    color={'gray.400'}
+                    fontWeight={'normal'}
+                    color={'gray.500'}
                   >
-                    Em Breve
+                    Taxa de Conversão
                   </Heading>
                 </GridItem>
               </Grid>
@@ -156,7 +155,7 @@ export default function Dashboard({ user }: DashboardProps) {
                         Você ainda não tem ofertas cadastradas
                       </Heading>
                       <Flex
-                      marginTop={{ xl: '1rem' }}
+                        marginTop={{ xl: '1rem' }}
                         justifyContent={'center'}
                         gap={{ xl: '1rem' }}
                       >
@@ -270,7 +269,7 @@ export default function Dashboard({ user }: DashboardProps) {
 export const getServerSideProps = withSSRAuth(async (ctx) => {
   const cookies = parseCookies(ctx);
 
-  const { data } = await api.get('/users/me', {
+  const { data } = await api.get<MeResponse>('/users/me', {
     headers: {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
@@ -278,7 +277,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 
   return {
     props: {
-      user: data
+      user: data.user
     }
   }
 }) 

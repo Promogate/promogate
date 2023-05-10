@@ -1,5 +1,5 @@
 import { api } from '@/config'
-import { OfferData } from '@/domain/models'
+import { OfferData, UserWithCategories } from '@/domain/models'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
 import {
@@ -8,11 +8,14 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  GridItem,
   Heading,
   IconButton,
   Input,
+  Select,
   useToast
 } from '@chakra-ui/react'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
 import { parseCookies } from 'nookies'
@@ -20,7 +23,14 @@ import React, { Fragment, useState } from 'react'
 import { TfiAngleLeft } from 'react-icons/tfi'
 import { useMutation } from 'react-query'
 
-export default function AddOffersPage() {
+type AddOffersPageProps = UserWithCategories;
+
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+})
+
+export default function AddOffersPage({ user }: AddOffersPageProps) {
   const cookies = parseCookies();
   const toast = useToast();
   const [offerData, setOfferData] = useState<OfferData>({
@@ -37,6 +47,8 @@ export default function AddOffersPage() {
     e.preventDefault();
     setOfferData({ ...offerData, [e.currentTarget.name]: e.currentTarget.value })
   }
+
+  console.log(user);
 
   const createOffer = useMutation(async () => {
     await api.post('/resources/offer/create', offerData, {
@@ -108,8 +120,9 @@ export default function AddOffersPage() {
             gridTemplateColumns={{ xl: '1fr 1fr' }}
             gap={{ xl: '1rem' }}
             backgroundColor={'white'}
-            padding={{ xl: '1.5rem' }}
+            padding={{ xl: '1.5rem 1.5rem 5rem 1.5rem' }}
             borderRadius={{ xl: '1rem' }}
+            overflow={'auto'}
           >
             <FormControl>
               <FormLabel>Image da oferta</FormLabel>
@@ -174,6 +187,32 @@ export default function AddOffersPage() {
                 onChange={handleChange}
               />
             </FormControl>
+            <FormControl>
+              <FormLabel>Data de expiração</FormLabel>
+              <Select>
+                {user?.user_profile.resources.categories.map((element, i) => {
+                  return (
+                    <option
+                      key={i}
+                    >
+                      {element.name}
+                    </option>
+                  )
+                })}
+              </Select>
+            </FormControl>
+            <FormControl
+              as={GridItem}
+              colSpan={2}
+              position={'relative'}
+            >
+              <FormLabel>Descrição</FormLabel>
+              <Input 
+                as={QuillNoSSRWrapper} 
+                theme='snow' 
+                height={'240px'}
+              />
+            </FormControl>
           </Box>
           <Flex
             justifyContent={'flex-end'}
@@ -199,7 +238,17 @@ export default function AddOffersPage() {
 }
 
 export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  const { data } = await api.get('/users/me/categories', {
+    headers: {
+      Authorization: `Bearer ${cookies['promogate.token']}`
+    }
+  })
+
   return {
-    props: {}
+    props: {
+      user: data.user
+    }
   }
 }) 
