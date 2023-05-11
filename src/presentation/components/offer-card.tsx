@@ -13,6 +13,11 @@ const inter = Inter({ subsets: ['latin'] });
 
 /*eslint-disable @next/next/no-img-element*/
 export function OfferCard({ data, storeName }: OfferCardProps) {
+  const store = storeName.toLocaleLowerCase().replace(' ', '-');
+  const productName = data.title.replaceAll(' ', '-');
+
+  const offerUrl = `/${store}/produto/${productName}?oid=${data.id}&utm_click=1&rid=${data.resources_id}`
+
   return (
     <Flex
       boxShadow={{ xl: 'lg' }}
@@ -31,7 +36,7 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
         overflow={'hidden'}
       >
         <Link
-          href={`/v/${storeName}/produto/${data.id}`}
+          href={offerUrl}
         >
           <img src={data.image} alt={data.title} />
         </Link>
@@ -50,7 +55,7 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
             color={'gray.700'}
             wordBreak={'break-word'}
             as={Link}
-            href={`/v/${storeName}/produto/${data.id}`}
+            href={offerUrl}
             target='_blank'
           >
             {data.title}

@@ -34,6 +34,8 @@ export default function Home({ store_name }: SingleStoreProps) {
     )
   }
 
+  console.log(data);
+
   return (
     <Fragment>
       <Head>

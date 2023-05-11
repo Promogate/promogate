@@ -17,7 +17,7 @@ export type Offer = {
   destination_link: string,
   store_image: string,
   store_name: string,
-  description: string | null,
+  description: string,
   expiration_date: string,
   created_at: string,
   is_on_showcase: boolean,
