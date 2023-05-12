@@ -4,9 +4,9 @@ const nextConfig = {
   async rewrites () {
     return [
       {
-        source: '/api/:path*',
+        source: '/api/external/:path*',
         destination: 'https://api.promogate.app/:path*',
-      }
+      },
     ]
   },
   images: {
