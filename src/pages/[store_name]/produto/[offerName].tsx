@@ -1,8 +1,8 @@
 import { api } from '@/config';
 import { OfferWithClicks } from '@/domain/models';
-import { parseCurrency } from '@/main/utils';
+import { parseAmbientUrl, parseCurrency } from '@/main/utils';
 import { StoreFooter, StoreHeader } from '@/presentation/components';
-import { Box, Button, Divider, Flex, Grid, HStack, Heading, Img, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Grid, HStack, Heading, IconButton, Img, Spinner, Text, VStack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
 import { Inter } from 'next/font/google';
@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { FaRegComments } from 'react-icons/fa';
 import { FiExternalLink } from 'react-icons/fi';
+import { TfiAngleLeft } from 'react-icons/tfi';
 import { useQuery } from 'react-query';
 
 type SingleProductResponse = {
@@ -37,11 +38,11 @@ export default function SingleProductPage() {
 
   if (data === undefined) {
     return (
-      <Fragment>
-        <Heading>
-          Loja não encontrada
-        </Heading>
-      </Fragment>
+      <Grid
+        justifyContent={'center'}
+      >
+        <Spinner />
+      </Grid>
     )
   }
 
@@ -49,18 +50,41 @@ export default function SingleProductPage() {
     <Fragment>
       <Head>
         <title>{data.offer.title}</title>
+        <meta property='og:title' content={data.offer.title} />
+        <meta property='og:description' content={data.offer.description} />
+        <meta property='og:type' content='website' data-rh='true' />
+        <meta property='og:image' content={data.offer.image} />
+        <meta property="og:image:width" content="400" />
+        <meta property="og:image:height" content="300" />
+        <meta property="og:image:alt" content={data.offer.title} />
+        <meta property='og:site_name' content='Promogate' />
+        <meta property='og:locale' content='pt_BR' />
+        <meta property='og:url' content={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)} data-rh='true' />
       </Head>
       <StoreHeader props={data.offer} />
       <Box
         backgroundColor={'gray.50'}
         fontFamily={inter.style.fontFamily}
       >
+        <Box
+          maxWidth={{ xl: '1160px' }}
+          padding={{ xl: '1rem 0' }}
+          margin={'0 auto'}
+        >
+          <IconButton
+            as={Link}
+            href={parseAmbientUrl(data.offer.store_name)}
+            icon={<TfiAngleLeft />}
+            variant={'outline'}
+            aria-label={`Voltar para ${data.offer.store_name}`}
+          />
+        </Box>
         <Grid
           maxWidth={{ xl: '1160px' }}
           margin={'0 auto'}
           gridTemplateColumns={'auto 300px'}
           gap={{ xl: '24px' }}
-          padding={{ xl: '2rem 0' }}
+          padding={{ xl: '1rem 0' }}
         >
           <Box
             padding={{ xl: '1rem' }}
@@ -206,51 +230,9 @@ export default function SingleProductPage() {
               width={300}
               height={250}
             />
-            <Image
-              src={'/ads/300x600.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
-            <Image
-              src={'/ads/300x600.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
-            <Image
-              src={'/ads/300x600.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
-            <Image
-              src={'/ads/300x600.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
-            <Image
-              src={'/ads/300x600.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
-            <Image
-              src={'/ads/300x600.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
-            <Image
-              src={'/ads/300x600.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
           </Grid>
         </Grid>
-      <StoreFooter props={data.offer} />
+        <StoreFooter />
       </Box>
     </Fragment>
   )

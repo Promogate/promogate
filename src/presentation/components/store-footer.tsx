@@ -3,27 +3,7 @@ import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'], preload: true });
 
-type StoreFooterProps = {
-  props: {
-		id: string,
-		image: string,
-		title: string,
-		old_price: string | null,
-		price: string,
-		destination_link: string,
-		store_image: string,
-		store_name: string,
-		description: string,
-		expiration_date: string,
-		created_at: string,
-		is_on_showcase: boolean,
-		is_featured: boolean,
-		is_free_shipping: boolean,
-		resources_id: string
-	} | undefined;
-}
-
-export function StoreFooter({ props }: StoreFooterProps) {
+export function StoreFooter() {
   return (
     <Grid
       height={'20vh'}

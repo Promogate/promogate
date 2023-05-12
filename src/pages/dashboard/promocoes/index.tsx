@@ -21,7 +21,7 @@ import {
   Tr,
   useToast
 } from '@chakra-ui/react';
-import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from 'next-share';
+import { FacebookShareButton, TelegramShareButton, WhatsappShareButton } from 'next-share';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -29,7 +29,7 @@ import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { BiTrash } from 'react-icons/bi';
-import { FaFacebook, FaTwitter, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebook, FaTelegram, FaWhatsapp } from 'react-icons/fa';
 import { useMutation, useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -46,9 +46,14 @@ type OffersPageProps = {
 /* eslint-disable @next/next/no-img-element */
 export default function OffersPage({ user }: OffersPageProps) {
   const toast = useToast();
+  const cookies = parseCookies();
 
   const { data, isLoading } = useQuery('offers', async () => {
-    const { data } = await api.get<Offer[]>('/dashboard/offers')
+    const { data } = await api.get<Offer[]>('/dashboard/offers', {
+      headers: {
+        Authorization: `Bearer ${cookies['promogate.token']}`
+      }
+    })
 
     return data
   }, {
@@ -183,17 +188,17 @@ export default function OffersPage({ user }: OffersPageProps) {
                                     icon={<FaFacebook />}
                                     size={'xs'}
                                     colorScheme={'facebook'}
-                                    url={`/dashboard/promocoes/${offer.id}`}
+                                    url={`https://promogate.app/${offer.store_name.toLocaleLowerCase()}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
                                   />
                                 </Tooltip>
                                 <Tooltip label='Compartilhar no Twitter' placement='top' borderRadius={'base'}>
                                   <IconButton
-                                    as={TwitterShareButton}
+                                    as={TelegramShareButton}
                                     aria-label='editar-oferta'
                                     colorScheme={'twitter'}
-                                    icon={<FaTwitter />}
+                                    icon={<FaTelegram />}
                                     size={'xs'}
-                                    url={`/dashboard/promocoes/${offer.id}`}
+                                    url={`https://promogate.app/${offer.store_name.toLocaleLowerCase()}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
                                   />
                                 </Tooltip>
                                 <Tooltip label='Compartilhar no Whatsapp' placement='top' borderRadius={'base'}>
@@ -203,7 +208,7 @@ export default function OffersPage({ user }: OffersPageProps) {
                                     colorScheme={'whatsapp'}
                                     icon={<FaWhatsapp />}
                                     size={'xs'}
-                                    url={`/dashboard/promocoes/${offer.id}`}
+                                    url={`https://promogate.app/${offer.store_name.toLocaleLowerCase()}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
                                   />
                                 </Tooltip>
                               </HStack>

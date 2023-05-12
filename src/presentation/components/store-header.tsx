@@ -3,22 +3,9 @@ import Image from 'next/image';
 
 type StoreHeaderProps = {
   props: {
-		id: string,
-		image: string,
-		title: string,
-		old_price: string | null,
-		price: string,
-		destination_link: string,
-		store_image: string,
-		store_name: string,
-		description: string,
-		expiration_date: string,
-		created_at: string,
-		is_on_showcase: boolean,
-		is_featured: boolean,
-		is_free_shipping: boolean,
-		resources_id: string
-	} | undefined
+    store_image: string;
+    store_name: string;
+  } | undefined
 }
 
 /*eslint-disable @next/next/no-img-element*/

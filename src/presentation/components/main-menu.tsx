@@ -13,9 +13,9 @@ type MainMenuProps = {
 export function MainMenu({ isLogged }: MainMenuProps) {
   return (
     <Grid
-      gridTemplateColumns={'auto 1fr auto'}
+      gridTemplateColumns={'120px auto'}
       height={'80px'}
-      maxWidth={{ xl: '1250px' }}
+      maxWidth={{ xl: '1170px' }}
       margin={'0 auto'}
       gap={'56px'}
     >
@@ -27,30 +27,12 @@ export function MainMenu({ isLogged }: MainMenuProps) {
         <Image src={'/promogate.svg'} alt={'Promogate logo'} fill />
       </Box>
       <Flex
-        gap={'24px'}
-        alignItems={'center'}
-        color={'gray.600'}
-      >
-        <Box
-          as={Link}
-          href={'/nosso-objetivo'}
-          fontFamily={inter.style.fontFamily}
-        >
-          Nosso objetivo
-        </Box>
-        <Box
-          as={Link}
-          href={'/ferramentas'}
-          fontFamily={inter.style.fontFamily}
-        >
-          Ferramentas
-        </Box>
-      </Flex>
-      <Flex
         gap={'16px'}
         alignItems={'center'}
         fontSize={'0.8rem'}
         color={'gray.500'}
+        width={'100%'}
+        justifyContent={'flex-end'}
       >
         {
           isLogged ? (

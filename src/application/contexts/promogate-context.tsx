@@ -1,5 +1,5 @@
 import { api } from '@/config';
-import { DashboardData, RequestError } from '@/domain/models';
+import { DashboardData, OfferWithClicks, RequestError } from '@/domain/models';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
@@ -16,7 +16,7 @@ type CreateProfileOutput = {
   profile: string;
 }
 
-type FetchStoreOffersResponse = {
+export type FetchStoreOffersResponse = {
   status: string,
   message: string,
   user_profile: {
@@ -26,23 +26,7 @@ type FetchStoreOffersResponse = {
     role: string,
     user_id: string,
     resources: {
-      offers: Array<{
-        id: string,
-        image: string,
-        title: string,
-        old_price: string | null,
-        price: string,
-        destination_link: string,
-        store_image: string,
-        store_name: string,
-        description: string | null,
-        expiration_date: string,
-        created_at: string,
-        is_on_showcase: boolean,
-        is_featured: boolean,
-        is_free_shipping: boolean,
-        resources_id: string
-      }>
+      offers: OfferWithClicks[]
     }
   }
 }

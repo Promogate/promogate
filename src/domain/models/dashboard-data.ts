@@ -1,4 +1,4 @@
-import { Offer } from './offer-data'
+import { OfferWithClicks } from './offer-data'
 
 export type DashboardData = {
 	id: string,
@@ -19,6 +19,6 @@ export type DashboardData = {
 		}
 	},
 	resources: {
-		offers: Offer[]
+		offers: OfferWithClicks[]
 	}
 }

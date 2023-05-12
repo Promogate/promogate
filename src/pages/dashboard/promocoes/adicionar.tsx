@@ -125,7 +125,7 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
             overflow={'auto'}
           >
             <FormControl>
-              <FormLabel>Image da oferta</FormLabel>
+              <FormLabel>(Link) Imagem da Oferta</FormLabel>
               <Input
                 type='text'
                 name='image'
@@ -161,7 +161,7 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Link da oferta</FormLabel>
+              <FormLabel>Destino (Link Afiliado)</FormLabel>
               <Input
                 type='text'
                 name='destinationLink'
@@ -170,7 +170,7 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Image da loja</FormLabel>
+              <FormLabel>Nome da loja</FormLabel>
               <Input
                 type='text'
                 name='storeImage'

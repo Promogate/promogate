@@ -1,5 +1,5 @@
 import { PromogateContext } from '@/application/contexts';
-import { Offer } from '@/domain/models';
+import { OfferWithClicks } from '@/domain/models';
 import { OfferCard, StoreFooter, StoreHeader } from '@/presentation/components';
 import { Box, Grid, Heading, Spinner } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
@@ -34,8 +34,6 @@ export default function Home({ store_name }: SingleStoreProps) {
     )
   }
 
-  console.log(data);
-
   return (
     <Fragment>
       <Head>
@@ -49,13 +47,7 @@ export default function Home({ store_name }: SingleStoreProps) {
         </title>
       </Head>
       <main>
-        <StoreHeader props={{ 
-          id: data.user_profile.id, 
-          role: data.user_profile.role, 
-          store_image: data.user_profile.store_image, 
-          store_name: data.user_profile.store_name, 
-          user_id: data.user_profile.user_id
-         }} />
+        <StoreHeader props={{ store_image: data.user_profile.store_image, store_name: data.user_profile.store_name }} />
         <Grid
           gridTemplateColumns={{ xl: '9fr 3fr' }}
           maxWidth={{ xl: '1250px' }}
@@ -89,7 +81,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                     Destaque
                   </Heading>
                 ) : (
-                  data.user_profile.resources.offers.map((offer: Offer) => {
+                  data.user_profile.resources.offers.map((offer: OfferWithClicks) => {
                     return <OfferCard key={offer.id} data={offer} storeName={offer.store_name} />
                   })
                 )
@@ -113,13 +105,7 @@ export default function Home({ store_name }: SingleStoreProps) {
             </Grid>
           </Box>
         </Grid>
-        <StoreFooter props={{ 
-          id: data.user_profile.id, 
-          role: data.user_profile.role, 
-          store_image: data.user_profile.store_image, 
-          store_name: data.user_profile.store_name, 
-          user_id: data.user_profile.user_id
-         }}/>
+        <StoreFooter />
       </main>
     </Fragment>
   )

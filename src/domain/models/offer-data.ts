@@ -27,6 +27,11 @@ export type Offer = {
 }
 
 export type OfferWithClicks = Offer & {
+  resources: {
+    user_profile: {
+      store_name: string,
+    }
+  },
   _count: {
     offer_clicks: number;
   };

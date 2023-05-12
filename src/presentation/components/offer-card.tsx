@@ -1,11 +1,11 @@
-import { Offer } from '@/domain/models';
+import { OfferWithClicks } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
 type OfferCardProps = {
-  data: Offer;
+  data: OfferWithClicks;
   storeName: string;
 }
 
@@ -14,12 +14,15 @@ const inter = Inter({ subsets: ['latin'] });
 /*eslint-disable @next/next/no-img-element*/
 export function OfferCard({ data, storeName }: OfferCardProps) {
   const store = storeName.toLocaleLowerCase().replace(' ', '-');
-  const productName = data.title.replaceAll(' ', '-');
+  const productName = data.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s,]/g, '-');
 
   const offerUrl = `/${store}/produto/${productName}?oid=${data.id}&utm_click=1&rid=${data.resources_id}`
 
   return (
     <Flex
+      as={Link}
+      href={offerUrl}
+      target='_blank'
       boxShadow={{ xl: 'lg' }}
       borderRadius={{ xl: 'lg' }}
       padding={{ xl: '1rem' }}
@@ -30,16 +33,14 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
         transform: 'scale(1.025)',
       }}
       transition={'175ms ease-in-out'}
+      fontFamily={inter.style.fontFamily}
     >
       <Box
         borderRadius={{ xl: '1rem' }}
         overflow={'hidden'}
       >
-        <Link
-          href={offerUrl}
-        >
-          <img src={data.image} alt={data.title} />
-        </Link>
+
+        <img src={data.image} alt={data.title} />
       </Box>
       <Box
         flex={1}
@@ -61,17 +62,42 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
             {data.title}
           </Heading>
         </Box>
-        <Heading
-          as={'span'}
-          fontFamily={inter.style.fontFamily}
-          fontSize={{ xl: '1rem' }}
-          fontWeight={'medium'}
-          color={'gray.600'}
-          wordBreak={'break-word'}
+        <Flex
+          width={'100%'}
           margin={{ xl: '1rem 0' }}
+          alignItems={'center'}
+          gap={{ xl: '4px' }}
         >
-          {parseCurrency(data.price)}
-        </Heading>
+          <Heading
+            as={'span'}
+            fontFamily={inter.style.fontFamily}
+            fontSize={{ xl: '1rem' }}
+            color={'gray.800'}
+            wordBreak={'break-word'}
+          >
+            {parseCurrency(data.price)}
+          </Heading>
+          {data.old_price && (
+            <Text
+              as={'span'}
+              fontSize={'xs'}
+              color={'red.400'}
+              textDecoration={'line-through'}
+            >
+              {parseCurrency(data.old_price)}
+            </Text>
+          )}
+        </Flex>
+        <Flex
+          width={'100%'}
+          justifyContent={'flex-end'}
+        >
+          <Text
+            fontSize={{ xl: 'xs' }}
+          >
+            {data._count.offer_clicks} visualizações
+          </Text>
+        </Flex>
       </Box>
     </Flex>
   )
