@@ -8,7 +8,6 @@ import {
   Button,
   Flex,
   Grid,
-  GridItem,
   Heading,
   Link,
   Skeleton,
@@ -21,10 +20,11 @@ import {
   Thead,
   Tr
 } from '@chakra-ui/react';
+import { Card, Metric, Text as TremorText } from '@tremor/react';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -36,11 +36,18 @@ type DashboardProps = {
 /* eslint-disable @next/next/no-img-element */
 export default function Dashboard({ user }: DashboardProps) {
   const { fetchDashboardData } = useContext(PromogateContext);
+  const [ctr, setCtr] = useState<number | null>(null)
 
   const { data, isLoading, isError } = useQuery(['offers', user.id], async () => await fetchDashboardData(user.user_profile.id), {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 5,
   })
+
+  useMemo(() => {
+    if (data) {
+      setCtr(( 100 * data?.analytics._count.destination_clicks) / data?.analytics._count.offer_clicks)
+    }
+  }, [data])
 
   return (
     <Fragment>
@@ -60,64 +67,42 @@ export default function Dashboard({ user }: DashboardProps) {
                 Dashboard
               </Heading>
               <Grid
-                gridTemplateColumns={{ xl: 'repeat(3, 1fr)' }}
+                gridTemplateColumns={{ xl: 'repeat(4, 1fr)' }}
                 margin={{ xl: '1rem 0' }}
                 gap={{ xl: '1rem' }}
               >
-                <GridItem
-                  backgroundColor={'white'}
-                  borderRadius={{ xl: '0.5rem' }}
-                  padding={{ xl: '1rem' }}
-                >
-                  <Heading
-                    as={'span'}
-                    fontSize={{ xl: 'md' }}
-                    fontFamily={inter.style.fontFamily}
-                    fontWeight={'normal'}
-                    color={'gray.500'}
-                  >
-                    Total de cliques
-                  </Heading>
-                  <Heading
-                    as={'h3'}
-                    fontSize={{ xl: '3xl' }}
-                    color={'gray.600'}
-                  >
-                    <Skeleton isLoaded={!isLoading}>
-                      {data?.analytics._count.offer_clicks}
-                    </Skeleton>
-                  </Heading>
-                </GridItem>
-                <GridItem
-                  backgroundColor={'white'}
-                  borderRadius={{ xl: '0.5rem' }}
-                  padding={{ xl: '1rem' }}
-                >
-                  <Heading
-                    as={'span'}
-                    fontSize={{ xl: 'md' }}
-                    fontFamily={inter.style.fontFamily}
-                    fontWeight={'normal'}
-                    color={'gray.500'}
-                  >
-                    Sessões
-                  </Heading>
-                </GridItem>
-                <GridItem
-                  backgroundColor={'white'}
-                  borderRadius={{ xl: '0.5rem' }}
-                  padding={{ xl: '1rem' }}
-                >
-                  <Heading
-                    as={'span'}
-                    fontSize={{ xl: 'md' }}
-                    fontFamily={inter.style.fontFamily}
-                    fontWeight={'normal'}
-                    color={'gray.500'}
-                  >
+                <Card decoration="top" decorationColor="indigo">
+                  <TremorText>
+                    Visualizações da loja
+                  </TremorText>
+                  <Skeleton isLoaded={!isLoading}>
+                    <Metric>{data?.analytics._count.offer_clicks}</Metric>
+                  </Skeleton>
+                </Card>
+                <Card decoration="top" decorationColor="amber">
+                  <TremorText>
+                    Cliques nas ofertas
+                  </TremorText>
+                  <Skeleton isLoaded={!isLoading}>
+                    <Metric>{data?.analytics._count.offer_clicks}</Metric>
+                  </Skeleton>
+                </Card>
+                <Card decoration="top" decorationColor="green">
+                  <TremorText>
+                    Cliques para lojas
+                  </TremorText>
+                  <Skeleton isLoaded={!isLoading}>
+                    <Metric>{data?.analytics._count.destination_clicks}</Metric>
+                  </Skeleton>
+                </Card>
+                <Card decoration="top" decorationColor="teal">
+                  <TremorText>
                     Taxa de Conversão
-                  </Heading>
-                </GridItem>
+                  </TremorText>
+                  <Skeleton isLoaded={!isLoading}>
+                    <Metric>{ctr?.toFixed(2)}%</Metric>
+                  </Skeleton>
+                </Card>
               </Grid>
               <Box
                 padding={{ xl: '2rem 0' }}
