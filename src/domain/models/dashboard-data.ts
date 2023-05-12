@@ -15,7 +15,8 @@ export type DashboardData = {
 	user_id: string,
 	analytics: {
 		_count: {
-			offer_clicks: number
+			offer_clicks: number,
+			destination_clicks: number
 		}
 	},
 	resources: {
