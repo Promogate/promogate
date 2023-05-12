@@ -200,7 +200,7 @@ export default function SingleProductPage() {
 
                   <Button
                     as={Link}
-                    href={data.offer.destination_link}
+                    href={`/api/redir/${data.offer.id}`}
                     target='_blank'
                     rightIcon={<FiExternalLink />}
                     colorScheme={'green'}
