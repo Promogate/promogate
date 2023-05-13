@@ -1,5 +1,5 @@
 import { PromogateContext } from '@/application/contexts';
-import { MeResponse } from '@/domain/models';
+import { MeResponse, RequestError } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
 import {
   Box,
@@ -25,7 +25,8 @@ import { TiDelete } from 'react-icons/ti';
 import { useMutation } from 'react-query';
 
 import { AWSUploadService } from '@/application/services';
-import { api } from '@/config';
+import { api, queryClient } from '@/config';
+import { AxiosError } from 'axios';
 import Head from 'next/head';
 import Image from 'next/image';
 
@@ -47,7 +48,7 @@ type SettingsPageProps = {
       user_id: string,
       social_media?: {
         facebook?: string;
-        whastapp?: string;
+        whatsapp?: string;
         instagram?: string;
         telegram?: string;
         twitter?: string;
@@ -72,6 +73,7 @@ export default function SettingsPage({ user }: SettingsPageProps) {
   const [localImageUrl, setLocalImageUrl] = useState(user.user_profile.store_image);
   const [sampleUrl, setSampleUrl] = useState(user.user_profile.store_name);
   const { token } = useContext(PromogateContext);
+  const cookies = parseCookies();
 
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -85,16 +87,21 @@ export default function SettingsPage({ user }: SettingsPageProps) {
 
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<UpdateProfileBody>({
     defaultValues: {
-
+      store_name: user.user_profile.store_name.replaceAll('-', ' '),
+      facebook: user.user_profile.social_media?.facebook,
+      instagram: user.user_profile.social_media?.instagram,
+      whatsapp: user.user_profile.social_media?.whatsapp,
+      telegram: user.user_profile.social_media?.telegram,
+      twitter: user.user_profile.social_media?.twitter,
     },
     values: {
       store_name: user.user_profile.store_name.replaceAll('-', ' '),
       facebook: user.user_profile.social_media?.facebook,
       instagram: user.user_profile.social_media?.instagram,
-      whatsapp: user.user_profile.social_media?.whastapp,
+      whatsapp: user.user_profile.social_media?.whatsapp,
       telegram: user.user_profile.social_media?.telegram,
       twitter: user.user_profile.social_media?.twitter,
-    }
+    },
   });
 
   const updateMutation = useMutation(async (values: UpdateProfileBody) => {
@@ -105,9 +112,16 @@ export default function SettingsPage({ user }: SettingsPageProps) {
     })
   }, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['user-profile', cookies['promogate.token']]);
       toast({
         status: 'success',
         description: 'Atualizado com sucesso'
+      })
+    },
+    onError: (err: AxiosError<RequestError>) => {
+      toast({
+        status: 'error',
+        description: err.response?.data.message
       })
     }
   });
@@ -383,8 +397,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
   })
-
-  console.log(data);
 
   return {
     props: {

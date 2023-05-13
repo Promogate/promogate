@@ -13,7 +13,7 @@ export type MeResponse = {
 			user_id: string,
       social_media?: {
         facebook?: string;
-        whastapp?: string;
+        whatsapp?: string;
         instagram?: string;
         telegram?: string;
         twitter?: string;
