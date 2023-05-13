@@ -83,7 +83,7 @@ export default function CreateStore({ user }: CreateStoreProps) {
 
   const handleSampleUrl = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSampleUrl(e.currentTarget.value.toLocaleLowerCase().replace(' ', '-'));
+    setSampleUrl(e.currentTarget.value.toLocaleLowerCase().replaceAll(' ', '-'));
   }
 
   return (
@@ -208,8 +208,8 @@ export default function CreateStore({ user }: CreateStoreProps) {
                 fontSize={{ xl: '0.725rem' }}
                 color={'gray.400'}
               >
-                Como será a sua url: /v
-                {`/${sampleUrl}`}
+                Como será a sua url:
+                {` https://promogate.app/${sampleUrl}`}
               </Text>
             </Box>
           </FormControl>
@@ -233,17 +233,19 @@ export default function CreateStore({ user }: CreateStoreProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { 'promogate.token': token } = parseCookies(ctx);
+  const cookies = parseCookies(ctx);
 
   const { data } = await api.get<CreateStoreProps>('/users/me', {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${cookies['promogate.token']}`
     }
   })
 
+  console.log(data)
+
   return {
     props: {
-      user: data
+      user: data.user
     }
   }
 }

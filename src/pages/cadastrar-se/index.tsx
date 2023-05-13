@@ -162,7 +162,7 @@ export default function RegisterPage() {
               fontFamily={inter.style.fontFamily}
               isLoading={isSubmitting}
             >
-              Entrar
+              Cadastrar-se
             </Button>
           </Flex>
           <Flex

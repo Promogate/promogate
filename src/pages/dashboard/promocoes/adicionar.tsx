@@ -1,5 +1,6 @@
-import { api } from '@/config'
-import { OfferData, UserWithCategories } from '@/domain/models'
+import { api, queryClient } from '@/config'
+import { OfferDataInput, UserMeResponse } from '@/domain/models'
+import { makeCurrencyStringReadable } from '@/main/utils'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
 import {
@@ -12,65 +13,77 @@ import {
   Heading,
   IconButton,
   Input,
-  Select,
   useToast
 } from '@chakra-ui/react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { TfiAngleLeft } from 'react-icons/tfi'
 import { useMutation } from 'react-query'
 
-type AddOffersPageProps = UserWithCategories;
+type AddOffersPageProps = {
+  userData: {
+    status: string,
+    user: {
+      id: string,
+      name: string,
+      email: string,
+      created_at: string,
+      user_profile: {
+        id: string,
+        store_image: string,
+        store_name: string,
+        role: string,
+        user_id: string,
+        resources: {
+          created_at: string,
+          id: string,
+          user_profile_id:string,
+        }
+      }
+    }
+  }
+};
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
 })
 
-export default function AddOffersPage({ user }: AddOffersPageProps) {
+export default function AddOffersPage({ userData }: AddOffersPageProps) {
   const cookies = parseCookies();
   const toast = useToast();
-  const [offerData, setOfferData] = useState<OfferData>({
-    image: '',
-    title: '',
-    price: '',
-    oldPrice: '',
-    destinationLink: '',
-    storeImage: '',
-    expirationDate: ''
-  })
+  const router = useRouter();
+  const [description, setDescription] = useState('')
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    setOfferData({ ...offerData, [e.currentTarget.name]: e.currentTarget.value })
-  }
+  const { register, handleSubmit, formState: { isSubmitting }, watch } = useForm<OfferDataInput>();
 
-  console.log(user);
+  const mutation = useMutation(async (data: OfferDataInput) => {
+    const price = makeCurrencyStringReadable(data.price);
+    const old_price = makeCurrencyStringReadable(data.old_price);
 
-  const createOffer = useMutation(async () => {
-    await api.post('/resources/offer/create', offerData, {
+    await api.post(`/resources/${userData.user.user_profile.resources.id}/offer/create`, { 
+      ...data,
+      price,
+      old_price,
+      description }, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
+    
   }, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['offers', userData.user.id]);
       toast({
         status: 'success',
         description: 'Oferta adicionada com sucesso!'
-      }),
-        setOfferData({
-          image: '',
-          title: '',
-          price: '',
-          oldPrice: '',
-          destinationLink: '',
-          storeImage: '',
-          expirationDate: ''
-        })
+      });
+      router.push('/dashboard/promocoes');
     },
     onError: (e: any) => {
       toast({
@@ -80,8 +93,12 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
     }
   })
 
-  const handleCreateOffer = async () => {
-    await createOffer.mutateAsync()
+  const createOffer: SubmitHandler<OfferDataInput> = async (data) => {
+    await mutation.mutateAsync(data);
+  }
+
+  const changeQuillDescription = (e: any) => {
+    setDescription(e)
   }
 
   return (
@@ -113,9 +130,10 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
         </Flex>
         <Box
           padding={{ xl: '2rem 0' }}
+          as={'form'}
+          onSubmit={handleSubmit(createOffer)}
         >
           <Box
-            as={'form'}
             display={'grid'}
             gridTemplateColumns={{ xl: '1fr 1fr' }}
             gap={{ xl: '1rem' }}
@@ -128,89 +146,62 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
               <FormLabel>(Link) Imagem da Oferta</FormLabel>
               <Input
                 type='text'
-                name='image'
-                value={offerData.image}
-                onChange={handleChange}
+                {...register('image')}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Título</FormLabel>
+              <FormLabel>Título da Oferta</FormLabel>
               <Input
                 type='text'
-                name='title'
-                value={offerData.title}
-                onChange={handleChange}
+                {...register('title')}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Preço antigo</FormLabel>
+              <FormLabel>Preço antigo (Opcional) </FormLabel>
               <Input
                 type='text'
-                name='oldPrice'
-                value={offerData.oldPrice}
-                onChange={handleChange}
+                {...register('old_price')}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Preço atual</FormLabel>
+              <FormLabel>Preço final</FormLabel>
               <Input
                 type='text'
-                name='price'
-                value={offerData.price}
-                onChange={handleChange}
+                {...register('price')}
               />
             </FormControl>
             <FormControl>
               <FormLabel>Destino (Link Afiliado)</FormLabel>
               <Input
                 type='text'
-                name='destinationLink'
-                value={offerData.destinationLink}
-                onChange={handleChange}
+                {...register('destination_link')}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Nome da loja</FormLabel>
+              <FormLabel>Nome da loja (Anunciante)</FormLabel>
               <Input
                 type='text'
-                name='storeImage'
-                value={offerData.storeImage}
-                onChange={handleChange}
+                {...register('store_name')}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Data de expiração</FormLabel>
+              <FormLabel>Data de expiração (Opcional)</FormLabel>
               <Input
                 type='datetime-local'
-                name='expirationDate'
-                value={offerData.expirationDate}
-                onChange={handleChange}
+                {...register('expiration_date')}
               />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Data de expiração</FormLabel>
-              <Select>
-                {user?.user_profile.resources.categories.map((element, i) => {
-                  return (
-                    <option
-                      key={i}
-                    >
-                      {element.name}
-                    </option>
-                  )
-                })}
-              </Select>
             </FormControl>
             <FormControl
               as={GridItem}
               colSpan={2}
               position={'relative'}
             >
-              <FormLabel>Descrição</FormLabel>
-              <Input 
-                as={QuillNoSSRWrapper} 
-                theme='snow' 
+              <FormLabel>Descrição (Opcional)</FormLabel>
+              <Input
+                as={QuillNoSSRWrapper}
+                theme='snow'
                 height={'240px'}
+                onChange={changeQuillDescription}
               />
             </FormControl>
           </Box>
@@ -225,8 +216,8 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
                 backgroundColor: 'black'
               }}
               color={'white'}
-              onClick={handleCreateOffer}
-              isLoading={createOffer.isLoading}
+              type='submit'
+              isLoading={isSubmitting}
             >
               Adicionar oferta
             </Button>
@@ -240,7 +231,7 @@ export default function AddOffersPage({ user }: AddOffersPageProps) {
 export const getServerSideProps = withSSRAuth(async (ctx) => {
   const cookies = parseCookies(ctx);
 
-  const { data } = await api.get('/users/me/categories', {
+  const { data } = await api.get<UserMeResponse>('/users/me', {
     headers: {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
@@ -248,7 +239,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 
   return {
     props: {
-      user: data.user
+      userData: data
     }
   }
 }) 

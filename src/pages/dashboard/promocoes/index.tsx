@@ -28,14 +28,19 @@ import Link from 'next/link';
 import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
-import { BiTrash } from 'react-icons/bi';
 import { FaFacebook, FaTelegram, FaWhatsapp } from 'react-icons/fa';
+import { RxUpdate } from 'react-icons/rx';
 import { useMutation, useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 
 type UpdateOfferShowcase = {
   is_on_showcase: boolean;
+  offerId: string
+}
+
+type UpdateOfferFeatured = {
+  is_featured: boolean;
   offerId: string
 }
 
@@ -48,7 +53,7 @@ export default function OffersPage({ user }: OffersPageProps) {
   const toast = useToast();
   const cookies = parseCookies();
 
-  const { data, isLoading } = useQuery('offers', async () => {
+  const { data, isLoading } = useQuery(['offers', user.id], async () => {
     const { data } = await api.get<Offer[]>('/dashboard/offers', {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
@@ -61,13 +66,31 @@ export default function OffersPage({ user }: OffersPageProps) {
     staleTime: 1000 * 60 * 5,
   })
 
+  console.log(data);
+
   const mutation = useMutation(async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
     await api.put(`/resources/offer/${offerId}/update/showcase`, {
       is_on_showcase
     })
   }, {
     onSuccess: () => {
-      queryClient.invalidateQueries('offers')
+      queryClient.invalidateQueries(['offers', user.id])
+    },
+    onError: () => {
+      toast({
+        status: 'error',
+        description: 'Houve algum erro'
+      })
+    }
+  })
+
+  const isFeatured = useMutation(async ({ is_featured, offerId }: UpdateOfferFeatured) => {
+    await api.put(`/resources/offer/${offerId}/update/featured`, {
+      is_featured
+    })
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['offers', user.id])
     },
     onError: () => {
       toast({
@@ -82,7 +105,19 @@ export default function OffersPage({ user }: OffersPageProps) {
     await mutation.mutateAsync({
       is_on_showcase: e.currentTarget.checked,
       offerId
-     })
+    })
+  }
+
+  const handleIsFeaturedStatus = async (e: ChangeEvent<HTMLInputElement>, offerId: string) => {
+    e.preventDefault();
+    await isFeatured.mutateAsync({
+      is_featured: e.currentTarget.checked,
+      offerId
+    })
+  }
+
+  const handleQueryInvalidation = () => {
+    queryClient.refetchQueries(['offers', user.id])
   }
 
   return (
@@ -115,6 +150,15 @@ export default function OffersPage({ user }: OffersPageProps) {
         <Box
           padding={{ xl: '2rem 0' }}
         >
+          <Button
+            marginBottom={{ xl: '1rem' }}
+            rightIcon={<RxUpdate />}
+            variant={'outline'}
+            onClick={handleQueryInvalidation}
+            size={{ xl: 'sm' }}
+          >
+            Atualizar ofertas
+          </Button>
           <Box
             backgroundColor={'white'}
             padding={{ xl: '2rem 1rem' }}
@@ -144,6 +188,7 @@ export default function OffersPage({ user }: OffersPageProps) {
                       <Th>Compartilhar</Th>
                       <Th></Th>
                       <Th>Vitrine</Th>
+                      <Th>Destaque</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -223,15 +268,8 @@ export default function OffersPage({ user }: OffersPageProps) {
                                     icon={<AiFillEdit />}
                                     size={'xs'}
                                     colorScheme={'blue'}
-                                  />
-                                </Tooltip>
-                                <Tooltip label='Excluir' backgroundColor={'red'} placement='top' borderRadius={'base'}>
-                                  <IconButton
-                                    aria-label='editar-oferta'
-                                    colorScheme={'red'}
-                                    variant={'outline'}
-                                    icon={<BiTrash />}
-                                    size={'xs'}
+                                    as={Link}
+                                    href={`/dashboard/promocoes/${offer.id}`}
                                   />
                                 </Tooltip>
                               </HStack>
@@ -243,6 +281,16 @@ export default function OffersPage({ user }: OffersPageProps) {
                                 value={String(offer.is_on_showcase) === 'false' ? 'true' : 'false'}
                                 onChange={(e) => handleShowcaseStatus(e, offer.id)}
                                 defaultChecked={offer.is_on_showcase}
+                                colorScheme='green'
+                              />
+                            </Text>
+                          </Td>
+                          <Td>
+                            <Text>
+                              <Switch
+                                value={String(offer.is_featured) === 'false' ? 'true' : 'false'}
+                                onChange={(e) => handleIsFeaturedStatus(e, offer.id)}
+                                defaultChecked={offer.is_featured}
                                 colorScheme='green'
                               />
                             </Text>

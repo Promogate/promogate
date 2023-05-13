@@ -16,6 +16,8 @@ import { FiExternalLink } from 'react-icons/fi';
 import { TfiAngleLeft } from 'react-icons/tfi';
 import { useQuery } from 'react-query';
 
+import parse from 'html-react-parser';
+ 
 type SingleProductResponse = {
   status: string;
   message: string;
@@ -36,7 +38,7 @@ export default function SingleProductPage() {
     staleTime: 1000 * 60 * 15
   })
 
-  if (data === undefined) {
+  if (isLoading) {
     return (
       <Grid
         justifyContent={'center'}
@@ -45,6 +47,20 @@ export default function SingleProductPage() {
       </Grid>
     )
   }
+
+  if (!data) {
+    return (
+      <Grid
+        justifyContent={'center'}
+      >
+        <Heading>
+          Erro ao tentar encontrar o produto
+        </Heading>
+      </Grid>
+    )
+  }
+
+  const description = parse(data.offer.description);
 
   return (
     <Fragment>
@@ -61,7 +77,7 @@ export default function SingleProductPage() {
         <meta property='og:locale' content='pt_BR' />
         <meta property='og:url' content={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)} data-rh='true' />
       </Head>
-      <StoreHeader props={data.offer} />
+      <StoreHeader props={{ store_image: data.offer.resources.user_profile.store_image, store_name: data.offer.resources.user_profile.store_name }} />
       <Box
         backgroundColor={'gray.50'}
         fontFamily={inter.style.fontFamily}
@@ -178,7 +194,7 @@ export default function SingleProductPage() {
                   <Text
                     fontSize={{ xl: '0.9rem' }}
                   >
-                    {data.offer.description}
+                    {description}
                   </Text>
                 </Box>
               </Box>

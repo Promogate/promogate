@@ -75,6 +75,10 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
     api.post<CreateProfileOutput>(`/users/${input.user_id}/profile/create`, {
       store_name: input.store_name,
       store_image: input.store_image
+    }, {
+      headers: {
+        Authorization: `Bearer ${cookies['promogate.token']}`
+      }
     }).then((fullfiled) => {
       const { data } = fullfiled;
 

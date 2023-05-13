@@ -38,7 +38,7 @@ export default function Dashboard({ user }: DashboardProps) {
   const { fetchDashboardData } = useContext(PromogateContext);
   const [ctr, setCtr] = useState<number | null>(null)
 
-  const { data, isLoading, isError } = useQuery(['offers', user.id], async () => await fetchDashboardData(user.user_profile.id), {
+  const { data, isLoading, isError } = useQuery(['dashboard-offers', user.id], async () => await fetchDashboardData(user.user_profile.id), {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 5,
   })
@@ -100,7 +100,7 @@ export default function Dashboard({ user }: DashboardProps) {
                     Taxa de Conversão
                   </TremorText>
                   <Skeleton isLoaded={!isLoading}>
-                    <Metric>{ctr?.toFixed(2)}%</Metric>
+                    <Metric>{(ctr?.toFixed(2) && Number(ctr?.toFixed(2))) ? ctr?.toFixed(2) : 0}%</Metric>
                   </Skeleton>
                 </Card>
               </Grid>
@@ -153,16 +153,6 @@ export default function Dashboard({ user }: DashboardProps) {
                           }}
                         >
                           Adicionar oferta
-                        </Button>
-                        <Button
-                          as={Link}
-                          href={'/dashboard/promocoes/importar'}
-                          colorScheme='orange'
-                          _hover={{
-                            textDecoration: 'none'
-                          }}
-                        >
-                          Importar ofertas
                         </Button>
                       </Flex>
                     </Box>

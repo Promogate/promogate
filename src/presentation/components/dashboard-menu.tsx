@@ -1,3 +1,4 @@
+import { MeResponse } from '@/domain/models';
 import { Badge, Box, Flex } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
@@ -10,11 +11,15 @@ import { BsGear } from 'react-icons/bs';
 import { FiExternalLink } from 'react-icons/fi';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
-import { TbDiscount2 } from 'react-icons/tb';
+import { TbDiscount2, TbPlugConnected } from 'react-icons/tb';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export function DashboardMenu() {
+type DashboardMenuProps = {
+  me: MeResponse | undefined
+}
+
+export function DashboardMenu({ me }: DashboardMenuProps) {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -77,6 +82,28 @@ export function DashboardMenu() {
             gap={'8px'}
             color={'gray.300'}
           >
+            <TbPlugConnected />
+            Categorias
+            <Badge ml='1' colorScheme='yellow'>
+              Em breve
+            </Badge>
+          </Flex>
+          <Flex
+            alignItems={'center'}
+            gap={'8px'}
+            color={'gray.300'}
+          >
+            <TbPlugConnected />
+            API
+            <Badge ml='1' colorScheme='yellow'>
+              Em breve
+            </Badge>
+          </Flex>
+          <Flex
+            alignItems={'center'}
+            gap={'8px'}
+            color={'gray.300'}
+          >
             <BiNetworkChart />
             Integrações
             <Badge ml='1' colorScheme='yellow'>
@@ -114,7 +141,8 @@ export function DashboardMenu() {
           </Flex>
           <Flex
             as={Link}
-            href={`/`}
+            href={`/${me?.user.user_profile.store_name}`}
+            target='_blank'
             alignItems={'center'}
             gap={'8px'}
             color={'gray.600'}

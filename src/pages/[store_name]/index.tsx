@@ -5,7 +5,6 @@ import { Box, Grid, Heading, Spinner } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import Image from 'next/image';
 import { Fragment, useContext } from 'react';
 import { useQuery } from 'react-query';
 
@@ -24,13 +23,27 @@ export default function Home({ store_name }: SingleStoreProps) {
     cacheTime: 1000 * 60 * 5
   });
 
-  if (data === undefined) {
+  if (isLoading) {
     return (
-      <Fragment>
+      <Grid
+        placeItems={'center'}
+        height={'100vh'}
+      >
+        <Spinner />
+      </Grid>
+    )
+  }
+
+  if (!data) {
+    return (
+      <Grid
+        placeItems={'center'}
+        height={'100vh'}
+      >
         <Heading>
           Loja não encontrada
         </Heading>
-      </Fragment>
+      </Grid>
     )
   }
 
@@ -40,7 +53,7 @@ export default function Home({ store_name }: SingleStoreProps) {
         <title>
           {
             data?.user_profile.store_name ?
-            data.user_profile.store_name.charAt(0).toUpperCase() +
+              data.user_profile.store_name.charAt(0).toUpperCase() +
               data.user_profile.store_name.slice(1) :
               'Loja Parceira'
           }
@@ -82,7 +95,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                   </Heading>
                 ) : (
                   data.user_profile.resources.offers.map((offer: OfferWithClicks) => {
-                    return <OfferCard key={offer.id} data={offer} storeName={offer.store_name} />
+                    return <OfferCard key={offer.id} data={offer} storeName={data.user_profile.store_name} />
                   })
                 )
               }
@@ -90,18 +103,38 @@ export default function Home({ store_name }: SingleStoreProps) {
           </Box>
           <Box>
             <Grid gap={'1rem'}>
-              <Image
-                src='/ads/300x600.png'
-                alt='Ad 300x600px'
-                width={300}
-                height={600}
-              />
-              <Image
-                src='/ads/300x250.png'
-                alt='Ad 300x250px'
-                width={300}
-                height={250}
-              />
+              <Box
+                height={'600px'}
+                width={'300px'}
+              >
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
+                  crossOrigin="anonymous"></script>
+                <ins className="adsbygoogle"
+                  style={{ display: "block" }}
+                  data-ad-client="ca-pub-9258286762385899"
+                  data-ad-slot="1379343231"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"></ins>
+                <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({ });
+                </script>
+              </Box>
+              <Box
+                height={'300px'}
+                width={'300px'}
+              >
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
+                  crossOrigin="anonymous"></script>
+                <ins className="adsbygoogle"
+                  style={{ display: "block" }}
+                  data-ad-client="ca-pub-9258286762385899"
+                  data-ad-slot="1379343231"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"></ins>
+                <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({ });
+                </script>
+              </Box>
             </Grid>
           </Box>
         </Grid>

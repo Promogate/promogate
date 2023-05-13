@@ -38,9 +38,14 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
       <Box
         borderRadius={{ xl: '1rem' }}
         overflow={'hidden'}
+        height={{ xl: '160px' }}
       >
 
-        <img src={data.image} alt={data.title} />
+        <img 
+          className='object-contain h-full w-full'
+          src={data.image} 
+          alt={data.title}
+        />
       </Box>
       <Box
         flex={1}
@@ -55,9 +60,6 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
             fontWeight={'medium'}
             color={'gray.700'}
             wordBreak={'break-word'}
-            as={Link}
-            href={offerUrl}
-            target='_blank'
           >
             {data.title}
           </Heading>
@@ -77,7 +79,7 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
           >
             {parseCurrency(data.price)}
           </Heading>
-          {data.old_price && (
+          {(data.old_price && data.old_price !== '0') && (
             <Text
               as={'span'}
               fontSize={'xs'}

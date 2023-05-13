@@ -5,7 +5,7 @@ type StoreHeaderProps = {
   props: {
     store_image: string;
     store_name: string;
-  } | undefined
+  }
 }
 
 /*eslint-disable @next/next/no-img-element*/
@@ -31,8 +31,8 @@ export function StoreHeader({ props }: StoreHeaderProps) {
           margin={'0 auto'}
         >
           <Image
-            src={props?.store_image as string}
-            alt={props?.store_name as string}
+            src={props.store_image}
+            alt={props.store_name}
             fill
           />
         </Box>
