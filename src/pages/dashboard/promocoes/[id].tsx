@@ -146,9 +146,14 @@ export default function AddOffersPage({ userData }: AddOffersPageProps) {
   }
 
   const deleteMutation = useMutation(async () => {
-    await api.delete(`/resources/${userData.user.user_profile.resources.id}/offer/${id}`)
+    await api.delete(`/resources/offer/${id}`,{
+      headers: {
+        Authorization: `Bearer ${cookies['promogate.token']}`
+      }
+    })
   }, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['offers', userData.user.id]);
       toast({
         status: 'success',
         description: 'Oferta excluída com sucesso!'

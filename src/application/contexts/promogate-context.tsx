@@ -37,6 +37,7 @@ interface PromogateContextProps {
   fetchStoreOffers(storeName: string): Promise<FetchStoreOffersResponse>
   fetchUserData(): Promise<any>;
   fetchStoreData(storeName: string): Promise<any>;
+  token: string
 }
 
 export const PromogateContext = createContext<PromogateContextProps>({} as PromogateContextProps);
@@ -107,7 +108,8 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
       fetchUserData,
       createUserProfile,
       fetchStoreOffers,
-      fetchStoreData
+      fetchStoreData,
+      token: `Bearer ${cookies['promogate.token']}`
     }}>
       {children}
     </PromogateContext.Provider>

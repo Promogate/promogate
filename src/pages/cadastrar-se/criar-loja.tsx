@@ -78,7 +78,7 @@ export default function CreateStore({ user }: CreateStoreProps) {
   const handleRegisterStore: SubmitHandler<RegisterStoreProps> = async (values) => {
     const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.id}`))
     const { url } = await s3Upload.uploadImage({ file, user: user.id })
-    await mutation.mutateAsync({ store_name: values.store_name.toLocaleLowerCase().replace(' ', '-'), store_image: url })
+    await mutation.mutateAsync({ store_name: values.store_name.replace(' ', '-'), store_image: url })
   }
 
   const handleSampleUrl = (e: ChangeEvent<HTMLInputElement>) => {

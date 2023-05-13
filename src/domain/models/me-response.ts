@@ -10,7 +10,14 @@ export type MeResponse = {
 			store_image: string,
 			store_name: string,
 			role: string,
-			user_id: string
+			user_id: string,
+      social_media?: {
+        facebook?: string;
+        whastapp?: string;
+        instagram?: string;
+        telegram?: string;
+        twitter?: string;
+      }
 		}
 	}
 }

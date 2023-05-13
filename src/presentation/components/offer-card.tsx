@@ -14,9 +14,9 @@ const inter = Inter({ subsets: ['latin'] });
 /*eslint-disable @next/next/no-img-element*/
 export function OfferCard({ data, storeName }: OfferCardProps) {
   const store = storeName.toLocaleLowerCase().replace(' ', '-');
-  const productName = data.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s,]/g, '-');
+  const productName = data.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s,\/]/g, '-');
 
-  const offerUrl = `/${store}/produto/${productName}?oid=${data.id}&utm_click=1&rid=${data.resources_id}`
+  const offerUrl = `/${store}/produto/${productName}/?oid=${data.id}&utm_click=1&rid=${data.resources_id}`
 
   return (
     <Flex

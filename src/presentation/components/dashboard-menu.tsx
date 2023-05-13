@@ -5,10 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { destroyCookie } from 'nookies';
-import { AiOutlineWhatsApp } from 'react-icons/ai';
+import { AiOutlineTeam, AiOutlineWhatsApp } from 'react-icons/ai';
 import { BiNetworkChart } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiExternalLink } from 'react-icons/fi';
+import { MdOutlineCategory } from 'react-icons/md';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
 import { TbDiscount2, TbPlugConnected } from 'react-icons/tb';
@@ -82,7 +83,18 @@ export function DashboardMenu({ me }: DashboardMenuProps) {
             gap={'8px'}
             color={'gray.300'}
           >
-            <TbPlugConnected />
+            <BiNetworkChart />
+            Integrações
+            <Badge ml='1' colorScheme='yellow'>
+              Em breve
+            </Badge>
+          </Flex>
+          <Flex
+            alignItems={'center'}
+            gap={'8px'}
+            color={'gray.300'}
+          >
+            <MdOutlineCategory />
             Categorias
             <Badge ml='1' colorScheme='yellow'>
               Em breve
@@ -104,8 +116,8 @@ export function DashboardMenu({ me }: DashboardMenuProps) {
             gap={'8px'}
             color={'gray.300'}
           >
-            <BiNetworkChart />
-            Integrações
+            <AiOutlineTeam />
+            Team
             <Badge ml='1' colorScheme='yellow'>
               Em breve
             </Badge>
