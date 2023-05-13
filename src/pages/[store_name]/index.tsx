@@ -47,6 +47,10 @@ export default function Home({ store_name }: SingleStoreProps) {
     )
   }
 
+  const featuredOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured)
+  const commonOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured === false)
+
+
   return (
     <Fragment>
       <Head>
@@ -94,12 +98,47 @@ export default function Home({ store_name }: SingleStoreProps) {
                     Destaque
                   </Heading>
                 ) : (
-                  data.user_profile.resources.offers.map((offer: OfferWithClicks) => {
+                  featuredOffers.map((offer: OfferWithClicks) => {
                     return <OfferCard key={offer.id} data={offer} storeName={data.user_profile.store_name} />
                   })
                 )
               }
             </Grid>
+            <Box
+              margin={{ xl: '3rem 0' }}
+            >
+              <Heading
+                fontSize={{ xl: 'xl' }}
+                fontFamily={inter.style.fontFamily}
+                color={'gray.600'}
+              >
+                Todas as ofertas
+              </Heading>
+              <Grid
+                gridTemplateColumns={{ xl: 'repeat(4, 1fr)' }}
+                margin={{ xl: '1rem 0' }}
+                gap={{ xl: '1rem' }}
+                position={'relative'}
+              >
+                {
+                  isLoading ? (
+                    <Spinner />
+                  ) : isError ? (
+                    <Heading
+                      fontSize={{ xl: 'xl' }}
+                      fontFamily={inter.style.fontFamily}
+                      color={'gray.600'}
+                    >
+                      Destaque
+                    </Heading>
+                  ) : (
+                    commonOffers.map((offer: OfferWithClicks) => {
+                      return <OfferCard key={offer.id} data={offer} storeName={data.user_profile.store_name} />
+                    })
+                  )
+                }
+              </Grid>
+            </Box>
           </Box>
           <Box>
             <Grid gap={'1rem'}>

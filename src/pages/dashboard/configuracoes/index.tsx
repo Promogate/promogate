@@ -94,14 +94,6 @@ export default function SettingsPage({ user }: SettingsPageProps) {
       telegram: user.user_profile.social_media?.telegram,
       twitter: user.user_profile.social_media?.twitter,
     },
-    values: {
-      store_name: user.user_profile.store_name.replaceAll('-', ' '),
-      facebook: user.user_profile.social_media?.facebook,
-      instagram: user.user_profile.social_media?.instagram,
-      whatsapp: user.user_profile.social_media?.whatsapp,
-      telegram: user.user_profile.social_media?.telegram,
-      twitter: user.user_profile.social_media?.twitter,
-    },
   });
 
   const updateMutation = useMutation(async (values: UpdateProfileBody) => {
@@ -368,7 +360,6 @@ export default function SettingsPage({ user }: SettingsPageProps) {
                 backgroundColor: 'black'
               }}
               size={{ xl: 'lg' }}
-              isLoading={isSubmitting}
               marginTop={{ xl: '1rem' }}
             >
               Atualizar
