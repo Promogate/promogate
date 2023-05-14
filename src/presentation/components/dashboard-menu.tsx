@@ -1,5 +1,5 @@
 import { MeResponse } from '@/domain/models';
-import { Badge, Box, Flex } from '@chakra-ui/react';
+import { Badge, Box, Flex, useToast } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,10 +22,19 @@ type DashboardMenuProps = {
 
 export function DashboardMenu({ me }: DashboardMenuProps) {
   const router = useRouter();
+  const toast = useToast();
 
   const handleLogout = () => {
-    destroyCookie(null, 'promogate.token');
-    router.push('/login');
+    try {
+      destroyCookie(null, 'promogate.token');
+    } catch {
+      toast({
+        status: 'error',
+        description: 'Erro eu tentar fazer logout'
+      })
+    } finally {
+      router.push('/login');
+    }
   }
 
   return (

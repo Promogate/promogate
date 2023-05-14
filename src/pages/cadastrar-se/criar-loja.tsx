@@ -1,6 +1,7 @@
 import { PromogateContext } from '@/application/contexts';
 import { AWSUploadService } from '@/application/services';
 import { api } from '@/config';
+import { MeResponse } from '@/domain/models';
 import {
   Box,
   Button,
@@ -42,12 +43,7 @@ type RegisterStoreProps = {
 const s3Upload = new AWSUploadService();
 
 type CreateStoreProps = {
-  user: {
-    id: string,
-    name: string,
-    email: string,
-    created_at: string
-  }
+  user: MeResponse
 }
 
 /*eslint-disable @next/next/no-img-element*/
@@ -72,12 +68,12 @@ export default function CreateStore({ user }: CreateStoreProps) {
   const mutation = useMutation(async (values: RegisterStoreProps) => await createUserProfile({
     store_name: values.store_name,
     store_image: values.store_image,
-    user_id: user.id
+    user_id: user.user.id
   }));
 
   const handleRegisterStore: SubmitHandler<RegisterStoreProps> = async (values) => {
-    const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.id}`))
-    const { url } = await s3Upload.uploadImage({ file, user: user.id })
+    const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.user.id}`))
+    const { url } = await s3Upload.uploadImage({ file, user: user.user.id })
     await mutation.mutateAsync({ store_name: values.store_name.replace(' ', '-'), store_image: url })
   }
 
@@ -235,7 +231,7 @@ export default function CreateStore({ user }: CreateStoreProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
 
-  const { data } = await api.get<CreateStoreProps>('/users/me', {
+  const { data } = await api.get<MeResponse>('/users/me', {
     headers: {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
@@ -245,7 +241,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      user: data.user
+      user: data
     }
   }
 }

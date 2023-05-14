@@ -21,7 +21,7 @@ export default function Home({ isLogged }: HomeProps) {
   return (
     <>
       <Head>
-        <title>Coupon Website</title>
+        <title>Promogate - Plataforma Digital Gratuito, Métricas e compartilhamento para o Afiliado</title>
       </Head>
       <MainMenu isLogged={isLogged} />
       <Box as='main' fontFamily={inter.style.fontFamily}>
