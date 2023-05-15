@@ -25,8 +25,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
     return data
   }, {
-    cacheTime: 1000 * 60 * 60,
-    staleTime: 1000 * 60 * 60,
+    cacheTime: 1000 * 60 * 60 * 15,
+    staleTime: 1000 * 60 * 60 * 15,
   })
 
   return (

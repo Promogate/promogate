@@ -5,7 +5,7 @@ import { Box, Grid, Heading, Spinner } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -15,6 +15,7 @@ type SingleStoreProps = {
 }
 
 export default function Home({ store_name }: SingleStoreProps) {
+  const [] = useState()
 
   const { fetchStoreOffers } = useContext(PromogateContext)
 
@@ -34,7 +35,7 @@ export default function Home({ store_name }: SingleStoreProps) {
     )
   }
 
-  if (!data) {
+  if (!data || isError) {
     return (
       <Grid
         placeItems={'center'}
@@ -49,7 +50,6 @@ export default function Home({ store_name }: SingleStoreProps) {
 
   const featuredOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured)
   const commonOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured === false)
-
 
   return (
     <Fragment>
