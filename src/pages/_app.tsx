@@ -5,9 +5,11 @@ import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import { QueryClientProvider } from 'react-query';
 import 'react-quill/dist/quill.snow.css';
+import { RecoilRoot } from 'recoil';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
+    <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
           <PromogateContextProvider>
@@ -17,5 +19,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </PromogateContextProvider>
         </AuthContextProvider>
       </QueryClientProvider>
+    </RecoilRoot>
   )
 }
