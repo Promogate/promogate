@@ -205,7 +205,7 @@ export default function CreateStore({ user }: CreateStoreProps) {
                 color={'gray.400'}
               >
                 Como será a sua url:
-                {` https://promogate.app/${sampleUrl}`}
+                {`https://promogate.app/${sampleUrl}`}
               </Text>
             </Box>
           </FormControl>
@@ -236,8 +236,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
   })
-
-  console.log(data)
 
   return {
     props: {
