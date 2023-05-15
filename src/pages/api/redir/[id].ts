@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { api } from '@/config';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 type APIResponse = {
@@ -35,10 +35,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET' && req.query) {
     const { id } = req.query as { id: string };
-    
-    const api = axios.create({
-      baseURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : '/api/external'),
-    })
 
     const { data } = await api.get<APIResponse>(`/analytics/redirect/offer/${id}`)
 
