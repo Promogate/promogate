@@ -240,7 +240,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                     icon={<FaFacebook />}
                                     size={'xs'}
                                     colorScheme={'facebook'}
-                                    url={`https://promogate.app/${offer.store_name.toLocaleLowerCase()}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
                                   />
                                 </Tooltip>
                                 <Tooltip label='Compartilhar no Twitter' placement='top' borderRadius={'base'}>
@@ -250,7 +250,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                     colorScheme={'twitter'}
                                     icon={<FaTelegram />}
                                     size={'xs'}
-                                    url={`https://promogate.app/${offer.store_name.toLocaleLowerCase()}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
                                   />
                                 </Tooltip>
                                 <Tooltip label='Compartilhar no Whatsapp' placement='top' borderRadius={'base'}>
@@ -260,7 +260,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                     colorScheme={'whatsapp'}
                                     icon={<FaWhatsapp />}
                                     size={'xs'}
-                                    url={`https://promogate.app/${offer.store_name.toLocaleLowerCase()}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
                                   />
                                 </Tooltip>
                               </HStack>
