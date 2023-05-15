@@ -1,3 +1,4 @@
+import { PromogateContext } from '@/application/contexts';
 import { api, queryClient } from '@/config';
 import { MeResponse, Offer } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
@@ -26,7 +27,7 @@ import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
 import { parseCookies } from 'nookies';
-import { ChangeEvent, Fragment } from 'react';
+import { ChangeEvent, Fragment, useContext } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { FaFacebook, FaTelegram, FaWhatsapp } from 'react-icons/fa';
 import { RxUpdate } from 'react-icons/rx';
@@ -51,6 +52,8 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   const toast = useToast();
   const cookies = parseCookies();
 
+  const { authorization } = useContext(PromogateContext);
+
   const { data, isLoading } = useQuery(['offers', user.id], async () => {
     const { data } = await api.get<Offer[]>('/dashboard/offers', {
       headers: {
@@ -64,11 +67,13 @@ export default function OffersPage({ status, user }: OffersPageProps) {
     staleTime: 1000 * 60 * 5,
   })
 
-  console.log(data);
-
   const mutation = useMutation(async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
     await api.put(`/resources/offer/${offerId}/update/showcase`, {
       is_on_showcase
+    }, {
+      headers: {
+        Authorization: authorization
+      }
     })
   }, {
     onSuccess: () => {
@@ -85,6 +90,10 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   const isFeatured = useMutation(async ({ is_featured, offerId }: UpdateOfferFeatured) => {
     await api.put(`/resources/offer/${offerId}/update/featured`, {
       is_featured
+    }, {
+      headers: {
+        Authorization: authorization
+      }
     })
   }, {
     onSuccess: () => {
