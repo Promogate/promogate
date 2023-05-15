@@ -1,6 +1,8 @@
-import { userState } from '@/application/atoms';
 import { PromogateContext } from '@/application/contexts';
+import { api } from '@/config';
+import { MeResponse } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
+import { withSSRAuth } from '@/utils';
 import {
   Box,
   Button,
@@ -21,17 +23,18 @@ import {
 import { Card, Metric, Text as TremorText } from '@tremor/react';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
+import { parseCookies } from 'nookies';
 import { Fragment, useContext, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useRecoilValue } from 'recoil';
 
 const inter = Inter({ subsets: ['latin'] })
 
+type DashboardPageProps = MeResponse
+
 /* eslint-disable @next/next/no-img-element */
-export default function Dashboard() {
+export default function Dashboard({ status, user }: DashboardPageProps) {
   const { fetchDashboardData } = useContext(PromogateContext);
   const [ctr, setCtr] = useState<number | null>(null)
-  const user = useRecoilValue(userState);
 
   const { data, isLoading, isError } = useQuery(['dashboard-offers', user.id], async () => await fetchDashboardData(user.user_profile.id), {
     staleTime: 1000 * 60 * 5,
@@ -235,3 +238,20 @@ export default function Dashboard() {
     </Fragment>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  const { data } = await api.get<MeResponse>('/users/me', {
+    headers: {
+      Authorization: `Bearer ${cookies['promogate.token']}`
+    }
+  })
+
+  return {
+    props: {
+      status: data.status,
+      user: data.user
+    }
+  }
+})

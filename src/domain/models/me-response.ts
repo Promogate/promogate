@@ -11,6 +11,11 @@ export type MeResponse = {
 			store_name: string,
 			role: string,
 			user_id: string,
+      resources: {
+				id: string,
+				created_at: string,
+				user_profile_id: string,
+			},
       social_media?: {
         facebook?: string;
         whatsapp?: string;

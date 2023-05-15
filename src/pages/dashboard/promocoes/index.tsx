@@ -1,5 +1,5 @@
 import { api, queryClient } from '@/config';
-import { MeResponse, Offer, UserData } from '@/domain/models';
+import { MeResponse, Offer } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
@@ -44,12 +44,10 @@ type UpdateOfferFeatured = {
   offerId: string
 }
 
-type OffersPageProps = {
-  user: UserData
-}
+type OffersPageProps = MeResponse
 
 /* eslint-disable @next/next/no-img-element */
-export default function OffersPage({ user }: OffersPageProps) {
+export default function OffersPage({ status, user }: OffersPageProps) {
   const toast = useToast();
   const cookies = parseCookies();
 
@@ -320,6 +318,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 
   return {
     props: {
+      status: data.status,
       user: data.user
     }
   }

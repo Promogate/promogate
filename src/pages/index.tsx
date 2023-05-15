@@ -13,11 +13,11 @@ import { parseCookies } from 'nookies';
 
 const inter = Inter({ subsets: ['latin'] });
 
-type HomeProps = {
-  isLogged: string | null
+type HomepageProps = {
+  isLogged: boolean
 };
 
-export default function Home({ isLogged }: HomeProps) {
+export default function Home({ isLogged }: HomepageProps) {
   return (
     <>
       <Head>
@@ -81,14 +81,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (cookies['promogate.token']) {
     return {
       props: {
-        isLogged: cookies['promogate.token']
+        isLogged: true
       }
     }
   }
 
   return {
     props: {
-      isLogged: null
+      isLogged: false
     }
   }
 }

@@ -42,16 +42,16 @@ type RegisterStoreProps = {
 
 const s3Upload = new AWSUploadService();
 
-type CreateStoreProps = {
-  user: MeResponse
-}
+type CreateStorePageProps = MeResponse
 
 /*eslint-disable @next/next/no-img-element*/
-export default function CreateStore({ user }: CreateStoreProps) {
+export default function CreateStore({ status, user }: CreateStorePageProps) {
   const [localImageUrl, setLocalImageUrl] = useState('');
   const [sampleUrl, setSampleUrl] = useState('');
 
   const { createUserProfile } = useContext(PromogateContext);
+
+  console.log(user);
 
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -68,12 +68,12 @@ export default function CreateStore({ user }: CreateStoreProps) {
   const mutation = useMutation(async (values: RegisterStoreProps) => await createUserProfile({
     store_name: values.store_name,
     store_image: values.store_image,
-    user_id: user.user.id
+    user_id: user.id
   }));
 
   const handleRegisterStore: SubmitHandler<RegisterStoreProps> = async (values) => {
-    const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.user.id}`))
-    const { url } = await s3Upload.uploadImage({ file, user: user.user.id })
+    const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.id}`))
+    const { url } = await s3Upload.uploadImage({ file, user: user.id})
     await mutation.mutateAsync({ store_name: values.store_name.replace(' ', '-'), store_image: url })
   }
 
@@ -239,7 +239,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      user: data
+      status: data.status,
+      user: data.user
     }
   }
 }

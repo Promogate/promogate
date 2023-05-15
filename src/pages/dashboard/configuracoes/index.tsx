@@ -15,7 +15,6 @@ import {
   Text,
   useToast
 } from '@chakra-ui/react';
-import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment, useCallback, useContext, useState } from 'react';
@@ -26,6 +25,7 @@ import { useMutation } from 'react-query';
 
 import { AWSUploadService } from '@/application/services';
 import { api, queryClient } from '@/config';
+import { withSSRAuth } from '@/utils';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -34,28 +34,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 const s3Upload = new AWSUploadService();
 
-type SettingsPageProps = {
-  user: {
-    id: string,
-    name: string,
-    email: string,
-    created_at: string,
-    user_profile: {
-      id: string,
-      store_image: string,
-      store_name: string,
-      role: string,
-      user_id: string,
-      social_media?: {
-        facebook?: string;
-        whatsapp?: string;
-        instagram?: string;
-        telegram?: string;
-        twitter?: string;
-      }
-    }
-  }
-}
+type SettingsPageProps = MeResponse
 
 type UpdateProfileBody = {
   store_name?: string;
@@ -68,11 +47,11 @@ type UpdateProfileBody = {
 }
 
 /*eslint-disable @next/next/no-img-element*/
-export default function SettingsPage({ user }: SettingsPageProps) {
+export default function SettingsPage({ status, user }: SettingsPageProps) {
   const toast = useToast();
   const [localImageUrl, setLocalImageUrl] = useState(user.user_profile.store_image);
   const [sampleUrl, setSampleUrl] = useState(user.user_profile.store_name);
-  const { token } = useContext(PromogateContext);
+  const { authorization } = useContext(PromogateContext);
   const cookies = parseCookies();
 
   const handleImageUpload = useCallback(
@@ -99,7 +78,7 @@ export default function SettingsPage({ user }: SettingsPageProps) {
   const updateMutation = useMutation(async (values: UpdateProfileBody) => {
     await api.put(`/users/profile/${user.user_profile.id}/update`, values, {
       headers: {
-        Authorization: token
+        Authorization: authorization
       }
     })
   }, {
@@ -380,7 +359,7 @@ export default function SettingsPage({ user }: SettingsPageProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = withSSRAuth(async (ctx) => {
   const cookies = parseCookies(ctx);
 
   const { data } = await api.get<MeResponse>('/users/me', {
@@ -391,7 +370,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
+      status: data.status,
       user: data.user
     }
   }
-}
+}) 

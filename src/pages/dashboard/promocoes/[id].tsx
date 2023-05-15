@@ -1,5 +1,5 @@
 import { api, queryClient } from '@/config'
-import { OfferDataInput, OfferWithClicks, UserMeResponse } from '@/domain/models'
+import { MeResponse, OfferDataInput, OfferWithClicks } from '@/domain/models'
 import { makeCurrencyStringReadable } from '@/main/utils'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
@@ -39,29 +39,7 @@ type SingleOfferPageProps = {
   offer: OfferWithClicks
 }
 
-type AddOffersPageProps = {
-  userData: {
-    status: string,
-    user: {
-      id: string,
-      name: string,
-      email: string,
-      created_at: string,
-      user_profile: {
-        id: string,
-        store_image: string,
-        store_name: string,
-        role: string,
-        user_id: string,
-        resources: {
-          created_at: string,
-          id: string,
-          user_profile_id: string,
-        }
-      }
-    }
-  }
-};
+type SingleOffersPageProps = MeResponse
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
@@ -70,7 +48,7 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function AddOffersPage({ userData }: AddOffersPageProps) {
+export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
   const cookies = parseCookies();
   const toast = useToast();
   const router = useRouter();
@@ -78,7 +56,7 @@ export default function AddOffersPage({ userData }: AddOffersPageProps) {
   const deletePopup = useDisclosure();
 
   const { data, isLoading } = useQuery(['offer', id], async () => {
-    const { data } = await api.get<SingleOfferPageProps>(`/resources/${userData.user.user_profile.resources.id}/offer/${id}`, {
+    const { data } = await api.get<SingleOfferPageProps>(`/resources/${user.user_profile.resources.id}/offer/${id}`, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
@@ -109,7 +87,7 @@ export default function AddOffersPage({ userData }: AddOffersPageProps) {
     const price = makeCurrencyStringReadable(data.price);
     const old_price = makeCurrencyStringReadable(data.old_price);
 
-    await api.put(`/resources/${userData.user.user_profile.resources.id}/offer/${id}`, {
+    await api.put(`/resources/${user.user_profile.resources.id}/offer/${id}`, {
       ...data,
       price,
       old_price,
@@ -122,7 +100,7 @@ export default function AddOffersPage({ userData }: AddOffersPageProps) {
 
   }, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['offers', userData.user.id]);
+      queryClient.invalidateQueries(['offers', user.id]);
       toast({
         status: 'success',
         description: 'Oferta atualizada com sucesso!'
@@ -153,7 +131,7 @@ export default function AddOffersPage({ userData }: AddOffersPageProps) {
     })
   }, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['offers', userData.user.id]);
+      queryClient.invalidateQueries(['offers', user.id]);
       toast({
         status: 'success',
         description: 'Oferta excluída com sucesso!'
@@ -359,7 +337,7 @@ export default function AddOffersPage({ userData }: AddOffersPageProps) {
 export const getServerSideProps = withSSRAuth(async (ctx) => {
   const cookies = parseCookies(ctx);
 
-  const { data } = await api.get<UserMeResponse>('/users/me', {
+  const { data } = await api.get<MeResponse>('/users/me', {
     headers: {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
@@ -367,7 +345,8 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 
   return {
     props: {
-      userData: data
+      status: data.status,
+      user: data.user
     }
   }
 }) 

@@ -7,7 +7,7 @@ import { BsArrowRightShort } from 'react-icons/bs';
 const inter = Inter({ subsets: ['latin'] })
 
 type MainMenuProps = {
-  isLogged: string | null
+  isLogged: boolean
 }
 
 export function MainMenu({ isLogged }: MainMenuProps) {

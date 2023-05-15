@@ -3,8 +3,8 @@ import { DashboardData, OfferWithClicks, RequestError } from '@/domain/models';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { destroyCookie, parseCookies } from 'nookies';
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { parseCookies } from 'nookies';
+import { ReactNode, createContext } from 'react';
 
 type CreateProfileInput = {
   store_name: string;
@@ -63,7 +63,6 @@ interface PromogateContextProps {
   fetchUserData(): Promise<any>;
   fetchStoreData(storeName: string): Promise<any>;
   authorization: string;
-  user: User;
 }
 
 export const PromogateContext = createContext<PromogateContextProps>({} as PromogateContextProps);
@@ -73,58 +72,6 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
   const toast = useToast();
   const cookies = parseCookies();
   const router = useRouter();
-  const [user, setUser] = useState<User>({
-    id: '',
-    name: '',
-    email: '',
-    created_at: '',
-    user_profile: {
-      id: '',
-      role: '',
-      store_name: '',
-      store_image: '',
-      social_media: {
-        facebook: '',
-        instagram: '',
-        whatsapp: '',
-        telegram: '',
-        twitter: '',
-      }
-    }
-  });
-
-  useEffect(() => {
-    try {
-      api.get<MeResponse>('/users/me', {
-        headers: {
-          Authorization: `Bearer ${cookies['promogate.token']}`
-        }
-      }).then((fullfiled) => {
-        const { data } = fullfiled
-        setUser({
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-          created_at: data.user.created_at,
-          user_profile: {
-            id: data.user.user_profile.id,
-            role: data.user.user_profile.role,
-            store_name: data.user.user_profile.store_name,
-            store_image: data.user.user_profile.store_image,
-            social_media: {
-              facebook: data.user.user_profile.social_media?.facebook ? data.user.user_profile.social_media?.facebook : '',
-              instagram: data.user.user_profile.social_media?.instagram ? data.user.user_profile.social_media?.instagram : '',
-              whatsapp: data.user.user_profile.social_media?.whatsapp ? data.user.user_profile.social_media?.whatsapp : '',
-              telegram: data.user.user_profile.social_media?.telegram ? data.user.user_profile.social_media?.telegram : '',
-              twitter: data.user.user_profile.social_media?.twitter ? data.user.user_profile.social_media?.twitter : '',
-            }
-          }
-        })
-      })
-    } catch {
-      destroyCookie(null, 'promogate.token');
-    }
-  })
 
   async function fetchDashboardData(profileId: string): Promise<DashboardData> {
     const { data } = await api.get<DashboardData>(`/analytics/profile/${profileId}`, {
@@ -188,7 +135,6 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
       fetchStoreOffers,
       fetchStoreData,
       authorization: `Bearer ${cookies['promogate.token']}`,
-      user
     }}>
       {children}
     </PromogateContext.Provider>
