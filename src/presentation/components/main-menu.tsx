@@ -1,10 +1,11 @@
-import { Box, Flex, Grid, Text } from '@chakra-ui/react';
-import { Inter } from 'next/font/google';
+import { Box, Button, Flex, Grid, Text } from '@chakra-ui/react';
+import { Inter, Montserrat } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BsArrowRightShort } from 'react-icons/bs';
 
 const inter = Inter({ subsets: ['latin'] })
+const montserrat = Montserrat({ subsets: ['latin'] });
 
 type MainMenuProps = {
   isLogged: boolean
@@ -13,19 +14,28 @@ type MainMenuProps = {
 export function MainMenu({ isLogged }: MainMenuProps) {
   return (
     <Grid
-      gridTemplateColumns={'120px auto'}
-      height={'80px'}
+      gridTemplateColumns={'160px 1fr auto'}
+      height={'104px'}
+      alignItems={'center'}
       maxWidth={{ xl: '1170px' }}
       margin={'0 auto'}
-      gap={'56px'}
+      gap={'80px'}
     >
       <Box
         position={'relative'}
-        height={'auto'}
-        width={'120px'}
+        height={'30px'}
+        width={'160px'}
       >
-        <Image src={'/promogate.svg'} alt={'Promogate logo'} fill />
+        <Image src={'/promogate-logo.svg'} alt={'Promogate logo'} fill priority />
       </Box>
+      <Flex fontFamily={montserrat.style.fontFamily} gap={{ xl: '48px' }} alignItems={'center'} fontWeight={'medium'}>
+        <Text as={Link} href={'/quem-somos'}>
+          Quem somos
+        </Text>
+        <Text as={Link} href={'/como-funciona'}>
+          Como funciona
+        </Text>
+      </Flex>
       <Flex
         gap={'16px'}
         alignItems={'center'}
@@ -37,7 +47,7 @@ export function MainMenu({ isLogged }: MainMenuProps) {
         {
           isLogged ? (
             <Flex
-              fontFamily={inter.style.fontFamily}
+              fontFamily={montserrat.style.fontFamily}
               fontSize={{ xl: '0.825rem' }}
               gap={'2px'}
               alignItems={'center'}
@@ -56,28 +66,24 @@ export function MainMenu({ isLogged }: MainMenuProps) {
               </Text>
             </Flex>
           ) : (
-            <>
+            <Flex gap={{ xl: '24px' }} width={'100%'} justifyContent={'flex-end'} alignItems={'center'}>
               <Box
                 as={Link}
                 href={'/login'}
-                fontFamily={inter.style.fontFamily}
-                _hover={{
-                  textDecoration: 'underline'
-                }}
+                fontFamily={montserrat.style.fontFamily}
+                fontSize={{ xl: '1rem' }}
+                color={'#2b2b2b'}
+                fontWeight={'bold'}
               >
                 Entrar
               </Box>
-              <Box
-                as={Link}
-                href={'/cadastrar-se'}
-                fontFamily={inter.style.fontFamily}
-                _hover={{
-                  textDecoration: 'underline'
-                }}
+              <Button as={Link} href={'/cadastrar-se'} fontFamily={montserrat.style.fontFamily}
+                fontSize={{ xl: '1rem' }} color={'#2b2b2b'} variant={'outline'} fontWeight={'bold'}
+                borderColor={'#2b2b2b'}
               >
                 Cadastrar-se
-              </Box>
-            </>
+              </Button>
+            </Flex>
           )
         }
       </Flex >
