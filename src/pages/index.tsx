@@ -8,12 +8,11 @@ import {
   Text
 } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
-import { Inter, Montserrat, Open_Sans } from 'next/font/google';
+import { Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import { parseCookies } from 'nookies';
 
-const inter = Inter({ subsets: ['latin'] });
 const montserrat = Montserrat({ subsets: ['latin'] });
 const openSans = Open_Sans({ subsets: ['latin'] });
 
@@ -44,14 +43,39 @@ export default function Home({ isLogged }: HomepageProps) {
         </Flex>
         <Grid
           maxWidth={'1170px'}
-          margin={{ xl: '0 auto' }}
-          gridTemplateColumns={{ xl: '480px 1fr' }}
-          height={{ xl: 'calc(100vh - 80px)' }}
+          margin={{ xl: '104px auto' }}
+          gridTemplateColumns={{ xl: '1fr 1fr' }}
           alignItems={{ xl: 'center' }}
         >
+          <Box>
+            <Text
+              fontSize={'2xl'}
+              textTransform={'uppercase'}
+              letterSpacing={'widest'}
+              fontWeight={'light'}
+              fontFamily={montserrat.style.fontFamily}
+            >
+              Tudo em um só lugar
+            </Text>
+            <Heading
+              fontFamily={montserrat.style.fontFamily}
+              width={{ xl: '72%' }}
+              marginTop={{ xl: '24px' }}
+            >
+              Torne-se afiliado de grandes lojas online.
+            </Heading>
+            <Text
+              fontWeight={'normal'}
+              width={{ xl: '72%' }}
+              marginTop={{ xl: '32px' }}
+              fontFamily={openSans.style.fontFamily}
+            >
+              Cadastre seus produtos em um só lugar e tenha sua estrutura digital para acompanhar seus resultados.
+            </Text>
+          </Box>
           <Box
-            width={{ xl: '480px' }}
-            height={{ xl: '480px' }}
+            width={{ xl: '560px' }}
+            height={{ xl: '560px' }}
             position={'relative'}
           >
             <Image
@@ -59,32 +83,6 @@ export default function Home({ isLogged }: HomepageProps) {
               alt={'Promogate Redes e Lojas'}
               fill
             />
-          </Box>
-          <Box
-            paddingLeft={{ xl: '4rem' }}
-          >
-            <Text
-              fontSize={'2xl'}
-              textTransform={'uppercase'}
-              letterSpacing={'wider'}
-              fontWeight={'light'}
-            >
-              Tudo em um só lugar
-            </Text>
-            <Heading
-              fontFamily={inter.style.fontFamily}
-              width={{ xl: '64%' }}
-              marginTop={{ xl: '24px' }}
-            >
-              Torne-se afiliado de grandes lojas online.
-            </Heading>
-            <Text
-              fontWeight={'normal'}
-              width={{ xl: '64%' }}
-              marginTop={{ xl: '24px' }}
-            >
-              Cadastre seus produtos em um só lugar e tenha sua estrutura digital para acompanhar seus resultados.
-            </Text>
           </Box>
         </Grid>
       </Box>
