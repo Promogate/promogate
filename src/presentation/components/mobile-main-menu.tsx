@@ -84,16 +84,16 @@ export function MobileMainMenu({ isLogged }: MobileMainMenuProps) {
               fontSize={'0.8rem'}
               color={'gray.500'} width={'100%'}
               justifyContent={'flex-end'}
-              display={['none', 'flex', 'flex', 'flex', 'flex']}
+              display={'flex'}
             >
               {
                 isLogged ? (
                   <Flex
                     fontFamily={openSans.style.fontFamily}
-                    fontSize={{ xl: '0.825rem' }}
+                    fontSize={'0.825rem'}
                     gap={'2px'}
                     alignItems={'center'}
-                    margin={{ xl: '0.5rem 0 0 0' }}
+                    margin={'0.5rem 0 0 0'}
                     color={'white'}
                   >
                     <Text>Você está logado. Ir para o </Text>
@@ -110,7 +110,7 @@ export function MobileMainMenu({ isLogged }: MobileMainMenuProps) {
                   </Flex>
                 ) : (
                   <Flex
-                    gap={['1rem', '1.5rem', '1.5rem', '1.5rem', '1.5rem']}
+                    gap={'1rem'}
                     width={'100%'}
                     justifyContent={'space-between'}
                     alignItems={'center'}
