@@ -15,7 +15,7 @@ import {
   Text,
   useToast
 } from '@chakra-ui/react';
-import { Inter } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment, useCallback, useContext, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -28,9 +28,8 @@ import { api, queryClient } from '@/config';
 import { withSSRAuth } from '@/utils';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
-import Image from 'next/image';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({ subsets: ['latin'], preload: true });
 
 const s3Upload = new AWSUploadService();
 
@@ -132,13 +131,14 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
       <DashboardLayout>
         <Heading
           as={'h2'}
-          fontSize={{ xl: '2xl' }}
+          fontSize={['2rem']}
+          fontFamily={montserrat.style.fontFamily}
           color={'gray.600'}
         >
           Configurações
         </Heading>
         <Grid
-          margin={{ xl: '1rem 0' }}
+          margin={['1rem 0']}
           gap={{ xl: '1rem' }}
           gridTemplateColumns={{ xl: '1fr 145px' }}
           position={'relative'}
@@ -148,8 +148,10 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
             onSubmit={handleSubmit(handleUpdateProfile)}
             autoComplete='off'
             backgroundColor={'white'}
-            padding={{ xl: '2rem' }}
-            borderRadius={{ xl: 'lg' }}
+            padding={['1rem']}
+            border={['1px']}
+            borderColor={['gray.200']}
+            borderRadius={['lg']}
           >
             <FormControl margin={'0 auto'}>
               {
@@ -216,7 +218,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
                     >
                       <Icon as={BsUpload} />
                       <Text
-                        fontFamily={inter.style.fontFamily}
+                        fontFamily={montserrat.style.fontFamily}
                         fontSize={{ xl: '0.8rem' }}
                         fontWeight={{ xl: 'normal' }}
                       >
@@ -234,7 +236,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
             </FormControl>
             <FormControl>
               <FormLabel
-                fontFamily={inter.style.fontFamily}
+                fontFamily={montserrat.style.fontFamily}
               >
                 Nome da loja
               </FormLabel>
@@ -271,7 +273,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
               </Heading>
               <FormControl>
                 <FormLabel
-                  fontFamily={inter.style.fontFamily}
+                  fontFamily={montserrat.style.fontFamily}
                 >
                   Facebook
                 </FormLabel>
@@ -283,7 +285,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
               </FormControl>
               <FormControl>
                 <FormLabel
-                  fontFamily={inter.style.fontFamily}
+                  fontFamily={montserrat.style.fontFamily}
                 >
                   Whastapp
                 </FormLabel>
@@ -295,7 +297,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
               </FormControl>
               <FormControl>
                 <FormLabel
-                  fontFamily={inter.style.fontFamily}
+                  fontFamily={montserrat.style.fontFamily}
                 >
                   Instagram
                 </FormLabel>
@@ -307,7 +309,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
               </FormControl>
               <FormControl>
                 <FormLabel
-                  fontFamily={inter.style.fontFamily}
+                  fontFamily={montserrat.style.fontFamily}
                 >
                   Telegram
                 </FormLabel>
@@ -319,7 +321,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
               </FormControl>
               <FormControl>
                 <FormLabel
-                  fontFamily={inter.style.fontFamily}
+                  fontFamily={montserrat.style.fontFamily}
                 >
                   Twitter
                 </FormLabel>
@@ -332,27 +334,18 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
             </Grid>
             <Button
               type='submit'
-              fontFamily={inter.style.fontFamily}
+              fontFamily={montserrat.style.fontFamily}
               backgroundColor={'black'}
               color={'white'}
               _hover={{
                 backgroundColor: 'black'
               }}
-              size={{ xl: 'lg' }}
-              marginTop={{ xl: '1rem' }}
+              size={['lg']}
+              marginTop={['1rem']}
             >
               Atualizar
             </Button>
           </Grid>
-          <Box
-          >
-            <Image
-              src='/ads/ad-banner-145x600.webp'
-              alt='ad-banner-145x600'
-              width={145}
-              height={600}
-            />
-          </Box>
         </Grid>
       </DashboardLayout>
     </Fragment>

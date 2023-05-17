@@ -46,13 +46,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <GridItem
         padding={{ xl: '2rem' }}
         backgroundColor={'#F5F4F7'}
+        minHeight={['100vh', '100vh', 'max-content']}
       >
         <Box
           display={['block', 'block', 'none']}
         >
           <DashboardMobileMenu me={data} />
         </Box>
-        <Box>
+        <Box
+          padding={['0 1rem', '0 1rem', 0]}
+        >
           {children}
         </Box>
       </GridItem>

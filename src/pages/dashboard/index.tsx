@@ -24,7 +24,7 @@ import { Card, Metric, Text as TremorText } from '@tremor/react';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
-import { Fragment, useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -43,22 +43,24 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
 
   useMemo(() => {
     if (data) {
-      setCtr(( 100 * data?.analytics._count.destination_clicks) / data?.analytics._count.offer_clicks)
+      setCtr((100 * data?.analytics._count.destination_clicks) / data?.analytics._count.offer_clicks)
     }
   }, [data])
 
   return (
-    <Fragment>
+    <Box>
       <Head>
         <title>Dashboard</title>
       </Head>
       <DashboardLayout>
         {
           user.user_profile.id ? (
-            <Fragment>
+            <Box
+              minHeight={['100vh']}
+            >
               <Heading
                 as={'h2'}
-                fontSize={{ xl: '2xl' }}
+                fontSize={['2rem']}
                 fontFamily={inter.style.fontFamily}
                 color={'gray.600'}
               >
@@ -66,8 +68,8 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
               </Heading>
               <Grid
                 gridTemplateColumns={{ xl: 'repeat(4, 1fr)' }}
-                margin={{ xl: '1rem 0' }}
-                gap={{ xl: '1rem' }}
+                margin={['1rem 0']}
+                gap={['1rem']}
               >
                 <Card decoration="top" decorationColor="indigo">
                   <TremorText>
@@ -107,10 +109,10 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
               >
                 <Heading
                   as={'h2'}
-                  fontSize={{ xl: 'xl' }}
+                  fontSize={['1.5rem', '1.5rem', '2rem']}
                   fontFamily={inter.style.fontFamily}
                   color={'gray.600'}
-                  marginBottom={{ xl: '1rem' }}
+                  marginBottom={['1rem']}
                 >
                   Top 10 produtos mais clicados
                 </Heading>
@@ -126,33 +128,28 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
                       borderRadius={{ xl: '1rem' }}
                       borderColor={'yellow.200'}
                       backgroundColor={'yellow.50'}
-                      padding={{ xl: '2rem' }}
+                      padding={['2rem']}
                     >
                       <Heading
                         as={'h2'}
-                        fontSize={{ xl: 'lg' }}
+                        fontSize={['xl']}
                         fontWeight={'normal'}
                         fontFamily={inter.style.fontFamily}
                         color={'yellow.500'}
                       >
                         Você ainda não tem ofertas cadastradas
                       </Heading>
-                      <Flex
-                        marginTop={{ xl: '1rem' }}
-                        justifyContent={'center'}
-                        gap={{ xl: '1rem' }}
+                      <Button
+                        as={Link}
+                        href={'/dashboard/promocoes/adicionar'}
+                        marginTop={['1.5rem', '1rem']}
+                        colorScheme='orange'
+                        _hover={{
+                          textDecoration: 'none'
+                        }}
                       >
-                        <Button
-                          as={Link}
-                          href={'/dashboard/promocoes/adicionar'}
-                          colorScheme='orange'
-                          _hover={{
-                            textDecoration: 'none'
-                          }}
-                        >
-                          Adicionar oferta
-                        </Button>
-                      </Flex>
+                        Adicionar oferta
+                      </Button>
                     </Box>
                   ) : (
                     <Box
@@ -227,7 +224,7 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
                   )
                 }
               </Box>
-            </Fragment>
+            </Box>
           ) : (
             <Heading>
               Precisa criar uma loja
@@ -235,7 +232,7 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
           )
         }
       </DashboardLayout>
-    </Fragment>
+    </Box>
   )
 }
 

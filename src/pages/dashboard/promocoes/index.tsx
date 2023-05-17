@@ -140,9 +140,9 @@ export default function OffersPage({ status, user }: OffersPageProps) {
         >
           <Heading
             as={'h2'}
-            fontSize={{ xl: '2xl' }}
+            fontSize={['2rem']}
+            fontFamily={inter.style.fontFamily}
             color={'gray.600'}
-            fontStyle={inter.style.fontFamily}
           >
             Promoções
           </Heading>
@@ -158,11 +158,11 @@ export default function OffersPage({ status, user }: OffersPageProps) {
           padding={{ xl: '2rem 0' }}
         >
           <Button
-            marginBottom={{ xl: '1rem' }}
+            margin={['1rem 0']}
             rightIcon={<RxUpdate />}
             variant={'outline'}
             onClick={handleQueryInvalidation}
-            size={{ xl: 'sm' }}
+            size={['sm']}
           >
             Atualizar ofertas
           </Button>
@@ -175,10 +175,18 @@ export default function OffersPage({ status, user }: OffersPageProps) {
               isLoading ? (
                 <Spinner />
               ) : (data?.length === 0) ? (
-                <Box margin={'0 auto'} textAlign={'center'} alignItems={'center'}>
+                <Box
+                  margin={'0 auto'}
+                  padding={['2rem', 0]}
+                  textAlign={'center'}
+                  alignItems={'center'}
+                  border={['1px']}
+                  borderColor={['gray.200']}
+                  borderRadius={['lg']}
+                >
                   <Heading
                     as={'h2'}
-                    fontSize={{ xl: 'lg' }}
+                    fontSize={['lg']}
                     fontWeight={'normal'}
                     fontFamily={inter.style.fontFamily}
                     color={'gray.300'}

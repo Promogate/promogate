@@ -38,22 +38,23 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
   const router = useRouter();
   const [description, setDescription] = useState('')
 
-  const { register, handleSubmit, formState: { isSubmitting }} = useForm<OfferDataInput>();
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>();
 
   const mutation = useMutation(async (data: OfferDataInput) => {
     const price = makeCurrencyStringReadable(data.price);
     const old_price = makeCurrencyStringReadable(data.old_price);
 
-    await api.post(`/resources/${user.user_profile.resources.id}/offer/create`, { 
+    await api.post(`/resources/${user.user_profile.resources.id}/offer/create`, {
       ...data,
       price,
       old_price,
-      description }, {
+      description
+    }, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
-    
+
   }, {
     onSuccess: () => {
       queryClient.invalidateQueries(['offers', user.id]);
@@ -89,6 +90,7 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
           width={'100%'}
           justifyContent={'space-between'}
           alignItems={'center'}
+          marginBottom={['1rem']}
         >
           <IconButton
             as={Link}
@@ -107,27 +109,31 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
           </Heading>
         </Flex>
         <Box
-          padding={{ xl: '2rem 0' }}
           as={'form'}
           onSubmit={handleSubmit(createOffer)}
+          height={['max-content']}
         >
           <Box
             display={'grid'}
-            gridTemplateColumns={{ xl: '1fr 1fr' }}
-            gap={{ xl: '1rem' }}
+            gridTemplateColumns={['1fr', '1fr', '1fr 1fr']}
+            gap={['1rem']}
             backgroundColor={'white'}
-            padding={{ xl: '1.5rem 1.5rem 5rem 1.5rem' }}
-            borderRadius={{ xl: '1rem' }}
+            padding={['2rem']}
+            borderRadius={'1rem'}
             overflow={'auto'}
           >
-            <FormControl>
+            <FormControl
+              as={GridItem}
+            >
               <FormLabel>(Link) Imagem da Oferta</FormLabel>
               <Input
                 type='text'
                 {...register('image')}
               />
             </FormControl>
-            <FormControl>
+            <FormControl
+              as={GridItem}
+            >
               <FormLabel>Título da Oferta</FormLabel>
               <Input
                 type='text'
@@ -171,21 +177,24 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
             </FormControl>
             <FormControl
               as={GridItem}
-              colSpan={2}
+              colSpan={[1, 2]}
               position={'relative'}
+              height={['240px', '240px']}
             >
               <FormLabel>Descrição (Opcional)</FormLabel>
               <Input
                 as={QuillNoSSRWrapper}
                 theme='snow'
-                height={'240px'}
+                height={['max-content', '240px']}
+                padding={['0 0 1rem 0']}
+                marginBottom={['1rem', '1rem', 0]}
                 onChange={changeQuillDescription}
               />
             </FormControl>
           </Box>
           <Flex
             justifyContent={'flex-end'}
-            padding={{ xl: '1rem 0' }}
+            padding={['2rem 0']}
           >
             <Button
               size={'lg'}
