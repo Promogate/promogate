@@ -38,7 +38,7 @@ export function MainMenu({ isLogged }: MainMenuProps) {
         gap={['32px', '48px', '48px', '48px', '48px']}
         alignItems={'center'}
         fontWeight={'medium'}
-        display='flex'
+        display={['none', 'none', 'flex', 'flex', 'flex']}
       >
         <Text as={Link} href={'/quem-somos'}>
           Quem somos
