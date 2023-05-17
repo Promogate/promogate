@@ -3,6 +3,7 @@ import { Inter, Montserrat } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BsArrowRightShort } from 'react-icons/bs';
+import { MobileMainMenu } from './mobile-main-menu';
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] });
@@ -14,21 +15,31 @@ type MainMenuProps = {
 export function MainMenu({ isLogged }: MainMenuProps) {
   return (
     <Grid
-      gridTemplateColumns={'160px 1fr auto'}
+      gridTemplateColumns={['1fr 1fr', '1fr 1fr', '160px 1fr auto', '160px 1fr auto', '160px 1fr auto']}
       height={'104px'}
       alignItems={'center'}
       maxWidth={{ xl: '1170px' }}
       margin={'0 auto'}
-      gap={'80px'}
+      gap={['40px', '40px', '40px', '80px', '80px']}
+      padding={['1rem', '1rem', '1rem', '1rem', 0]}
     >
       <Box
+        as={Link}
+        href='/'
         position={'relative'}
         height={'30px'}
         width={'160px'}
       >
         <Image src={'/promogate-logo.svg'} alt={'Promogate logo'} fill priority />
       </Box>
-      <Flex fontFamily={montserrat.style.fontFamily} gap={{ xl: '48px' }} alignItems={'center'} fontWeight={'medium'}>
+      <MobileMainMenu isLogged={isLogged} />
+      <Flex
+        fontFamily={montserrat.style.fontFamily}
+        gap={['32px', '48px', '48px', '48px', '48px']}
+        alignItems={'center'}
+        fontWeight={'medium'}
+        display={['none', 'none', 'flex', 'flex', 'flex']}
+      >
         <Text as={Link} href={'/quem-somos'}>
           Quem somos
         </Text>
@@ -40,9 +51,9 @@ export function MainMenu({ isLogged }: MainMenuProps) {
         gap={'16px'}
         alignItems={'center'}
         fontSize={'0.8rem'}
-        color={'gray.500'}
-        width={'100%'}
+        color={'gray.500'} width={'100%'}
         justifyContent={'flex-end'}
+        display={['none', 'none', 'flex', 'flex', 'flex']}
       >
         {
           isLogged ? (
@@ -66,7 +77,12 @@ export function MainMenu({ isLogged }: MainMenuProps) {
               </Text>
             </Flex>
           ) : (
-            <Flex gap={{ xl: '24px' }} width={'100%'} justifyContent={'flex-end'} alignItems={'center'}>
+            <Flex
+              gap={['1rem', '1.5rem', '1.5rem', '1.5rem', '1.5rem']}
+              width={'100%'}
+              justifyContent={'flex-end'}
+              alignItems={'center'}
+            >
               <Box
                 as={Link}
                 href={'/login'}
@@ -77,8 +93,14 @@ export function MainMenu({ isLogged }: MainMenuProps) {
               >
                 Entrar
               </Box>
-              <Button as={Link} href={'/cadastrar-se'} fontFamily={montserrat.style.fontFamily}
-                fontSize={{ xl: '1rem' }} color={'#2b2b2b'} variant={'outline'} fontWeight={'bold'}
+              <Button
+                as={Link}
+                href={'/cadastrar-se'}
+                fontFamily={montserrat.style.fontFamily}
+                fontSize={{ xl: '1rem' }}
+                color={'#2b2b2b'}
+                variant={'outline'}
+                fontWeight={'bold'}
                 borderColor={'#2b2b2b'}
               >
                 Cadastrar-se
