@@ -51,6 +51,7 @@ export function MobileMainMenu({ isLogged }: MobileMainMenuProps) {
         <DrawerContent
           backgroundColor={'#5528ff'}
           color={'white'}
+          height={['100vh']}
         >
           <DrawerCloseButton />
           <DrawerHeader></DrawerHeader>
@@ -93,14 +94,14 @@ export function MobileMainMenu({ isLogged }: MobileMainMenuProps) {
                     fontSize={'0.825rem'}
                     gap={'2px'}
                     alignItems={'center'}
-                    margin={'0.5rem 0 0 0'}
+                    margin={['2rem 0']}
                     color={'white'}
                   >
                     <Text>Você está logado. Ir para o </Text>
                     <Text
                       as={Link} href={'/dashboard'}
                       fontWeight={'semibold'}
-                      color={'#571770'}
+                      color={'#F8AFFF'}
                       display={'flex'}
                       alignItems={'center'}
                     >
