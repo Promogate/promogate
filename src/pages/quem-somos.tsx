@@ -2,6 +2,7 @@ import { HomeFooter, MainMenu } from '@/presentation/components';
 import { Box, Heading, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { Montserrat, Open_Sans } from 'next/font/google';
+import Head from 'next/head';
 import { parseCookies } from 'nookies';
 
 type PageProps = {
@@ -15,6 +16,9 @@ export default function AboutUs({ isLogged }: PageProps) {
 
   return (
     <>
+      <Head>
+          <title>Promogate - Quem somos</title>
+      </Head>
       <MainMenu isLogged={isLogged} />
       <Box maxWidth={{ xl: '1170px' }} margin={'0 auto'} padding={{ xl: '0 6rem' }}>
         <Heading fontSize={{ xl: '2rem' }} fontFamily={montserrat.style.fontFamily} marginTop={{ xl: '32px' }}
@@ -55,12 +59,12 @@ export default function AboutUs({ isLogged }: PageProps) {
           </ListItem>
         </UnorderedList>
         <Text fontWeight={'normal'} marginTop={{ xl: '32px' }} fontFamily={openSans.style.fontFamily}>
-          Uma série de funcionalidades e métricas já estarão disponíveis na versão gratuita para que você alcance seus 
+          Uma série de funcionalidades e métricas já estarão disponíveis na versão gratuita para que você alcance seus
           objetivos sem a necessidade de investir nada além de tempo.
         </Text>
         <Text fontWeight={'normal'} marginTop={{ xl: '32px' }} fontFamily={openSans.style.fontFamily}>
-          Na medida em que começar a obter resultados, você pode contratar ferramentas específicas de acordo com suas 
-          necessidades e objetivos. Não serão oferecidos pacotes cheios de funções que você não quer ou precisa, apenas 
+          Na medida em que começar a obter resultados, você pode contratar ferramentas específicas de acordo com suas
+          necessidades e objetivos. Não serão oferecidos pacotes cheios de funções que você não quer ou precisa, apenas
           para justificar a cobrança.
         </Text>
         <Text fontWeight={'normal'} marginTop={{ xl: '32px' }} fontFamily={openSans.style.fontFamily}>
