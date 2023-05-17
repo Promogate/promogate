@@ -1,4 +1,5 @@
 export * from './dashboard-layout';
+export * from './dashboard-mobile-menu';
 export * from './hero';
 export * from './home-footer';
 export * from './main-menu';

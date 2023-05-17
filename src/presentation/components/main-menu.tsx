@@ -1,11 +1,10 @@
 import { Box, Button, Flex, Grid, Text } from '@chakra-ui/react';
-import { Inter, Montserrat } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BsArrowRightShort } from 'react-icons/bs';
 import { MobileMainMenu } from './mobile-main-menu';
 
-const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] });
 
 type MainMenuProps = {
