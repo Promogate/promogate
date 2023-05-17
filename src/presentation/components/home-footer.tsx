@@ -17,23 +17,47 @@ export function HomeFooter() {
   const router = useRouter();
 
   return (
-    <Box backgroundColor={'#fafafa'}>
-      <Grid gridTemplateColumns={{ xl: '2fr repeat(3, 1fr)' }} maxWidth={{ xl: '1170px' }} margin={'144px auto 0'}
-        padding={{ xl: '40px 0' }} alignItems={'center'}>
+    <Box
+      backgroundColor={'#fafafa'}
+    >
+      <Grid
+        gridTemplateColumns={['1fr', '2fr repeat(3, 1fr)']}
+        maxWidth={{ xl: '1170px' }}
+        margin={['0 0', '144px auto 0']}
+        padding={['40px 1rem', '40px 0']}
+        alignItems={'center'}
+      >
         <GridItem>
           <Box
             position={'relative'}
             height={'30px'}
             width={'160px'}
           >
-            <Image src={'/promogate-logo.svg'} alt={'Promogate logo'} fill priority />
+            <Image
+              src={'/promogate-logo.svg'}
+              alt={'Promogate logo'}
+              fill
+              priority
+            />
           </Box>
-          <Text fontWeight={'normal'} marginTop={{ xl: '2rem' }} width={{ xl: '80%' }} fontFamily={openSans.style.fontFamily}>
+          <Text
+            fontWeight={'normal'}
+            fontSize={['21px']}
+            margin={['2rem 0 2rem']}
+            width={{ xl: '80%' }}
+            fontFamily={openSans.style.fontFamily}
+          >
             Promogate é uma plataforma gratuita com o objetivo de ajudar afiliados a construir seus primeiros canais
             de divulgação. Criando uma estrutura digital, acompanhamento de performance e compartilhamento social.
           </Text>
         </GridItem>
-        <GridItem display='flex' flexDirection={'column'} gap={{ xl: '1rem' }}>
+        <GridItem
+          display='flex'
+          flexDirection={'column'}
+          margin={['0 0 2rem']}
+          gap={['1rem']}
+          fontSize={['21px']}
+        >
           <Text as={Link} href={'/quem-somos'}>
             Quem somos
           </Text>
@@ -41,7 +65,13 @@ export function HomeFooter() {
             Como funciona?
           </Text>
         </GridItem>
-        <GridItem display='flex' flexDirection={'column'} gap={{ xl: '1rem' }}>
+        <GridItem
+          display='flex'
+          flexDirection={'column'}
+          gap={['1rem']}
+          margin={['0 0 2rem']}
+          fontSize={['21px']}
+        >
           <Text as={Link} href={'/politica-de-privacidade'}>
             Política de Privacidade
           </Text>
@@ -50,7 +80,7 @@ export function HomeFooter() {
           </Text>
         </GridItem>
         <GridItem>
-          <HStack gap={{ xl: '1rem' }}>
+          <HStack gap={['1rem']}>
             <Text as='a' href={'https://facebook.com.br'} target='_blank'>
               <FaFacebook size={24} />
             </Text>
@@ -63,8 +93,11 @@ export function HomeFooter() {
           </HStack>
         </GridItem>
       </Grid>
-      <Box textAlign={'center'} padding={{ xl: '2rem 0' }}>
-        <Text as='span' fontFamily={openSans.style.fontFamily} fontSize={{ xl: '0.825rem' }}>
+      <Box
+        textAlign={'center'}
+        padding={['2rem 0']}
+      >
+        <Text as='span' fontFamily={openSans.style.fontFamily} fontSize={['1rem','21px']}>
           {currentYear} &copy; Promogate. Todos os direitos reservados.
         </Text>
       </Box>

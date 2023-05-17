@@ -16,7 +16,7 @@ export function MainMenu({ isLogged }: MainMenuProps) {
   return (
     <Grid
       gridTemplateColumns={['1fr 1fr', '1fr 1fr', '160px 1fr auto', '160px 1fr auto', '160px 1fr auto']}
-      height={'104px'}
+      height={['60px', '80px','104px']}
       alignItems={'center'}
       maxWidth={{ xl: '1170px' }}
       margin={'0 auto'}
