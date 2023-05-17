@@ -73,7 +73,7 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
 
   const handleRegisterStore: SubmitHandler<RegisterStoreProps> = async (values) => {
     const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.id}`))
-    const { url } = await s3Upload.uploadImage({ file, user: user.id})
+    const { url } = await s3Upload.uploadImage({ file, user: user.id })
     await mutation.mutateAsync({ store_name: values.store_name, store_image: url })
   }
 
@@ -94,10 +94,11 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
       >
         <Grid
           as='form'
-          width={{ xl: '500px' }}
-          boxShadow={{ xl: 'lg' }}
+          width={['500px']}
           padding={{ xl: '4rem 2rem' }}
-          borderRadius={{ xl: '1rem' }}
+          border={['1px']}
+          borderColor={'gray.200'}
+          borderRadius={['lg']}
           gap={{ xl: '2rem' }}
           onSubmit={handleSubmit(handleRegisterStore)}
           autoComplete='off'
@@ -212,10 +213,10 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
           <Button
             type='submit'
             fontFamily={inter.style.fontFamily}
-            backgroundColor={'black'}
+            backgroundColor={'#5528ff'}
             color={'white'}
             _hover={{
-              backgroundColor: 'black'
+              backgroundColor: '#5528ff'
             }}
             size={{ xl: 'lg' }}
             isLoading={isSubmitting}

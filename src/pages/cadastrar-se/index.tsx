@@ -16,6 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from 'axios';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
@@ -72,20 +73,40 @@ export default function RegisterPage() {
       </Head>
       <Grid
         as='main'
-        height={'100vh'}
+        height={['100vh']}
         alignItems={'center'}
         justifyContent={'center'}
-        gridTemplateColumns={{ xl: '1fr 1fr' }}
+        gridTemplateColumns={['1fr']}
+        backgroundColor={'gray.50'}
       >
         <Box
+          as={Link}
+          href='/'
+          position={'relative'}
+          height={'30px'}
+          width={'160px'}
+          margin={['0 auto']}
+        >
+          <Image
+            src={'/promogate-logo.svg'}
+            alt={'Promogate logo'}
+            fill priority
+          />
+        </Box>
+        <Box
           margin={'0 auto'}
+          backgroundColor={'white'}
+          padding={['1rem']}
+          border={['1px']}
+          borderColor={'gray.200'}
+          borderRadius={['lg']}
         >
           <Flex
             as='form'
             onSubmit={handleSubmit(handleRegister)}
-            width={{ xl: '400px' }}
+            width={['max-content', '400px']}
             flexDirection={'column'}
-            gap={{ xl: '1.175rem' }}
+            gap={['1.175rem']}
           >
             <FormControl isInvalid={!!errors.name}>
               <FormLabel
@@ -166,9 +187,9 @@ export default function RegisterPage() {
             </Button>
           </Flex>
           <Flex
-            margin={{ xl: '1rem 0 0 0' }}
+            margin={['1rem 0 0']}
             fontFamily={inter.style.fontFamily}
-            fontSize={{ xl: '0.825rem' }}
+            fontSize={['0.825rem']}
             gap={'2px'}
             alignItems={'center'}
           >
@@ -181,15 +202,6 @@ export default function RegisterPage() {
               Faça o login.
             </Text>
           </Flex>
-        </Box>
-        <Box
-          backgroundColor={'#F5F4F7'}
-          height={'100vh'}
-          backgroundImage={'/register.jpg'}
-          backgroundSize={'cover'}
-          backgroundPosition={'center'}
-          backgroundRepeat={'no-repeat'}
-        >
         </Box>
       </Grid>
     </>

@@ -16,6 +16,7 @@ import { AxiosError } from 'axios';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { parseCookies } from 'nookies';
 import { useContext } from 'react';
@@ -63,10 +64,32 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
         height={'100vh'}
         alignItems={'center'}
         justifyContent={'center'}
-        gridTemplateColumns={{ xl: '1fr 1fr' }}
+        gridTemplateColumns={['1fr']}
+        backgroundColor={'gray.50'}
+        
       >
         <Box
+          as={Link}
+          href='/'
+          position={'relative'}
+          height={'30px'}
+          width={'160px'}
+          margin={['0 auto']}
+        >
+          <Image
+            src={'/promogate-logo.svg'}
+            alt={'Promogate logo'}
+            fill
+            priority
+          />
+        </Box>
+        <Box
           margin={'0 auto'}
+          backgroundColor={'white'}
+          padding={['1rem']}
+          border={['1px']}
+          borderColor={'gray.200'}
+          borderRadius={['lg']}
         >
           {
             isLogged ? (
@@ -105,7 +128,7 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
                   as='form'
                   minWidth={{ xl: '400px' }}
                   flexDirection={'column'}
-                  gap={{ xl: '1.175rem' }}
+                  gap={['1.175rem']}
                   onSubmit={handleSubmit(handleLogin)}
                 >
                   <FormControl>
@@ -150,7 +173,7 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
                   </Button>
                 </Flex>
                 <Flex
-                  margin={{ xl: '1rem 0 0 0' }}
+                  margin={['1rem 0 0']}
                   fontFamily={inter.style.fontFamily}
                   fontSize={{ xl: '0.825rem' }}
                   gap={'2px'}
@@ -168,16 +191,6 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
               </>
             )
           }
-        </Box>
-        <Box
-          backgroundColor={'#F5F4F7'}
-          height={'100vh'}
-          backgroundImage={'/login.jpg'}
-          backgroundSize={'cover'}
-          backgroundPosition={'center'}
-          backgroundRepeat={'no-repeat'}
-        >
-
         </Box>
       </Grid>
     </>
