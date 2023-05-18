@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
   HStack,
   Heading,
   IconButton,
@@ -22,16 +23,16 @@ import {
   Tr,
   useToast
 } from '@chakra-ui/react';
-import { FacebookShareButton, TelegramShareButton, WhatsappShareButton } from 'next-share';
+import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment, useContext } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
-import { FaFacebook, FaTelegram, FaWhatsapp } from 'react-icons/fa';
 import { RxUpdate } from 'react-icons/rx';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,6 +52,8 @@ type OffersPageProps = MeResponse
 export default function OffersPage({ status, user }: OffersPageProps) {
   const toast = useToast();
   const cookies = parseCookies();
+  const query = useQueryClient();
+  const router = useRouter();
 
   const { authorization } = useContext(PromogateContext);
 
@@ -124,7 +127,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   }
 
   const handleQueryInvalidation = () => {
-    queryClient.refetchQueries(['offers', user.id])
+    query.refetchQueries(['offers', user.id])
   }
 
   return (
@@ -195,126 +198,238 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                   </Heading>
                 </Box>
               ) : (
-                <Table size={'sm'}>
-                  <Thead>
-                    <Tr>
-                      <Th>Produto</Th>
-                      <Th>Título do produto</Th>
-                      <Th>Compartilhar</Th>
-                      <Th></Th>
-                      <Th>Vitrine</Th>
-                      <Th>Destaque</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {data?.map((offer) => {
-                      return (
-                        <Tr
-                          key={offer.id}
-                          backgroundColor={'white'}
-                        >
-                          <Td>
-                            <Link
-                              href={`/dashboard/promocoes/${offer.id}`}
+                <>
+                  <Box
+                    display={['block', 'block', 'none']}
+                  >
+                    <Grid
+                      gridTemplateColumns={['1fr']}
+                    >
+                      {data?.map((offer) => {
+                        return (
+                          <Flex
+                            key={offer.id}
+                            padding={['1rem']}
+                            backgroundColor={'white'}
+                            flexDirection={'column'}
+                            border={['1px']}
+                            borderColor={['gray.200']}
+                            borderRadius={['1rem']}
+                            overflow={['hidden']}
+                            fontFamily={inter.style.fontFamily}
+                          >
+                            <Box
+                              borderRadius={{ xl: '1rem' }}
+                              overflow={'hidden'}
+                              height={{ xl: '160px' }}
                             >
-                              <Box
-                                position={'relative'}
-                                width={'64px'}
-                                height={'auto'}
-                              >
-                                <img
-                                  src={offer.image}
-                                  alt={offer.title}
-                                />
+
+                              <img
+                                className='object-contain h-full w-full'
+                                src={offer.image}
+                                alt={offer.title}
+                              />
+                            </Box>
+                            <Box
+                              flex={1}
+                              marginTop={{ xl: '1rem' }}
+                              display={'flex'}
+                              flexDirection={'column'}
+                            >
+                              <Box flex={1}>
+                                <Heading
+                                  fontFamily={inter.style.fontFamily}
+                                  fontSize={{ xl: '14px' }}
+                                  fontWeight={'medium'}
+                                  color={'gray.700'}
+                                  wordBreak={'break-word'}
+                                  padding={['1rem 0']}
+                                >
+                                  {offer.title}
+                                </Heading>
                               </Box>
-                            </Link>
-                          </Td>
-                          <Td>
-                            <Link
-                              href={`/dashboard/promocoes/${offer.id}`}
-                            >
-                              <Text fontStyle={inter.style.fontFamily}>
-                                {offer.title}
-                              </Text>
-                            </Link>
-                          </Td>
-                          <Td>
-                            <Text fontStyle={inter.style.fontFamily}>
-                              <HStack>
-                                <Tooltip label='Compartilhar no Facebook' placement='top' borderRadius={'base'}>
-                                  <IconButton
-                                    as={FacebookShareButton}
-                                    aria-label='editar-oferta'
-                                    icon={<FaFacebook />}
-                                    size={'xs'}
-                                    colorScheme={'facebook'}
+                              <Flex
+                                gap={['16px']}
+                              >
+                                <Box>
+                                  <Heading
+                                    fontSize={['1rem']}
+                                  >
+                                    Vitrine
+                                  </Heading>
+                                  <Switch
+                                    value={String(offer.is_on_showcase) === 'false' ? 'true' : 'false'}
+                                    onChange={(e) => handleShowcaseStatus(e, offer.id)}
+                                    defaultChecked={offer.is_on_showcase}
+                                    colorScheme='green'
+                                  />
+                                </Box>
+                                <Box>
+                                  <Heading
+                                    fontSize={['1rem']}
+                                  >
+                                    Destaque
+                                  </Heading>
+                                  <Switch
+                                    value={String(offer.is_featured) === 'false' ? 'true' : 'false'}
+                                    onChange={(e) => handleIsFeaturedStatus(e, offer.id)}
+                                    defaultChecked={offer.is_featured}
+                                    colorScheme='green'
+                                  />
+                                </Box>
+                              </Flex>
+                              <Box
+                                margin={['1rem 0']}
+                              >
+                                <Heading
+                                  fontSize={['1rem']}
+                                >
+                                  Compartilhar
+                                </Heading>
+                                <HStack
+                                  margin={['1rem 0']}
+                                  spacing={['1.5rem']}
+                                >
+                                  <FacebookShareButton
                                     url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
-                                  />
-                                </Tooltip>
-                                <Tooltip label='Compartilhar no Twitter' placement='top' borderRadius={'base'}>
-                                  <IconButton
-                                    as={TelegramShareButton}
-                                    aria-label='editar-oferta'
-                                    colorScheme={'twitter'}
-                                    icon={<FaTelegram />}
-                                    size={'xs'}
+                                  >
+                                    <FacebookIcon size={32} />
+                                  </FacebookShareButton>
+                                  <TelegramShareButton
                                     url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
-                                  />
-                                </Tooltip>
-                                <Tooltip label='Compartilhar no Whatsapp' placement='top' borderRadius={'base'}>
-                                  <IconButton
-                                    as={WhatsappShareButton}
-                                    aria-label='editar-oferta'
-                                    colorScheme={'whatsapp'}
-                                    icon={<FaWhatsapp />}
-                                    size={'xs'}
+                                  >
+                                    <TelegramIcon size={32} />
+                                  </TelegramShareButton>
+                                  <WhatsappShareButton
                                     url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
-                                  />
-                                </Tooltip>
-                              </HStack>
-                            </Text>
-                          </Td>
-                          <Td>
-                            <Text fontStyle={inter.style.fontFamily}>
-                              <HStack>
-                                <Tooltip label='Editar' placement='top' borderRadius={'base'}>
-                                  <IconButton
-                                    aria-label='editar-oferta'
-                                    icon={<AiFillEdit />}
-                                    size={'xs'}
-                                    colorScheme={'blue'}
-                                    as={Link}
-                                    href={`/dashboard/promocoes/${offer.id}`}
-                                  />
-                                </Tooltip>
-                              </HStack>
-                            </Text>
-                          </Td>
-                          <Td>
-                            <Text>
-                              <Switch
-                                value={String(offer.is_on_showcase) === 'false' ? 'true' : 'false'}
-                                onChange={(e) => handleShowcaseStatus(e, offer.id)}
-                                defaultChecked={offer.is_on_showcase}
-                                colorScheme='green'
-                              />
-                            </Text>
-                          </Td>
-                          <Td>
-                            <Text>
-                              <Switch
-                                value={String(offer.is_featured) === 'false' ? 'true' : 'false'}
-                                onChange={(e) => handleIsFeaturedStatus(e, offer.id)}
-                                defaultChecked={offer.is_featured}
-                                colorScheme='green'
-                              />
-                            </Text>
-                          </Td>
+                                  >
+                                    <WhatsappIcon size={32} />
+                                  </WhatsappShareButton>
+                                </HStack>
+                              </Box>
+                              <Button
+                                onClick={() => router.push(`/dashboard/promocoes/${offer.id}`)}
+                                backgroundColor={'#5528ff'}
+                                color={'white'}
+                              >
+                                Editar Oferta
+                              </Button>
+                            </Box>
+                          </Flex>
+                        )
+                      })}
+                    </Grid>
+                  </Box>
+                  <Box
+                    display={['none', 'none', 'block']}
+                  >
+                    <Table size={'sm'}>
+                      <Thead>
+                        <Tr>
+                          <Th>Produto</Th>
+                          <Th>Título do produto</Th>
+                          <Th>Compartilhar</Th>
+                          <Th></Th>
+                          <Th>Vitrine</Th>
+                          <Th>Destaque</Th>
                         </Tr>
-                      )
-                    })}
-                  </Tbody>
-                </Table>
+                      </Thead>
+                      <Tbody>
+                        {data?.map((offer) => {
+                          return (
+                            <Tr
+                              key={offer.id}
+                              backgroundColor={'white'}
+                            >
+                              <Td>
+                                <Link
+                                  href={`/dashboard/promocoes/${offer.id}`}
+                                >
+                                  <Box
+                                    position={'relative'}
+                                    width={'64px'}
+                                    height={'auto'}
+                                  >
+                                    <img
+                                      src={offer.image}
+                                      alt={offer.title}
+                                    />
+                                  </Box>
+                                </Link>
+                              </Td>
+                              <Td>
+                                <Link
+                                  href={`/dashboard/promocoes/${offer.id}`}
+                                >
+                                  <Text fontStyle={inter.style.fontFamily}>
+                                    {offer.title}
+                                  </Text>
+                                </Link>
+                              </Td>
+                              <Td>
+                                <Text fontStyle={inter.style.fontFamily}>
+                                  <HStack>
+                                    <FacebookShareButton
+                                      url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    >
+                                      <FacebookIcon size={32} />
+                                    </FacebookShareButton>
+                                    <TelegramShareButton
+                                      url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    >
+                                      <TelegramIcon size={32} />
+                                    </TelegramShareButton>
+                                    <WhatsappShareButton
+                                      url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    >
+                                      <WhatsappIcon size={32} />
+                                    </WhatsappShareButton>
+                                  </HStack>
+                                </Text>
+                              </Td>
+                              <Td>
+                                <Text fontStyle={inter.style.fontFamily}>
+                                  <HStack>
+                                    <Tooltip label='Editar' placement='top' borderRadius={'base'}>
+                                      <IconButton
+                                        aria-label='editar-oferta'
+                                        icon={<AiFillEdit />}
+                                        size={'xs'}
+                                        colorScheme={'blue'}
+                                        as={Link}
+                                        href={`/dashboard/promocoes/${offer.id}`}
+                                      />
+                                    </Tooltip>
+                                  </HStack>
+                                </Text>
+                              </Td>
+                              <Td>
+                                <Text>
+                                  <Switch
+                                    value={String(offer.is_on_showcase) === 'false' ? 'true' : 'false'}
+                                    onChange={(e) => handleShowcaseStatus(e, offer.id)}
+                                    defaultChecked={offer.is_on_showcase}
+                                    colorScheme='green'
+                                  />
+                                </Text>
+                              </Td>
+                              <Td>
+                                <Text>
+                                  <Switch
+                                    value={String(offer.is_featured) === 'false' ? 'true' : 'false'}
+                                    onChange={(e) => handleIsFeaturedStatus(e, offer.id)}
+                                    defaultChecked={offer.is_featured}
+                                    colorScheme='green'
+                                  />
+                                </Text>
+                              </Td>
+                            </Tr>
+                          )
+                        })}
+                      </Tbody>
+                    </Table>
+                  </Box>
+                </>
               )
             }
           </Box>

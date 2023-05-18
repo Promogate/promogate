@@ -171,7 +171,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
           </IconButton>
           <Heading
             as={'h2'}
-            fontSize={{ xl: '2xl' }}
+            fontSize={['2rem']}
             color={'gray.600'}
           >
             Editar oferta
@@ -183,14 +183,14 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
           <Box
             as={'form'}
             onSubmit={handleSubmit(createOffer)}
-            margin={{ xl: '1rem 0' }}
+            margin={['1rem 0']}
           >
             <Box
               display={'grid'}
               gridTemplateColumns={{ xl: '1fr 1fr' }}
-              gap={{ xl: '1rem' }}
+              gap={['1rem']}
               backgroundColor={'white'}
-              padding={{ xl: '1.5rem 1.5rem 5rem 1.5rem' }}
+              padding={['1rem']}
               borderRadius={{ xl: '1rem' }}
               overflow={'auto'}
             >
@@ -245,7 +245,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
               </FormControl>
               <FormControl
                 as={GridItem}
-                colSpan={2}
+                colSpan={[1, 1, 2]}
                 position={'relative'}
               >
                 <FormLabel>Descrição (Opcional)</FormLabel>
@@ -260,7 +260,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
             <Flex
               justifyContent={'space-between'}
               width={'100%'}
-              padding={{ xl: '1rem 0' }}
+              padding={['2rem 0']}
               alignItems={'center'}
             >
               <Button

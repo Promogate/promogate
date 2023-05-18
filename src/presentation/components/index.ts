@@ -2,6 +2,7 @@ export * from './dashboard-layout';
 export * from './dashboard-mobile-menu';
 export * from './hero';
 export * from './home-footer';
+export * from './internal-offer-card';
 export * from './main-menu';
 export * from './mobile-main-menu';
 export * from './offer-card';

@@ -160,9 +160,21 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
                       <Table size={'sm'}>
                         <Thead>
                           <Tr>
-                            <Th>Imagem do produto</Th>
-                            <Th>Título do produto</Th>
-                            <Th>Cliques</Th>
+                            <Th
+                              fontSize={['xx-small', 'sm']}
+                            >
+                              Imagem do produto
+                            </Th>
+                            <Th
+                              fontSize={['xx-small', 'sm']}
+                            >
+                              Título do produto
+                            </Th>
+                            <Th
+                              fontSize={['xx-small', 'sm']}
+                            >
+                              Cliques
+                            </Th>
                           </Tr>
                         </Thead>
                         <Tbody>
