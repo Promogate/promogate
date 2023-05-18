@@ -6,6 +6,7 @@ export * from './internal-offer-card';
 export * from './main-menu';
 export * from './mobile-main-menu';
 export * from './offer-card';
+export * from './single-production-page-content';
 export * from './store-footer';
 export * from './store-footer-content';
 export * from './store-header';

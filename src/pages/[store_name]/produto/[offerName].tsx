@@ -1,12 +1,12 @@
 import { api } from '@/config';
 import { OfferWithClicks } from '@/domain/models';
 import { parseAmbientUrl, parseCurrency } from '@/main/utils';
-import { StoreFooter, StoreHeader } from '@/presentation/components';
-import { Box, Button, Divider, Flex, Grid, HStack, Heading, IconButton, Img, Spinner, Text, VStack } from '@chakra-ui/react';
+import { SingleProductPageContent, StoreFooter, StoreHeader } from '@/presentation/components';
+import { Box, Button, Divider, Flex, Grid, HStack, Heading, Img, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
-import { Inter } from 'next/font/google';
+import { Inter, Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,10 +14,9 @@ import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { FaRegComments } from 'react-icons/fa';
 import { FiExternalLink } from 'react-icons/fi';
-import { TfiAngleLeft } from 'react-icons/tfi';
 
 import parse from 'html-react-parser';
- 
+
 type SingleProductResponse = {
   status: string;
   message: string;
@@ -25,6 +24,8 @@ type SingleProductResponse = {
 }
 
 const inter = Inter({ subsets: ['latin'], preload: true });
+const openSans = Open_Sans({ subsets: ['latin'], preload: true })
+const montserrat = Montserrat({ subsets: ['latin'], preload: true })
 
 export default function SingleProductPage() {
   const router = useRouter();
@@ -77,47 +78,38 @@ export default function SingleProductPage() {
         <meta property='og:locale' content='pt_BR' />
         <meta property='og:url' content={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)} data-rh='true' />
       </Head>
-      <StoreHeader props={{ store_image: data.offer.resources.user_profile.store_image, store_name: data.offer.resources.user_profile.store_name }} />
+      <StoreHeader props={{
+        store_image: data.offer.resources.user_profile.store_image,
+        store_name: data.offer.resources.user_profile.store_name
+      }} />
       <Box
-        backgroundColor={'gray.50'}
         fontFamily={inter.style.fontFamily}
+        padding={['1rem 1rem', '1rem 1rem', 0]}
+        backgroundColor={'blackAlpha.50'}
       >
-        <Box
-          maxWidth={{ xl: '1160px' }}
-          padding={{ xl: '1rem 0' }}
-          margin={'0 auto'}
-        >
-          <IconButton
-            as={Link}
-            href={parseAmbientUrl(data.offer.store_name)}
-            icon={<TfiAngleLeft />}
-            variant={'outline'}
-            aria-label={`Voltar para ${data.offer.store_name}`}
-          />
-        </Box>
         <Grid
-          maxWidth={{ xl: '1160px' }}
+          maxWidth={['1170px']}
+          minHeight={['100vh']}
           margin={'0 auto'}
-          gridTemplateColumns={'auto 300px'}
+          gridTemplateColumns={['1fr', '1fr', 'auto 300px']}
           gap={{ xl: '24px' }}
           padding={{ xl: '1rem 0' }}
         >
           <Box
-            padding={{ xl: '1rem' }}
-            borderRadius={{ xl: 'lg' }}
+            borderRadius={['lg']}
             backgroundColor={'white'}
             height={'max-content'}
           >
             <Grid
-              gridTemplateColumns={{ xl: '8fr 4fr' }}
-              gap={'24px'}
+              gridTemplateColumns={['1fr', '1fr', '8fr 4fr']}
+              gap={['24px']}
             >
               <Box
-                padding={{ xl: '1rem 0' }}
+                padding={['1rem']}
               >
                 <Heading
                   as='h1'
-                  fontSize={'2xl'}
+                  fontSize={['1.3rem', '2xl']}
                   fontFamily={inter.style.fontFamily}
                   padding={{ xl: '0 0 1rem 0' }}
                 >
@@ -127,9 +119,11 @@ export default function SingleProductPage() {
                   alignItems={'center'}
                   width={'100%'}
                   justifyContent={'space-between'}
+                  margin={['1rem 0', '1rem 0', 0]}
                 >
                   <Flex
                     gap={{ xl: '0.5rem' }}
+                    flexDirection={['column-reverse', 'column', 'row']}
                   >
                     <Heading
                       as={'h2'}
@@ -150,7 +144,7 @@ export default function SingleProductPage() {
                   </Flex>
                   <Flex
                     alignItems={'center'}
-                    fontSize={{ xl: '0.825rem' }}
+                    fontSize={['0.825rem']}
                     gap={{ xl: '0.25rem' }}
                   >
                     <Text>
@@ -198,11 +192,9 @@ export default function SingleProductPage() {
                   </Text>
                 </Box>
               </Box>
-              <Box position={'relative'}>
+              <Box>
                 <VStack
-                  padding={{ xl: '2rem 0' }}
                   gap={{ xl: '0.5rem' }}
-                  pos={'sticky'}
                   top={0}
                   left={0}
                   width={'100%'}
@@ -213,22 +205,29 @@ export default function SingleProductPage() {
                     alt={data.offer.title}
                     height={'240px'}
                   />
-
-                  <Button
-                    as={Link}
-                    href={`/api/redir/${data.offer.id}`}
-                    target='_blank'
-                    rightIcon={<FiExternalLink />}
-                    colorScheme={'green'}
-                    width={'100%'}
-                    size={{ xl: 'lg' }}
+                  <Box
+                    margin={['2rem']}
                   >
-                    Abrir na loja
-                  </Button>
+                    <Button
+                      as={Link}
+                      href={`/api/redir/${data.offer.id}`}
+                      target='_blank'
+                      rightIcon={<FiExternalLink />}
+                      colorScheme={'green'}
+                      width={['100%']}
+                      size={['lg']}
+                    >
+                      Abrir na loja
+                    </Button>
+                  </Box>
                   <Divider orientation='horizontal' />
-                  <HStack>
+                  <HStack
+                    padding={['1rem 0', '1rem 0', 0]}
+                  >
                     <Button
                       leftIcon={<FaRegComments />}
+                      width={['100%']}
+                      size={['lg']}
                     >
                       Deixe um comentário
                     </Button>
@@ -238,7 +237,8 @@ export default function SingleProductPage() {
             </Grid>
           </Box>
           <Grid
-            gap={{ xl: '1rem' }}
+            gap={['1rem']}
+            margin={['1rem', '1rem', 0]}
           >
             <Image
               src={'/ads/300x250.png'}
@@ -248,8 +248,9 @@ export default function SingleProductPage() {
             />
           </Grid>
         </Grid>
-        <StoreFooter />
       </Box>
+      <SingleProductPageContent />
+      <StoreFooter />
     </Fragment>
   )
 }
