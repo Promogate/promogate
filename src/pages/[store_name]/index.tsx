@@ -1,7 +1,17 @@
 import { PromogateContext } from '@/application/contexts';
 import { OfferWithClicks } from '@/domain/models';
-import { OfferCard, StoreFooter, StoreHeader } from '@/presentation/components';
-import { Box, Grid, Heading, Spinner } from '@chakra-ui/react';
+import {
+  OfferCard,
+  StoreFooter,
+  StoreFooterContent,
+  StoreHeader
+} from '@/presentation/components';
+import {
+  Box,
+  Grid,
+  Heading,
+  Spinner
+} from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
@@ -62,7 +72,10 @@ export default function Home({ store_name }: SingleStoreProps) {
           }
         </title>
       </Head>
-      <main>
+      <Box
+        as='main'
+        backgroundColor={'gray.50'}
+      >
         <StoreHeader props={{ store_image: data.user_profile.store_image, store_name: data.user_profile.store_name }} />
         <Grid
           gridTemplateColumns={{ xl: '9fr 3fr' }}
@@ -176,8 +189,9 @@ export default function Home({ store_name }: SingleStoreProps) {
             </Grid>
           </Box>
         </Grid>
+        <StoreFooterContent />
         <StoreFooter />
-      </main>
+      </Box>
     </Fragment>
   )
 }
