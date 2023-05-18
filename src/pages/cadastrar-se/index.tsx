@@ -13,6 +13,7 @@ import {
   useToast
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
@@ -21,7 +22,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
 import * as yup from 'yup';
 
 const inter = Inter({ subsets: ['latin'] })

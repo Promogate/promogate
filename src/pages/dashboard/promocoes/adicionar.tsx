@@ -1,4 +1,4 @@
-import { api, queryClient } from '@/config'
+import { api } from '@/config'
 import { MeResponse, OfferDataInput } from '@/domain/models'
 import { makeCurrencyStringReadable } from '@/main/utils'
 import { DashboardLayout } from '@/presentation/components'
@@ -15,6 +15,7 @@ import {
   Input,
   useToast
 } from '@chakra-ui/react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -23,7 +24,6 @@ import { parseCookies } from 'nookies'
 import { Fragment, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { TfiAngleLeft } from 'react-icons/tfi'
-import { useMutation } from 'react-query'
 
 type AddOffersPageProps = MeResponse
 
@@ -37,27 +37,29 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
   const toast = useToast();
   const router = useRouter();
   const [description, setDescription] = useState('')
+  const query = useQueryClient();
 
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>();
 
-  const mutation = useMutation(async (data: OfferDataInput) => {
-    const price = makeCurrencyStringReadable(data.price);
-    const old_price = makeCurrencyStringReadable(data.old_price);
+  const mutation = useMutation({
+    mutationFn: async (data: OfferDataInput) => {
+      const price = makeCurrencyStringReadable(data.price);
+      const old_price = makeCurrencyStringReadable(data.old_price);
 
-    await api.post(`/resources/${user.user_profile.resources.id}/offer/create`, {
-      ...data,
-      price,
-      old_price,
-      description
-    }, {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
+      await api.post(`/resources/${user.user_profile.resources.id}/offer/create`, {
+        ...data,
+        price,
+        old_price,
+        description
+      }, {
+        headers: {
+          Authorization: `Bearer ${cookies['promogate.token']}`
+        }
+      })
 
-  }, {
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries(['offers', user.id]);
+      query.invalidateQueries(['offers', user.id]);
       toast({
         status: 'success',
         description: 'Oferta adicionada com sucesso!'

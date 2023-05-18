@@ -14,6 +14,7 @@ import {
   Input,
   Text
 } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
@@ -31,7 +32,6 @@ import {
 } from 'react-hook-form';
 import { BsUpload } from 'react-icons/bs';
 import { TiDelete } from 'react-icons/ti';
-import { useMutation } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 

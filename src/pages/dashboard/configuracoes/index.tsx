@@ -15,16 +15,16 @@ import {
   Text,
   useToast
 } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Montserrat } from 'next/font/google';
 import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment, useCallback, useContext, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsUpload } from 'react-icons/bs';
 import { TiDelete } from 'react-icons/ti';
-import { useMutation } from 'react-query';
 
 import { AWSUploadService } from '@/application/services';
-import { api, queryClient } from '@/config';
+import { api } from '@/config';
 import { withSSRAuth } from '@/utils';
 import { AxiosError } from 'axios';
 import Head from 'next/head';
@@ -52,6 +52,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
   const [sampleUrl, setSampleUrl] = useState(user.user_profile.store_name);
   const { authorization } = useContext(PromogateContext);
   const cookies = parseCookies();
+  const query = useQueryClient();
 
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -82,7 +83,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
     })
   }, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-profile', cookies['promogate.token']]);
+      query.invalidateQueries(['user-profile', cookies['promogate.token']]);
       toast({
         status: 'success',
         description: 'Atualizado com sucesso'

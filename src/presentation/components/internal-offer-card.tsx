@@ -2,10 +2,10 @@ import { PromogateContext } from '@/application/contexts';
 import { api } from '@/config';
 import { Offer } from '@/domain/models';
 import { Box, Flex, Heading, Switch, useToast } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { ChangeEvent, useContext } from 'react';
-import { useMutation } from 'react-query';
 
 type InternalOfferCardProps = {
   data: Offer;
@@ -25,23 +25,20 @@ const inter = Inter({ subsets: ['latin'] });
 
 /*eslint-disable @next/next/no-img-element*/
 export function InternalOfferCard({ data }: InternalOfferCardProps) {
-  // const store = storeName.toLocaleLowerCase().replace(' ', '-');
-  const productName = data.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s,\/]/g, '-');
   const toast = useToast();
 
-  // const offerUrl = `/${store}/produto/${productName}/?oid=${data.id}&utm_click=1&rid=${data.resources_id}`
-
   const { authorization } = useContext(PromogateContext);
-  
-  const mutation = useMutation(async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
-    await api.put(`/resources/offer/${offerId}/update/showcase`, {
-      is_on_showcase
-    }, {
-      headers: {
-        Authorization: authorization
-      }
-    })
-  }, {
+
+  const mutation = useMutation({
+    mutationFn: async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
+      await api.put(`/resources/offer/${offerId}/update/showcase`, {
+        is_on_showcase
+      }, {
+        headers: {
+          Authorization: authorization
+        }
+      })
+    },
     onError: () => {
       toast({
         status: 'error',
@@ -50,15 +47,16 @@ export function InternalOfferCard({ data }: InternalOfferCardProps) {
     }
   })
 
-  const isFeatured = useMutation(async ({ is_featured, offerId }: UpdateOfferFeatured) => {
-    await api.put(`/resources/offer/${offerId}/update/featured`, {
-      is_featured
-    }, {
-      headers: {
-        Authorization: authorization
-      }
-    })
-  }, {
+  const isFeatured = useMutation({
+    mutationFn: async ({ is_featured, offerId }: UpdateOfferFeatured) => {
+      await api.put(`/resources/offer/${offerId}/update/featured`, {
+        is_featured
+      }, {
+        headers: {
+          Authorization: authorization
+        }
+      })
+    },
     onError: () => {
       toast({
         status: 'error',

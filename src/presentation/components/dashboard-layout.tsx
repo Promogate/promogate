@@ -1,10 +1,10 @@
 import { api } from '@/config';
 import { MeResponse } from '@/domain/models';
 import { Box, Grid, GridItem } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { Inter } from 'next/font/google';
 import { parseCookies } from 'nookies';
 import { ReactNode } from 'react';
-import { useQuery } from 'react-query';
 import { DashboardMenu } from './dashboard-menu';
 import { DashboardMobileMenu } from './dashboard-mobile-menu';
 
@@ -17,16 +17,17 @@ const inter = Inter({ subsets: ['latin'] })
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const cookies = parseCookies();
 
-  const { data } = useQuery(['user-profile', cookies['promogate.token']], async () => {
-    const { data } = await api.get<MeResponse>('/users/me', {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
+  const { data } = useQuery({
+    queryKey: ['user-profile', cookies['promogate.token']],
+    queryFn: async () => {
+      const { data } = await api.get<MeResponse>('/users/me', {
+        headers: {
+          Authorization: `Bearer ${cookies['promogate.token']}`
+        }
+      })
 
-    return data
-  }, {
-    cacheTime: 1000 * 60 * 60 * 15,
+      return data
+    },
     staleTime: 1000 * 60 * 60 * 15,
   })
 

@@ -2,11 +2,11 @@ import { PromogateContext } from '@/application/contexts';
 import { OfferWithClicks } from '@/domain/models';
 import { OfferCard, StoreFooter, StoreHeader } from '@/presentation/components';
 import { Box, Grid, Heading, Spinner } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { Fragment, useContext } from 'react';
-import { useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,9 +17,10 @@ type SingleStoreProps = {
 export default function Home({ store_name }: SingleStoreProps) {
   const { fetchStoreOffers } = useContext(PromogateContext)
 
-  const { data, isLoading, isError } = useQuery(['showcase', store_name], async () => await fetchStoreOffers(store_name), {
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 5
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['showcase', store_name],
+    queryFn: async () => await fetchStoreOffers(store_name),
+    staleTime: 1000 * 60 * 5
   });
 
   if (isLoading) {

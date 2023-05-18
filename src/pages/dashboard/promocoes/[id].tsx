@@ -1,4 +1,4 @@
-import { api, queryClient } from '@/config'
+import { api } from '@/config'
 import { MeResponse, OfferDataInput, OfferWithClicks } from '@/domain/models'
 import { makeCurrencyStringReadable } from '@/main/utils'
 import { DashboardLayout } from '@/presentation/components'
@@ -22,6 +22,7 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
@@ -31,7 +32,6 @@ import { parseCookies } from 'nookies'
 import { Fragment, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { TfiAngleLeft } from 'react-icons/tfi'
-import { useMutation, useQuery } from 'react-query'
 
 type SingleOfferPageProps = {
   status: string;
@@ -54,6 +54,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
   const router = useRouter();
   const { id } = router.query as { id: string };
   const deletePopup = useDisclosure();
+  const query = useQueryClient();
 
   const { data, isLoading } = useQuery(['offer', id], async () => {
     const { data } = await api.get<SingleOfferPageProps>(`/resources/${user.user_profile.resources.id}/offer/${id}`, {
@@ -100,7 +101,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
 
   }, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['offers', user.id]);
+      query.invalidateQueries(['offers', user.id]);
       toast({
         status: 'success',
         description: 'Oferta atualizada com sucesso!'
@@ -131,7 +132,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
     })
   }, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['offers', user.id]);
+      query.invalidateQueries(['offers', user.id]);
       toast({
         status: 'success',
         description: 'Oferta excluída com sucesso!'

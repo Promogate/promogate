@@ -12,6 +12,7 @@ import {
   Text,
   useToast
 } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
@@ -22,7 +23,6 @@ import { parseCookies } from 'nookies';
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsArrowRightShort } from 'react-icons/bs';
-import { useMutation } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 

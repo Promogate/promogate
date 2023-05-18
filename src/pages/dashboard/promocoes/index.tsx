@@ -1,5 +1,5 @@
 import { PromogateContext } from '@/application/contexts';
-import { api, queryClient } from '@/config';
+import { api } from '@/config';
 import { MeResponse, Offer } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
@@ -23,6 +23,7 @@ import {
   Tr,
   useToast
 } from '@chakra-ui/react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
@@ -32,7 +33,6 @@ import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment, useContext } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { RxUpdate } from 'react-icons/rx';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -57,30 +57,32 @@ export default function OffersPage({ status, user }: OffersPageProps) {
 
   const { authorization } = useContext(PromogateContext);
 
-  const { data, isLoading } = useQuery(['offers', user.id], async () => {
-    const { data } = await api.get<Offer[]>('/dashboard/offers', {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
+  const { data, isLoading } = useQuery({
+    queryKey: ['offers', user.id],
+    queryFn: async () => {
+      const { data } = await api.get<Offer[]>('/dashboard/offers', {
+        headers: {
+          Authorization: `Bearer ${cookies['promogate.token']}`
+        }
+      })
 
-    return data
-  }, {
-    cacheTime: 1000 * 60 * 5,
-    staleTime: 1000 * 60 * 5,
+      return data
+    },
+    staleTime: 1000 * 60 * 5
   })
 
-  const mutation = useMutation(async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
-    await api.put(`/resources/offer/${offerId}/update/showcase`, {
-      is_on_showcase
-    }, {
-      headers: {
-        Authorization: authorization
-      }
-    })
-  }, {
+  const mutation = useMutation({
+    mutationFn: async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
+      await api.put(`/resources/offer/${offerId}/update/showcase`, {
+        is_on_showcase
+      }, {
+        headers: {
+          Authorization: authorization
+        }
+      })
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries(['offers', user.id])
+      query.invalidateQueries(['offers', user.id])
     },
     onError: () => {
       toast({
@@ -90,17 +92,18 @@ export default function OffersPage({ status, user }: OffersPageProps) {
     }
   })
 
-  const isFeatured = useMutation(async ({ is_featured, offerId }: UpdateOfferFeatured) => {
-    await api.put(`/resources/offer/${offerId}/update/featured`, {
-      is_featured
-    }, {
-      headers: {
-        Authorization: authorization
-      }
-    })
-  }, {
+  const isFeatured = useMutation({
+    mutationFn: async ({ is_featured, offerId }: UpdateOfferFeatured) => {
+      await api.put(`/resources/offer/${offerId}/update/featured`, {
+        is_featured
+      }, {
+        headers: {
+          Authorization: authorization
+        }
+      })
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries(['offers', user.id])
+      query.invalidateQueries(['offers', user.id])
     },
     onError: () => {
       toast({

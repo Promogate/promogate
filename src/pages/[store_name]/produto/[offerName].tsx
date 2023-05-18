@@ -3,6 +3,7 @@ import { OfferWithClicks } from '@/domain/models';
 import { parseAmbientUrl, parseCurrency } from '@/main/utils';
 import { StoreFooter, StoreHeader } from '@/presentation/components';
 import { Box, Button, Divider, Flex, Grid, HStack, Heading, IconButton, Img, Spinner, Text, VStack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
 import { Inter } from 'next/font/google';
@@ -14,7 +15,6 @@ import { Fragment } from 'react';
 import { FaRegComments } from 'react-icons/fa';
 import { FiExternalLink } from 'react-icons/fi';
 import { TfiAngleLeft } from 'react-icons/tfi';
-import { useQuery } from 'react-query';
 
 import parse from 'html-react-parser';
  

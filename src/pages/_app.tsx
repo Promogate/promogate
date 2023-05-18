@@ -1,10 +1,14 @@
-import { AuthContextProvider, PromogateContextProvider } from '@/application/contexts';
-import { queryClient } from '@/config';
+import {
+  AuthContextProvider,
+  PromogateContextProvider
+} from '@/application/contexts';
 import '@/styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
-import { QueryClientProvider } from 'react-query';
 import 'react-quill/dist/quill.snow.css';
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

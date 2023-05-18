@@ -20,12 +20,12 @@ import {
   Thead,
   Tr
 } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { Card, Metric, Text as TremorText } from '@tremor/react';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
 import { useContext, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,9 +36,10 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
   const { fetchDashboardData } = useContext(PromogateContext);
   const [ctr, setCtr] = useState<number | null>(null)
 
-  const { data, isLoading, isError } = useQuery(['dashboard-offers', user.id], async () => await fetchDashboardData(user.user_profile.id), {
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 5,
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['dashboard-data', user.id],
+    queryFn: async () => await fetchDashboardData(user.user_profile.id),
+    staleTime: 1000 * 60 * 5
   })
 
   useMemo(() => {
