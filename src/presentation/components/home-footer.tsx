@@ -1,5 +1,5 @@
 import {
-  Box, Grid, GridItem,
+  Box, Button, Grid, GridItem,
   HStack,
   Text
 } from '@chakra-ui/react';
@@ -79,8 +79,16 @@ export function HomeFooter() {
             Termos de Uso
           </Text>
         </GridItem>
-        <GridItem>
-          <HStack gap={['1rem']}>
+        <GridItem
+          display='flex'
+          flexDirection={'column'}
+          justifyContent={['center']}
+          gap={['32px']}
+        >
+          <HStack
+            gap={['2rem']}
+            justifyContent={['center']}
+          >
             <Text as='a' href={'https://facebook.com.br'} target='_blank'>
               <FaFacebook size={24} />
             </Text>
@@ -91,13 +99,27 @@ export function HomeFooter() {
               <FaInstagram size={24} />
             </Text>
           </HStack>
+          <Button
+            as={Link}
+            href={'/cadastrar-se'}
+            target='_blank'
+            fontFamily={openSans.style.fontFamily}
+            fontSize={{ xl: '1rem' }}
+            color={'#2b2b2b'}
+            variant={'outline'}
+            fontWeight={'bold'}
+            borderColor={'#2b2b2b'}
+            margin={['0 auto']}
+          >
+            Começar agora
+          </Button>
         </GridItem>
       </Grid>
       <Box
         textAlign={'center'}
         padding={['2rem 0']}
       >
-        <Text as='span' fontFamily={openSans.style.fontFamily} fontSize={['1rem','21px']}>
+        <Text as='span' fontFamily={openSans.style.fontFamily} fontSize={['1rem', '21px']}>
           {currentYear} &copy; Promogate. Todos os direitos reservados.
         </Text>
       </Box>

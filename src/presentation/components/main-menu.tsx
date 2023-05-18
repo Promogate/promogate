@@ -95,6 +95,7 @@ export function MainMenu({ isLogged }: MainMenuProps) {
               <Button
                 as={Link}
                 href={'/cadastrar-se'}
+                target='_blank'
                 fontFamily={montserrat.style.fontFamily}
                 fontSize={{ xl: '1rem' }}
                 color={'#2b2b2b'}
@@ -102,7 +103,7 @@ export function MainMenu({ isLogged }: MainMenuProps) {
                 fontWeight={'bold'}
                 borderColor={'#2b2b2b'}
               >
-                Cadastrar-se
+                Começar agora
               </Button>
             </Flex>
           )

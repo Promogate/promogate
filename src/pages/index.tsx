@@ -12,6 +12,7 @@ import { GetServerSideProps } from 'next';
 import { Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 import { FiExternalLink } from 'react-icons/fi';
@@ -59,7 +60,7 @@ export default function Home({ isLogged }: HomepageProps) {
               width={{ xl: '72%' }}
               marginTop={'24px'}
             >
-              Torne-se afiliado de grandes lojas online.
+              Aumente seu alcance como afiliado
             </Heading>
             <Text
               fontWeight={'normal'}
@@ -68,7 +69,8 @@ export default function Home({ isLogged }: HomepageProps) {
               fontFamily={openSans.style.fontFamily}
               fontSize={['21px']}
             >
-              Cadastre seus produtos em um só lugar e tenha sua estrutura digital para acompanhar seus resultados.
+              Cadastre seus produtos em um só lugar e tenha sua estrutura digital <span className='text-[#5528ff] 
+              font-bold'>gratuita</span> para acompanhar e medir seus resultados e divulgar seus produtos como afiliado.
             </Text>
           </Box>
           <Box
@@ -116,8 +118,8 @@ export default function Home({ isLogged }: HomepageProps) {
               fontFamily={openSans.style.fontFamily}
               fontSize={'21px'}
             >
-              Obtenha uma visão geral rápida do seu programa de afiliados a qualquer momento ou vá granular com filtros
-              poderosos. comparar conversões em diferentes ambientes móveis.
+              Obtenha uma visão geral rápida do seu programa de afiliados a qualquer momento ou aproveite nossos
+              filtros poderosos e compare diferentes tipos de  conversões.
             </Text>
           </Box>
           <Box>
@@ -148,7 +150,7 @@ export default function Home({ isLogged }: HomepageProps) {
               fontFamily={openSans.style.fontFamily}
               fontSize={'21px'}
             >
-              User o potencial de suas redes sociais e compartilhe sua loja e seus produtos cadastrados. Tenha um maior
+              Aproveite todo o potencial de suas redes sociais e compartilhe sua loja e seus produtos cadastrados. Tenha um maior
               alcance e mais conversões, diretamente do seu painel administrativo.
             </Text>
           </Box>
@@ -181,8 +183,9 @@ export default function Home({ isLogged }: HomepageProps) {
             fontSize={'21px'}
             width={{ xl: '80%' }}
           >
-            Somos uma plataforma com painel administrativo e um site individual, gratuitos, para você divulgar suas
-            ofertas e promoções
+            Somos uma plataforma de gestão com painel administrativo e um site individual, gratuitos, para você
+            divulgar suas ofertas e promoções. além de oferecer as melhores ferramentas de marketing do mercado pra
+            você alavancar seu alcance e suas vendas como afiliado
           </Text>
         </Flex>
         <Box
@@ -195,7 +198,7 @@ export default function Home({ isLogged }: HomepageProps) {
             marginTop={['56px']}
             color={'#2b2b2b'}
           >
-            Veja nossa loja
+            Confira aqui exemplos de sites
           </Heading>
           <Grid
             margin={{ xl: '2rem 0' }}
@@ -209,8 +212,8 @@ export default function Home({ isLogged }: HomepageProps) {
               <Box
                 rounded={'full'}
                 position={'relative'}
-                height={'120px'}
-                width={'120px'}
+                height={'180px'}
+                width={'180px'}
                 boxShadow={['2xl']}
                 overflow={'hidden'}
                 margin={['40px auto', '0 auto']}
@@ -218,14 +221,16 @@ export default function Home({ isLogged }: HomepageProps) {
                 <Image src='/novo_promogate.png' alt='Loja Promogate' fill />
               </Box>
               <Button
+                as={Link}
+                href={'/promogate'}
+                target='_blank'
                 maxWidth={'max-content'}
                 backgroundColor={'#5528FF'}
                 _hover={{ backgroundColor: '#5528FF' }}
                 color={'white'}
-                onClick={() => router.push('/promogate')}
                 rightIcon={<FiExternalLink />}
               >
-                Visite nossa loja!
+                Visite nossa loja
               </Button>
             </GridItem>
           </Grid>
