@@ -64,7 +64,7 @@ export default function Home({ store_name }: SingleStoreProps) {
     <Fragment>
       <Head>
         <title>
-          {
+          Promogate | {
             data?.user_profile.store_name ?
               data.user_profile.store_name.charAt(0).toUpperCase() +
               data.user_profile.store_name.slice(1) :
@@ -76,7 +76,7 @@ export default function Home({ store_name }: SingleStoreProps) {
         as='main'
         backgroundColor={'gray.50'}
       >
-        <StoreHeader props={{ store_image: data.user_profile.store_image, store_name: data.user_profile.store_name }} />
+        <StoreHeader props={{ store_image: data.user_profile.store_image, store_name: data.user_profile.store_name_display }} />
         <Grid
           gridTemplateColumns={{ xl: '9fr 3fr' }}
           maxWidth={{ xl: '1250px' }}

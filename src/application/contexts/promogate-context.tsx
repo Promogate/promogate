@@ -23,6 +23,7 @@ export type FetchStoreOffersResponse = {
     id: string,
     store_image: string,
     store_name: string,
+    store_name_display: string,
     role: string,
     user_id: string,
     resources: {
