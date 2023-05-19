@@ -1,5 +1,6 @@
 export * from './dashboard-layout';
 export * from './dashboard-mobile-menu';
+export * from './featured-slider';
 export * from './hero';
 export * from './home-footer';
 export * from './internal-offer-card';
@@ -7,6 +8,7 @@ export * from './main-menu';
 export * from './mobile-main-menu';
 export * from './offer-card';
 export * from './single-production-page-content';
+export * from './slider';
 export * from './store-footer';
 export * from './store-footer-content';
 export * from './store-header';

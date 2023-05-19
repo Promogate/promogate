@@ -1,6 +1,7 @@
 import { PromogateContext } from '@/application/contexts';
 import { OfferWithClicks } from '@/domain/models';
 import {
+  FeaturedSlider,
   OfferCard,
   StoreFooter,
   StoreFooterContent,
@@ -17,6 +18,7 @@ import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { Fragment, useContext } from 'react';
+import { SwiperProps } from 'swiper/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -60,6 +62,15 @@ export default function Home({ store_name }: SingleStoreProps) {
   const featuredOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured)
   const commonOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured === false)
 
+  const settings: SwiperProps = {
+    spaceBetween: 16,
+    slidesPerView: 4.5,
+    navigation: true,
+    pagination: {
+      clickable: false,
+    }
+  }
+
   return (
     <Fragment>
       <Head>
@@ -79,12 +90,12 @@ export default function Home({ store_name }: SingleStoreProps) {
         <StoreHeader props={{ store_image: data.user_profile.store_image, store_name: data.user_profile.store_name_display }} />
         <Grid
           gridTemplateColumns={{ xl: '9fr 3fr' }}
-          maxWidth={{ xl: '1250px' }}
+          maxWidth={['1170px']}
           margin={'0 auto'}
-          paddingY={{ xl: '2rem' }}
+          padding={['1rem']}
           gap={{ xl: '1.5rem' }}
         >
-          <Box>
+          <Box maxWidth={['815px']}>
             <Heading
               fontSize={{ xl: 'xl' }}
               fontFamily={inter.style.fontFamily}
@@ -92,30 +103,12 @@ export default function Home({ store_name }: SingleStoreProps) {
             >
               Destaque
             </Heading>
-            <Grid
-              gridTemplateColumns={{ xl: 'repeat(4, 1fr)' }}
-              margin={{ xl: '1rem 0' }}
-              gap={{ xl: '1rem' }}
-              position={'relative'}
+            <Box
+              margin={['1rem 0']}
+              width={['360px', '768px', 'auto']}
             >
-              {
-                isLoading ? (
-                  <Spinner />
-                ) : isError ? (
-                  <Heading
-                    fontSize={{ xl: 'xl' }}
-                    fontFamily={inter.style.fontFamily}
-                    color={'gray.600'}
-                  >
-                    Destaque
-                  </Heading>
-                ) : (
-                  featuredOffers.map((offer: OfferWithClicks) => {
-                    return <OfferCard key={offer.id} data={offer} storeName={data.user_profile.store_name} />
-                  })
-                )
-              }
-            </Grid>
+              <FeaturedSlider offers={featuredOffers} />
+            </Box>
             <Box
               margin={{ xl: '3rem 0' }}
             >
@@ -192,6 +185,7 @@ export default function Home({ store_name }: SingleStoreProps) {
         <StoreFooterContent />
         <StoreFooter />
       </Box>
+
     </Fragment>
   )
 }

@@ -23,11 +23,10 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
       as={Link}
       href={offerUrl}
       target='_blank'
-      boxShadow={{ xl: 'lg' }}
-      borderRadius={{ xl: 'lg' }}
-      padding={{ xl: '1rem' }}
+      borderRadius={['lg']}
+      padding={['1rem']}
       backgroundColor={'white'}
-      minHeight={{ xl: '360px' }}
+      minHeight={['360px']}
       flexDirection={'column'}
       _hover={{
         transform: 'scale(1.025)',
@@ -36,9 +35,9 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
       fontFamily={inter.style.fontFamily}
     >
       <Box
-        borderRadius={{ xl: '1rem' }}
-        overflow={'hidden'}
-        height={{ xl: '160px' }}
+        borderRadius={['1rem']}
+        overflow={['hidden']}
+        height={['160px']}
       >
 
         <img 
@@ -53,7 +52,10 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
         display={'flex'}
         flexDirection={'column'}
       >
-        <Box flex={1}>
+        <Box 
+          flex={1}
+          margin={['2rem 0 0 ', 0]}
+        >
           <Heading
             fontFamily={inter.style.fontFamily}
             fontSize={{ xl: '14px' }}
