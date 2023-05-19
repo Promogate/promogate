@@ -12,7 +12,7 @@ type OfferCardProps = {
 const inter = Inter({ subsets: ['latin'] });
 
 /*eslint-disable @next/next/no-img-element*/
-export function OfferCard({ data, storeName }: OfferCardProps) {
+export function SliderOfferCard({ data, storeName }: OfferCardProps) {
   const store = storeName.toLocaleLowerCase().replace(' ', '-');
   const productName = data.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\s,\/]/g, '-');
 
@@ -33,6 +33,7 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
       transition={'175ms ease-in-out'}
       fontFamily={inter.style.fontFamily}
       position={'relative'}
+      justifyContent={'space-between'}
     >
       {data.is_featured ? (
         <Box
@@ -67,7 +68,6 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
         fontSize={['1rem']}
         fontWeight={['medium']}
         color={['gray.600']}
-        flex={1}
       >
         {data.title}
       </Heading>

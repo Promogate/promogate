@@ -1,8 +1,8 @@
 import { OfferWithClicks } from '@/domain/models';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { SwiperProps, SwiperSlide } from 'swiper/react';
-import { OfferCard } from './offer-card';
 import { Slider } from './slider';
+import { SliderOfferCard } from './slider-offer-card';
 
 type FeaturedSliderProps = {
   offers: OfferWithClicks[]
@@ -26,7 +26,7 @@ export function FeaturedSlider({ offers }: FeaturedSliderProps) {
       {offers.map((offer: OfferWithClicks) => {
         return (
           <SwiperSlide key={offer.id}>
-            <OfferCard data={offer} storeName={offer.store_name} />
+            <SliderOfferCard data={offer} storeName={offer.store_name} />
           </SwiperSlide>
         )
       })}

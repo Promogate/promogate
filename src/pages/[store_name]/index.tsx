@@ -18,7 +18,6 @@ import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { Fragment, useContext } from 'react';
-import { SwiperProps } from 'swiper/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -62,15 +61,6 @@ export default function Home({ store_name }: SingleStoreProps) {
   const featuredOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured)
   const commonOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured === false)
 
-  const settings: SwiperProps = {
-    spaceBetween: 16,
-    slidesPerView: 4.5,
-    navigation: true,
-    pagination: {
-      clickable: false,
-    }
-  }
-
   return (
     <Fragment>
       <Head>
@@ -97,7 +87,7 @@ export default function Home({ store_name }: SingleStoreProps) {
         >
           <Box maxWidth={['815px']}>
             <Heading
-              fontSize={{ xl: 'xl' }}
+              fontSize={['2xl']}
               fontFamily={inter.style.fontFamily}
               color={'gray.600'}
             >
@@ -113,16 +103,16 @@ export default function Home({ store_name }: SingleStoreProps) {
               margin={{ xl: '3rem 0' }}
             >
               <Heading
-                fontSize={{ xl: 'xl' }}
+                fontSize={['2xl']}
                 fontFamily={inter.style.fontFamily}
                 color={'gray.600'}
               >
                 Todas as ofertas
               </Heading>
               <Grid
-                gridTemplateColumns={{ xl: 'repeat(4, 1fr)' }}
-                margin={{ xl: '1rem 0' }}
-                gap={{ xl: '1rem' }}
+                gridTemplateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
+                margin={['1rem 0']}
+                gap={['1rem']}
                 position={'relative'}
               >
                 {
@@ -137,7 +127,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                       Destaque
                     </Heading>
                   ) : (
-                    commonOffers.map((offer: OfferWithClicks) => {
+                    data.user_profile.resources.offers.map((offer: OfferWithClicks) => {
                       return <OfferCard key={offer.id} data={offer} storeName={data.user_profile.store_name} />
                     })
                   )

@@ -13,6 +13,7 @@ import {
   Heading,
   IconButton,
   Input,
+  Spinner,
   useToast
 } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -29,7 +30,7 @@ type AddOffersPageProps = MeResponse
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
+  loading: () => <Spinner />,
 })
 
 export default function AddOffersPage({ status, user }: AddOffersPageProps) {
