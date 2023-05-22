@@ -52,14 +52,14 @@ export default function Home({ store_name }: SingleStoreProps) {
   } else {
     
     const featuredOffers = data.data.resources.offers.filter(offer => offer.is_featured)
-  
+
     return (
       <Fragment>
         <Head>
           <title>
             Promogate | {data.data.store_name_display}
           </title>
-          {data.data.lomadee_source_id}
+          <meta name="lomadee-verification" content={data.data.lomadee_source_id as string} />
         </Head>
         <Box
           as='main'
