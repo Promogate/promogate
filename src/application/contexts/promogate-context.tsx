@@ -19,7 +19,7 @@ type CreateProfileOutput = {
 export type FetchStoreOffersResponse = {
   status: string,
   message: string,
-  user_profile: {
+  data: {
     id: string,
     store_image: string,
     store_name: string,

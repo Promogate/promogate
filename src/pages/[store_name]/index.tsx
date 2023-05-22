@@ -49,124 +49,126 @@ export default function Home({ store_name }: SingleStoreProps) {
         </Grid>
       </>
     )
-  }
-
-  const featuredOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured)
-
-  return (
-    <Fragment>
-      <Head>
-        <title>
-          Promogate | {data.user_profile.store_name_display}
-        </title>
-      </Head>
-      <Box
-        as='main'
-        backgroundColor={'gray.50'}
-      >
-
-        <StoreHeader props={{ store_image: data.user_profile.store_image, store_name: data.user_profile.store_name_display }} />
-
-        <Grid
-          gridTemplateColumns={{ xl: '9fr 3fr' }}
-          maxWidth={['1170px']}
-          margin={'0 auto'}
-          padding={['1rem']}
-          gap={{ xl: '1.5rem' }}
+  } else {
+    
+    const featuredOffers = data.data.resources.offers.filter(offer => offer.is_featured)
+  
+    return (
+      <Fragment>
+        <Head>
+          <title>
+            Promogate | {data.data.store_name_display}
+          </title>
+        </Head>
+        <Box
+          as='main'
+          backgroundColor={'gray.50'}
         >
-          <Box maxWidth={['815px']}>
-            <Heading
-              fontSize={['2xl']}
-              fontFamily={inter.style.fontFamily}
-              color={'gray.600'}
-            >
-              Destaque
-            </Heading>
-            <Box
-              margin={['1rem 0']}
-              width={['360px', '768px', 'auto']}
-            >
-              <FeaturedSlider offers={featuredOffers} />
-            </Box>
-            <Box
-              margin={{ xl: '3rem 0' }}
-            >
+  
+          <StoreHeader props={{ store_image: data.data.store_image, store_name: data.data.store_name_display }} />
+  
+          <Grid
+            gridTemplateColumns={{ xl: '9fr 3fr' }}
+            maxWidth={['1170px']}
+            margin={'0 auto'}
+            padding={['1rem']}
+            gap={{ xl: '1.5rem' }}
+          >
+            <Box maxWidth={['815px']}>
               <Heading
                 fontSize={['2xl']}
                 fontFamily={inter.style.fontFamily}
                 color={'gray.600'}
               >
-                Todas as ofertas
+                Destaque
               </Heading>
-              <Grid
-                gridTemplateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
+              <Box
                 margin={['1rem 0']}
-                gap={['1rem']}
-                position={'relative'}
+                width={['360px', '768px', 'auto']}
               >
-                {
-                  isLoading ? (
-                    <Spinner />
-                  ) : isError ? (
-                    <Heading
-                      fontSize={{ xl: 'xl' }}
-                      fontFamily={inter.style.fontFamily}
-                      color={'gray.600'}
-                    >
-                      Destaque
-                    </Heading>
-                  ) : (
-                    data.user_profile.resources.offers.map((offer: OfferWithClicks) => {
-                      return <OfferCard key={offer.id} data={offer} storeName={data.user_profile.store_name} />
-                    })
-                  )
-                }
+                <FeaturedSlider offers={featuredOffers} />
+              </Box>
+              <Box
+                margin={{ xl: '3rem 0' }}
+              >
+                <Heading
+                  fontSize={['2xl']}
+                  fontFamily={inter.style.fontFamily}
+                  color={'gray.600'}
+                >
+                  Todas as ofertas
+                </Heading>
+                <Grid
+                  gridTemplateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
+                  margin={['1rem 0']}
+                  gap={['1rem']}
+                  position={'relative'}
+                >
+                  {
+                    isLoading ? (
+                      <Spinner />
+                    ) : isError ? (
+                      <Heading
+                        fontSize={{ xl: 'xl' }}
+                        fontFamily={inter.style.fontFamily}
+                        color={'gray.600'}
+                      >
+                        Destaque
+                      </Heading>
+                    ) : (
+                      data.data.resources.offers.map((offer: OfferWithClicks) => {
+                        return <OfferCard key={offer.id} data={offer} storeName={data.data.store_name} />
+                      })
+                    )
+                  }
+                </Grid>
+              </Box>
+            </Box>
+            <Box>
+              <Grid gap={'1rem'}>
+                <Box
+                  height={'600px'}
+                  width={'300px'}
+                >
+                  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
+                    crossOrigin="anonymous"></script>
+                  <ins className="adsbygoogle"
+                    style={{ display: "block" }}
+                    data-ad-client="ca-pub-9258286762385899"
+                    data-ad-slot="1379343231"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                  <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({ });
+                  </script>
+                </Box>
+                <Box
+                  height={'300px'}
+                  width={'300px'}
+                >
+                  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
+                    crossOrigin="anonymous"></script>
+                  <ins className="adsbygoogle"
+                    style={{ display: "block" }}
+                    data-ad-client="ca-pub-9258286762385899"
+                    data-ad-slot="1379343231"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                  <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({ });
+                  </script>
+                </Box>
               </Grid>
             </Box>
-          </Box>
-          <Box>
-            <Grid gap={'1rem'}>
-              <Box
-                height={'600px'}
-                width={'300px'}
-              >
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
-                  crossOrigin="anonymous"></script>
-                <ins className="adsbygoogle"
-                  style={{ display: "block" }}
-                  data-ad-client="ca-pub-9258286762385899"
-                  data-ad-slot="1379343231"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"></ins>
-                <script>
-                  (adsbygoogle = window.adsbygoogle || []).push({ });
-                </script>
-              </Box>
-              <Box
-                height={'300px'}
-                width={'300px'}
-              >
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
-                  crossOrigin="anonymous"></script>
-                <ins className="adsbygoogle"
-                  style={{ display: "block" }}
-                  data-ad-client="ca-pub-9258286762385899"
-                  data-ad-slot="1379343231"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"></ins>
-                <script>
-                  (adsbygoogle = window.adsbygoogle || []).push({ });
-                </script>
-              </Box>
-            </Grid>
-          </Box>
-        </Grid>
-        <StoreFooterContent />
-        <StoreFooter />
-      </Box>
+          </Grid>
+          <StoreFooterContent />
+          <StoreFooter />
+        </Box>
+  
+      </Fragment>
+    )
+  }
 
-    </Fragment>
-  )
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
