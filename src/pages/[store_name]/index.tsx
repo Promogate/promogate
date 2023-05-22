@@ -59,7 +59,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           <title>
             Promogate | {data.data.store_name_display}
           </title>
-          {data.data.lomadee_source_id ? <meta name="lomadee-verification" content={data.data.lomadee_source_id}/> : null}
+          <meta name="lomadee-verification" content={data.data.lomadee_source_id === null ? '': data.data.lomadee_source_id}/>
         </Head>
         <Box
           as='main'
