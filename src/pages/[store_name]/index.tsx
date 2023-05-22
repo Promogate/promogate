@@ -17,7 +17,7 @@ import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,27 +25,14 @@ type SingleStoreProps = {
   store_name: string;
 }
 
-type VerificationMetatags = {
-  lomadee_source_id: string | null | undefined
-}
-
 export default function Home({ store_name }: SingleStoreProps) {
   const { fetchStoreOffers } = useContext(PromogateContext)
-  const [verificationMetatags, setVerificationMetatags] = useState<VerificationMetatags>({
-    lomadee_source_id: ''
-  })
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['showcase', store_name],
     queryFn: async () => await fetchStoreOffers(store_name),
     staleTime: 1000 * 60 * 5
   });
-
-  useEffect(() => {
-    setVerificationMetatags({
-      lomadee_source_id: data?.data.lomadee_source_id
-    })
-  }, [data?.data.lomadee_source_id])
 
   if (!data || isLoading) {
     return (
@@ -72,7 +59,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           <title>
             Promogate | {data.data.store_name_display}
           </title>
-          <meta name="lomadee-verification" content={verificationMetatags.lomadee_source_id as string}/>
+          {data.data.lomadee_source_id ? <meta name="lomadee-verification" content={data.data.lomadee_source_id}/> : null}
         </Head>
         <Box
           as='main'
