@@ -24,17 +24,13 @@ export type FetchStoreOffersResponse = {
     store_image: string,
     store_name: string,
     store_name_display: string,
+    lomadee_source_id: string | null,
     role: string,
     user_id: string,
     resources: {
       offers: OfferWithClicks[]
     }
   }
-}
-
-type MeResponse = {
-  status: string,
-  user: User
 }
 
 type User = {
