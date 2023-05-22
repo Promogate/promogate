@@ -17,6 +17,7 @@ import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
+import Script from 'next/script';
 import { Fragment, useContext } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -50,24 +51,24 @@ export default function Home({ store_name }: SingleStoreProps) {
       </>
     )
   } else {
-    
+
     const featuredOffers = data.data.resources.offers.filter(offer => offer.is_featured)
 
     return (
       <Fragment>
-        <Head>
+        <Head key={data.data.id}>
           <title>
             Promogate | {data.data.store_name_display}
           </title>
-          <meta name="lomadee-verification" content={data.data.lomadee_source_id as string} />
+          <meta name="lomadee-verification" content={data.data.lomadee_source_id as string} />
         </Head>
         <Box
           as='main'
           backgroundColor={'gray.50'}
         >
-  
+
           <StoreHeader props={{ store_image: data.data.store_image, store_name: data.data.store_name_display }} />
-  
+
           <Grid
             gridTemplateColumns={{ xl: '9fr 3fr' }}
             maxWidth={['1170px']}
@@ -165,7 +166,16 @@ export default function Home({ store_name }: SingleStoreProps) {
           <StoreFooterContent />
           <StoreFooter />
         </Box>
-  
+        <Script id={'lomadee-script'}>
+          {`var lmdimgpixel = document.createElement('img');
+          lmdimgpixel.src = '//secure.lomadee.com/pub.png?pid=${data.data.lomadee_source_id}';
+          lmdimgpixel.id = 'lmd-verification-pixel-${data.data.lomadee_source_id}';
+          lmdimgpixel.style = 'display:none';
+
+          var elmt = document.getElementsByTagName('body')[0];
+          elmt.appendChild(lmdimgpixel);
+          `}
+        </Script>
       </Fragment>
     )
   }
