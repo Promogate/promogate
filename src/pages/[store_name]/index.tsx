@@ -34,50 +34,39 @@ export default function Home({ store_name }: SingleStoreProps) {
     staleTime: 1000 * 60 * 5
   });
 
-  if (isLoading) {
+  if (!data || isLoading) {
     return (
-      <Grid
-        placeItems={'center'}
-        height={'100vh'}
-      >
-        <Spinner />
-      </Grid>
-    )
-  }
-
-  if (!data || isError) {
-    return (
-      <Grid
-        placeItems={'center'}
-        height={'100vh'}
-      >
-        <Heading>
-          Loja não encontrada
-        </Heading>
-      </Grid>
+      <>
+        <Head>
+          <title>Promogate</title>
+        </Head>
+        <StoreHeader props={{ store_image: '/promogate-logo.svg', store_name: 'Promogate' }} />
+        <Grid
+          placeItems={'center'}
+          height={'100vh'}
+        >
+          <Spinner />
+        </Grid>
+      </>
     )
   }
 
   const featuredOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured)
-  const commonOffers = data.user_profile.resources.offers.filter(offer => offer.is_featured === false)
 
   return (
     <Fragment>
       <Head>
         <title>
-          Promogate | {
-            data?.user_profile.store_name ?
-              data.user_profile.store_name.charAt(0).toUpperCase() +
-              data.user_profile.store_name.slice(1) :
-              'Loja Parceira'
-          }
+          Promogate | {data.user_profile.store_name_display}
         </title>
       </Head>
       <Box
         as='main'
         backgroundColor={'gray.50'}
       >
+
         <StoreHeader props={{ store_image: data.user_profile.store_image, store_name: data.user_profile.store_name_display }} />
+
         <Grid
           gridTemplateColumns={{ xl: '9fr 3fr' }}
           maxWidth={['1170px']}

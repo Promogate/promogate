@@ -51,8 +51,6 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
 
   const { createUserProfile } = useContext(PromogateContext);
 
-  console.log(user);
-
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
       if (!event.target.files?.length) {

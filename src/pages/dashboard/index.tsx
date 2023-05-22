@@ -36,7 +36,7 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
   const { fetchDashboardData } = useContext(PromogateContext);
   const [ctr, setCtr] = useState<number | null>(null)
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['dashboard-data', user.id],
     queryFn: async () => await fetchDashboardData(user.user_profile.id),
     staleTime: 1000 * 60 * 5
