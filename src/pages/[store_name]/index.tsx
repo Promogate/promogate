@@ -166,7 +166,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           <StoreFooterContent />
           <StoreFooter />
         </Box>
-        <Script id={'lomadee-script'}>
+        <Script id={'lomadee-script'} >
           {`var lmdimgpixel = document.createElement('img');
           lmdimgpixel.src = '//secure.lomadee.com/pub.png?pid=${data.data.lomadee_source_id}';
           lmdimgpixel.id = 'lmd-verification-pixel-${data.data.lomadee_source_id}';

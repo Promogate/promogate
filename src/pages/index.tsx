@@ -31,6 +31,7 @@ export default function Home({ isLogged }: HomepageProps) {
     <>
       <Head>
         <title>Promogate - Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado</title>
+        <meta name="lomadee-verification" content="22803701" />
       </Head>
       <MainMenu isLogged={isLogged} />
       <Box
