@@ -25,6 +25,7 @@ export type FetchStoreOffersResponse = {
     store_name: string,
     store_name_display: string,
     lomadee_source_id: string | null,
+    admitad_verification: string | null,
     role: string,
     user_id: string,
     resources: {

@@ -60,6 +60,7 @@ export default function Home({ store_name }: SingleStoreProps) {
             Promogate | {data.data.store_name_display}
           </title>
           <meta name="lomadee-verification" content={data.data.lomadee_source_id as string} />
+          <meta name="verify-admitad" content={data.data.admitad_verification as string} />
         </Head>
         <Box
           as='main'
