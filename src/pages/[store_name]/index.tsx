@@ -62,6 +62,16 @@ export default function Home({ store_name }: SingleStoreProps) {
           </title>
           <meta name="lomadee-verification" content={data.data.lomadee_source_id as string} />
         </Head>
+        <Script id={'lomadee-script'} dangerouslySetInnerHTML={{
+          __html: `var lmdimgpixel = document.createElement('img');
+          lmdimgpixel.src = '//secure.lomadee.com/pub.png?pid=${data.data.lomadee_source_id}';
+          lmdimgpixel.id = 'lmd-verification-pixel-${data.data.lomadee_source_id}';
+          lmdimgpixel.style = 'display:none';
+
+          var elmt = document.getElementsByTagName('body')[0];
+          elmt.appendChild(lmdimgpixel);
+          `
+        }}/>
         <Box
           as='main'
           backgroundColor={'gray.50'}
@@ -166,16 +176,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           <StoreFooterContent />
           <StoreFooter />
         </Box>
-        <Script id={'lomadee-script'} >
-          {`var lmdimgpixel = document.createElement('img');
-          lmdimgpixel.src = '//secure.lomadee.com/pub.png?pid=${data.data.lomadee_source_id}';
-          lmdimgpixel.id = 'lmd-verification-pixel-${data.data.lomadee_source_id}';
-          lmdimgpixel.style = 'display:none';
 
-          var elmt = document.getElementsByTagName('body')[0];
-          elmt.appendChild(lmdimgpixel);
-          `}
-        </Script>
       </Fragment>
     )
   }
