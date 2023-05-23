@@ -17,7 +17,6 @@ import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import Script from 'next/script';
 import { Fragment, useContext } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -61,29 +60,7 @@ export default function Home({ store_name }: SingleStoreProps) {
             Promogate | {data.data.store_name_display}
           </title>
           <meta name="lomadee-verification" content={data.data.lomadee_source_id as string} />
-
-          <script>
-          {`
-                      var lmdimgpixel = document.createElement('img');
-                      lmdimgpixel.src = '//secure.lomadee.com/pub.png?pid=${data.data.lomadee_source_id}';
-                      lmdimgpixel.id = 'lmd-verification-pixel-${data.data.lomadee_source_id}';
-                      lmdimgpixel.style = 'display:none';
-            
-                      var elmt = document.getElementsByTagName('body')[0];
-                      elmt.appendChild(lmdimgpixel);
-                    `}
-        </script>
         </Head>
-        <Script id={'lomadee-script'} dangerouslySetInnerHTML={{
-          __html: `var lmdimgpixel = document.createElement('img');
-          lmdimgpixel.src = '//secure.lomadee.com/pub.png?pid=${data.data.lomadee_source_id}';
-          lmdimgpixel.id = 'lmd-verification-pixel-${data.data.lomadee_source_id}';
-          lmdimgpixel.style = 'display:none';
-
-          var elmt = document.getElementsByTagName('body')[0];
-          elmt.appendChild(lmdimgpixel);
-          `
-        }} />
         <Box
           as='main'
           backgroundColor={'gray.50'}
