@@ -2,8 +2,8 @@ import { PromogateContext } from '@/application/contexts';
 import { OfferWithClicks } from '@/domain/models';
 import {
   FeaturedSlider,
+  HomeFooter,
   OfferCard,
-  StoreFooter,
   StoreFooterContent,
   StoreHeader
 } from '@/presentation/components';
@@ -164,7 +164,7 @@ export default function Home({ store_name }: SingleStoreProps) {
             </Box>
           </Grid>
           <StoreFooterContent />
-          <StoreFooter />
+          <HomeFooter />
         </Box>
 
       </Fragment>
