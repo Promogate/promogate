@@ -13,31 +13,25 @@ import {
   Heading,
   IconButton,
   Input,
-  Spinner,
+  Textarea,
   useToast
 } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import dynamic from 'next/dynamic'
+import dayjs from 'dayjs'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { TfiAngleLeft } from 'react-icons/tfi'
 
 type AddOffersPageProps = MeResponse
 
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-  ssr: false,
-  loading: () => <Spinner />,
-})
-
 export default function AddOffersPage({ status, user }: AddOffersPageProps) {
   const cookies = parseCookies();
   const toast = useToast();
   const router = useRouter();
-  const [description, setDescription] = useState('')
   const query = useQueryClient();
 
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>();
@@ -49,9 +43,9 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
 
       await api.post(`/resources/${user.user_profile.resources.id}/offer/create`, {
         ...data,
+        expiration_date: data.expiration_date ? data.expiration_date : dayjs().add(30, 'days'),
         price,
-        old_price,
-        description
+        old_price
       }, {
         headers: {
           Authorization: `Bearer ${cookies['promogate.token']}`
@@ -77,10 +71,6 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
 
   const createOffer: SubmitHandler<OfferDataInput> = async (data) => {
     await mutation.mutateAsync(data);
-  }
-
-  const changeQuillDescription = (e: any) => {
-    setDescription(e)
   }
 
   return (
@@ -185,13 +175,8 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
               height={['240px', '240px']}
             >
               <FormLabel>Descrição (Opcional)</FormLabel>
-              <Input
-                as={QuillNoSSRWrapper}
-                theme='snow'
-                height={['max-content', '240px']}
-                padding={['0 0 1rem 0']}
-                marginBottom={['1rem', '1rem', 0]}
-                onChange={changeQuillDescription}
+              <Textarea
+                {...register('description')}
               />
             </FormControl>
           </Box>

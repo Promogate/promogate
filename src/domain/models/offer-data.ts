@@ -5,7 +5,8 @@ export type OfferDataInput = {
   old_price: string,
   destination_link: string,
   store_name: string,
-  expiration_date: string
+  expiration_date: string,
+  description: string
 }
 
 export type Offer = {

@@ -6,11 +6,13 @@ import { withSSRAuth } from '@/utils';
 import {
   Box,
   Button,
+  Card,
   Flex,
   Grid,
   HStack,
   Heading,
   IconButton,
+  Skeleton,
   Spinner,
   Switch,
   Table,
@@ -25,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
-import { Inter } from 'next/font/google';
+import { Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -34,7 +36,8 @@ import { ChangeEvent, Fragment, useContext } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { RxUpdate } from 'react-icons/rx';
 
-const inter = Inter({ subsets: ['latin'] })
+const openSans = Open_Sans({ subsets: ['latin'], preload: true })
+const montserrat = Montserrat({ subsets: ['latin'], preload: true })
 
 type UpdateOfferShowcase = {
   is_on_showcase: boolean;
@@ -66,10 +69,19 @@ export default function OffersPage({ status, user }: OffersPageProps) {
         }
       })
 
-      return data
+      const featuredOffers = data.filter(item => item.is_on_showcase === true && item.is_featured === true)
+      const showcaseQuantity = data.filter(item => item.is_on_showcase);
+
+      return {
+        offers: data,
+        showcase_quantity: showcaseQuantity.length,
+        featured_quantity: featuredOffers.length
+      }
     },
     staleTime: 1000 * 60 * 5
   })
+
+  console.log(data);
 
   const mutation = useMutation({
     mutationFn: async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
@@ -147,7 +159,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
           <Heading
             as={'h2'}
             fontSize={['2rem']}
-            fontFamily={inter.style.fontFamily}
+            fontFamily={openSans.style.fontFamily}
             color={'gray.600'}
           >
             Promoções
@@ -162,7 +174,59 @@ export default function OffersPage({ status, user }: OffersPageProps) {
         </Flex>
         <Box
           padding={{ xl: '2rem 0' }}
+          fontFamily={openSans.style.fontFamily}
         >
+          <Grid
+            width={['full', 'full', '50%']}
+            gridTemplateColumns={['1fr', '1fr 1fr']}
+            margin={['0 0 1rem']}
+            gap={['1rem']}
+          >
+            <Card
+              padding={['1rem']}
+              display={'grid'}
+              borderLeft={['4px']}
+              borderColor={['green.200']}
+            >
+              <Text
+                fontSize={['0.875rem']}
+                color={['gray.600']}
+              >
+                Total de ofertas
+              </Text>
+              <Skeleton isLoaded={!isLoading}>
+                <Text
+                  fontSize={['2rem']}
+                  color={['gray.600']}
+                  fontWeight={['semibold']}
+                >
+                  {data?.showcase_quantity}/50
+                </Text>
+              </Skeleton>
+            </Card>
+            <Card
+              padding={['1rem']}
+              display={'grid'}
+              borderLeft={['4px']}
+              borderColor={['green.200']}
+            >
+              <Text
+                fontSize={['0.875rem']}
+                color={['gray.600']}
+              >
+                Ofertas em Destaque
+              </Text>
+              <Skeleton isLoaded={!isLoading}>
+                <Text
+                  fontSize={['2rem']}
+                  color={['gray.600']}
+                  fontWeight={['semibold']}
+                >
+                  {data?.featured_quantity}/10
+                </Text>
+              </Skeleton>
+            </Card>
+          </Grid>
           <Button
             margin={['1rem 0']}
             rightIcon={<RxUpdate />}
@@ -180,7 +244,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
             {
               isLoading ? (
                 <Spinner />
-              ) : (data?.length === 0) ? (
+              ) : (data?.offers.length === 0) ? (
                 <Box
                   margin={'0 auto'}
                   padding={['2rem', 0]}
@@ -194,7 +258,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                     as={'h2'}
                     fontSize={['lg']}
                     fontWeight={'normal'}
-                    fontFamily={inter.style.fontFamily}
+                    fontFamily={openSans.style.fontFamily}
                     color={'gray.300'}
                   >
                     Você ainda não tem ofertas cadastradas
@@ -208,7 +272,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                     <Grid
                       gridTemplateColumns={['1fr']}
                     >
-                      {data?.map((offer) => {
+                      {data?.offers.map((offer) => {
                         return (
                           <Flex
                             key={offer.id}
@@ -219,7 +283,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                             borderColor={['gray.200']}
                             borderRadius={['1rem']}
                             overflow={['hidden']}
-                            fontFamily={inter.style.fontFamily}
+                            fontFamily={openSans.style.fontFamily}
                           >
                             <Box
                               borderRadius={{ xl: '1rem' }}
@@ -241,7 +305,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                             >
                               <Box flex={1}>
                                 <Heading
-                                  fontFamily={inter.style.fontFamily}
+                                  fontFamily={openSans.style.fontFamily}
                                   fontSize={{ xl: '14px' }}
                                   fontWeight={'medium'}
                                   color={'gray.700'}
@@ -338,7 +402,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {data?.map((offer) => {
+                        {data?.offers.map((offer) => {
                           return (
                             <Tr
                               key={offer.id}
@@ -364,13 +428,13 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                 <Link
                                   href={`/dashboard/promocoes/${offer.id}`}
                                 >
-                                  <Text fontStyle={inter.style.fontFamily}>
+                                  <Text fontStyle={openSans.style.fontFamily}>
                                     {offer.title}
                                   </Text>
                                 </Link>
                               </Td>
                               <Td>
-                                <Text fontStyle={inter.style.fontFamily}>
+                                <Text fontStyle={openSans.style.fontFamily}>
                                   <HStack>
                                     <FacebookShareButton
                                       url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
@@ -391,7 +455,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                 </Text>
                               </Td>
                               <Td>
-                                <Text fontStyle={inter.style.fontFamily}>
+                                <Text fontStyle={openSans.style.fontFamily}>
                                   <HStack>
                                     <Tooltip label='Editar' placement='top' borderRadius={'base'}>
                                       <IconButton
@@ -419,6 +483,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                               <Td>
                                 <Text>
                                   <Switch
+                                    isDisabled={offer.is_on_showcase === false ? true : false}
                                     value={String(offer.is_featured) === 'false' ? 'true' : 'false'}
                                     onChange={(e) => handleIsFeaturedStatus(e, offer.id)}
                                     defaultChecked={offer.is_featured}
