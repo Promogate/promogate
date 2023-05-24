@@ -75,6 +75,9 @@ export function HomeFooter() {
           <Text as={Link} href={'/politica-de-privacidade'}>
             Política de Privacidade
           </Text>
+          <Text as={Link} href={'/politica-de-cookies'}>
+            Politica de Cookies
+          </Text>
           <Text as={Link} href={'/termos-de-uso'}>
             Termos de Uso
           </Text>
