@@ -85,8 +85,6 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   const router = useRouter();
   const [page, setPage] = useState(1);
 
-  console.log(page)
-
   const { authorization } = useContext(PromogateContext);
 
   const { data, isLoading } = useQuery({
@@ -212,7 +210,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                 fontSize={['0.875rem']}
                 color={['gray.600']}
               >
-                Total de ofertas
+                Ofertas na Vitrine
               </Text>
               <Skeleton isLoaded={!isLoading}>
                 <Text
@@ -220,7 +218,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                   color={['gray.600']}
                   fontWeight={['semibold']}
                 >
-                  {data.total_offers}/50
+                  {data.showcase_quantity}/50
                 </Text>
               </Skeleton>
             </Card>

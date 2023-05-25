@@ -20,6 +20,8 @@ type RequestOutput = {
   page: number;
   per_page: number;
   total_offers: number;
+  total_featured_offers: number;
+  total_showcase_offers: number;
   offers: Offer[]
 }
 
@@ -38,15 +40,12 @@ export async function getDashboardOffers({
     }
   });
 
-  const featuredOffers = data.offers.filter(item => item.is_on_showcase === true && item.is_featured === true)
-  const showcaseQuantity = data.offers.filter(item => item.is_on_showcase);
-
   return {
     page: data.page,
     per_page: data.per_page,
     total_offers: data.total_offers,
-    showcase_quantity: showcaseQuantity.length,
-    featured_quantity: featuredOffers.length,
+    showcase_quantity: data.total_showcase_offers,
+    featured_quantity: data.total_featured_offers,
     offers: data.offers,
   }
 }
