@@ -34,26 +34,6 @@ export type FetchStoreOffersResponse = {
   }
 }
 
-type User = {
-  id: string,
-  name: string,
-  email: string,
-  created_at: string,
-  user_profile: {
-    id: string,
-    store_image: string,
-    store_name: string,
-    role: string,
-    social_media: ({
-      facebook: string | null,
-      instagram: string | null,
-      whatsapp: string | null,
-      telegram: string | null,
-      twitter: string | null
-    } | null)
-  }
-}
-
 interface PromogateContextProps {
   createUserProfile(input: CreateProfileInput): Promise<void>
   fetchDashboardData(profileId: string): Promise<DashboardData>;
