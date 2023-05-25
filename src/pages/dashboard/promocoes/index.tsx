@@ -61,7 +61,6 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   }
 }) 
 
-
 const openSans = Open_Sans({ subsets: ['latin'], preload: true })
 const montserrat = Montserrat({ subsets: ['latin'], preload: true })
 
@@ -75,7 +74,6 @@ type UpdateOfferFeatured = {
   offerId: string
 }
 
-
 type OffersPageProps = MeResponse
 
 /* eslint-disable @next/next/no-img-element */
@@ -88,7 +86,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   const { authorization } = useContext(PromogateContext);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['offers', user.id],
+    queryKey: ['offers', user.id, page],
     queryFn: async () => await getDashboardOffers({ authorization, page }),
     staleTime: 1000 * 60 * 5
   })
@@ -125,7 +123,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
       })
     },
     onSuccess: () => {
-      query.invalidateQueries(['offers', user.id])
+      query.invalidateQueries(['offers', user.id, page])
     },
     onError: () => {
       toast({
@@ -152,7 +150,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   }
 
   const handleQueryInvalidation = () => {
-    query.refetchQueries(['offers', user.id])
+    query.refetchQueries(['offers', user.id, page])
   }
 
   if (!data || isLoading) {
@@ -177,7 +175,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
           <Heading
             as={'h2'}
             fontSize={['2rem']}
-            fontFamily={openSans.style.fontFamily}
+            fontFamily={montserrat.style.fontFamily}
             color={'gray.600'}
           >
             Promoções
