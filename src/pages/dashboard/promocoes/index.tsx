@@ -1,7 +1,8 @@
 import { PromogateContext } from '@/application/contexts';
+import { getDashboardOffers } from '@/application/utils';
 import { api } from '@/config';
-import { MeResponse, Offer } from '@/domain/models';
-import { DashboardLayout } from '@/presentation/components';
+import { MeResponse } from '@/domain/models';
+import { DashboardLayout, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
   Box,
@@ -26,15 +27,40 @@ import {
   useToast
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  WhatsappIcon,
+  WhatsappShareButton
+} from 'next-share';
 import { Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
-import { ChangeEvent, Fragment, useContext } from 'react';
+import { ChangeEvent, Fragment, useContext, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { RxUpdate } from 'react-icons/rx';
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  const { data } = await api.get<MeResponse>('/users/me', {
+    headers: {
+      Authorization: `Bearer ${cookies['promogate.token']}`
+    }
+  })
+
+  return {
+    props: {
+      status: data.status,
+      user: data.user
+    }
+  }
+}) 
+
 
 const openSans = Open_Sans({ subsets: ['latin'], preload: true })
 const montserrat = Montserrat({ subsets: ['latin'], preload: true })
@@ -49,39 +75,25 @@ type UpdateOfferFeatured = {
   offerId: string
 }
 
+
 type OffersPageProps = MeResponse
 
 /* eslint-disable @next/next/no-img-element */
 export default function OffersPage({ status, user }: OffersPageProps) {
   const toast = useToast();
-  const cookies = parseCookies();
   const query = useQueryClient();
   const router = useRouter();
+  const [page, setPage] = useState(1);
+
+  console.log(page)
 
   const { authorization } = useContext(PromogateContext);
 
   const { data, isLoading } = useQuery({
     queryKey: ['offers', user.id],
-    queryFn: async () => {
-      const { data } = await api.get<Offer[]>('/dashboard/offers', {
-        headers: {
-          Authorization: `Bearer ${cookies['promogate.token']}`
-        }
-      })
-
-      const featuredOffers = data.filter(item => item.is_on_showcase === true && item.is_featured === true)
-      const showcaseQuantity = data.filter(item => item.is_on_showcase);
-
-      return {
-        offers: data,
-        showcase_quantity: showcaseQuantity.length,
-        featured_quantity: featuredOffers.length
-      }
-    },
+    queryFn: async () => await getDashboardOffers({ authorization, page }),
     staleTime: 1000 * 60 * 5
   })
-
-  console.log(data);
 
   const mutation = useMutation({
     mutationFn: async ({ is_on_showcase, offerId }: UpdateOfferShowcase) => {
@@ -145,6 +157,14 @@ export default function OffersPage({ status, user }: OffersPageProps) {
     query.refetchQueries(['offers', user.id])
   }
 
+  if (!data || isLoading) {
+    return (
+      <Grid placeItems={'center'} height={'100vh'}>
+        <Spinner />
+      </Grid>
+    )
+  }
+
   return (
     <Fragment>
       <Head>
@@ -200,7 +220,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                   color={['gray.600']}
                   fontWeight={['semibold']}
                 >
-                  {data?.showcase_quantity}/50
+                  {data.total_offers}/50
                 </Text>
               </Skeleton>
             </Card>
@@ -501,25 +521,13 @@ export default function OffersPage({ status, user }: OffersPageProps) {
               )
             }
           </Box>
+          <Pagination 
+            totalCountOfRegisters={data.total_offers}
+            currentPage={page}
+            onPageChange={setPage}
+          />
         </Box>
       </DashboardLayout>
     </Fragment>
   )
 }
-
-export const getServerSideProps = withSSRAuth(async (ctx) => {
-  const cookies = parseCookies(ctx);
-
-  const { data } = await api.get<MeResponse>('/users/me', {
-    headers: {
-      Authorization: `Bearer ${cookies['promogate.token']}`
-    }
-  })
-
-  return {
-    props: {
-      status: data.status,
-      user: data.user
-    }
-  }
-}) 

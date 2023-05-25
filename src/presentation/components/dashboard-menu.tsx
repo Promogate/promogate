@@ -51,7 +51,7 @@ export function DashboardMenu({ me }: DashboardMenuProps) {
         position={'relative'}
       >
         <Image
-          src='/promogate.svg'
+          src='/promogate-logo.svg'
           alt='Logo Promogate'
           fill
         />
