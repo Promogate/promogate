@@ -7,6 +7,7 @@ export * from './internal-offer-card';
 export * from './main-menu';
 export * from './mobile-main-menu';
 export * from './offer-card';
+export * from './pagination';
 export * from './single-production-page-content';
 export * from './slider';
 export * from './store-footer';
