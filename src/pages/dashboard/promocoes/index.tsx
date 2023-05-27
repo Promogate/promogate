@@ -108,7 +108,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
     onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        description: err.response?.data.message,
+        description: err.response?.data.error,
       })
     }
   })
@@ -129,7 +129,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
     onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        description: err.response?.data.message
+        description: err.response?.data.error
       })
     }
   })
