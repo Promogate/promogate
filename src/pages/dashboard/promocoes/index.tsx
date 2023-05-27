@@ -1,7 +1,7 @@
 import { PromogateContext } from '@/application/contexts';
 import { getDashboardOffers } from '@/application/utils';
 import { api } from '@/config';
-import { MeResponse } from '@/domain/models';
+import { MeResponse, RequestError } from '@/domain/models';
 import { DashboardLayout, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
@@ -27,6 +27,7 @@ import {
   useToast
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -104,10 +105,10 @@ export default function OffersPage({ status, user }: OffersPageProps) {
     onSuccess: () => {
       query.invalidateQueries(['offers', user.id])
     },
-    onError: () => {
+    onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        description: 'Houve algum erro'
+        description: err.response?.data.message,
       })
     }
   })
@@ -125,10 +126,10 @@ export default function OffersPage({ status, user }: OffersPageProps) {
     onSuccess: () => {
       query.invalidateQueries(['offers', user.id, page])
     },
-    onError: () => {
+    onError: (err: AxiosError<RequestError>) => {
       toast({
         status: 'error',
-        description: 'Houve algum erro'
+        description: err.response?.data.message
       })
     }
   })

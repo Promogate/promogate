@@ -1,4 +1,6 @@
 export type RequestError = { 
-  name: string,
-  message: string
+  statusCode: string;
+  status?: string
+  message: string;
+  name: string;
 }
