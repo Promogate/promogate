@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/application/services/aws-upload.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/application/services/aws-upload.ts", "src/pages/api/upload/[store_name].ts"],
   "exclude": ["node_modules"]
 }
