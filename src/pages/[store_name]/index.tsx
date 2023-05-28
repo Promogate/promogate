@@ -53,6 +53,8 @@ export default function Home({ store_name }: SingleStoreProps) {
 
     const featuredOffers = data.data.resources.offers.filter(offer => offer.is_featured)
 
+    console.log(featuredOffers);
+
     return (
       <Fragment>
         <Head key={data.data.id}>
@@ -86,7 +88,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                 margin={['1rem 0']}
                 width={['360px', '768px', 'auto']}
               >
-                <FeaturedSlider offers={featuredOffers} />
+                <FeaturedSlider offers={featuredOffers} storeName={data.data.store_name} />
               </Box>
               <Box
                 margin={{ xl: '3rem 0' }}

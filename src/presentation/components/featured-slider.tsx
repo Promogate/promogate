@@ -5,10 +5,11 @@ import { Slider } from './slider';
 import { SliderOfferCard } from './slider-offer-card';
 
 type FeaturedSliderProps = {
+  storeName: string;
   offers: OfferWithClicks[]
 }
 
-export function FeaturedSlider({ offers }: FeaturedSliderProps) {
+export function FeaturedSlider({ offers, storeName }: FeaturedSliderProps) {
   const variant = useBreakpointValue({
     base: 1,
     md: 3.5
@@ -26,7 +27,7 @@ export function FeaturedSlider({ offers }: FeaturedSliderProps) {
       {offers.map((offer: OfferWithClicks) => {
         return (
           <SwiperSlide key={offer.id}>
-            <SliderOfferCard data={offer} storeName={offer.store_name} />
+            <SliderOfferCard data={offer} storeName={storeName} />
           </SwiperSlide>
         )
       })}
