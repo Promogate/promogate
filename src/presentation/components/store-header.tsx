@@ -40,6 +40,7 @@ export function StoreHeader({ props }: StoreHeaderProps) {
                   src={props.store_image}
                   alt={props.store_name}
                   fill
+                  priority
                 />
               </Box>
               <Heading

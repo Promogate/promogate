@@ -111,6 +111,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                       src={'/Impulsionando-o-Seu-Sucesso-Online.gif'}
                       alt={'wavvves - Impulsionando o Seu Sucesso Online'}
                       fill
+                      priority
                     />
                   </Box>
                 </Link>
@@ -231,6 +232,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                       src={'/Quer-alavancar-suas-vendas-como-afiliado.gif'}
                       alt={'Promogate - Quer alavancar suas vendas como afiliado'}
                       fill
+                      priority
                     />
                   </Box>
                 </Link>
