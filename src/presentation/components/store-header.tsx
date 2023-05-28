@@ -1,4 +1,5 @@
-import { Box, Grid } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Montserrat } from 'next/font/google';
 import Image from 'next/image';
 
 type StoreHeaderProps = {
@@ -8,35 +9,63 @@ type StoreHeaderProps = {
   }
 }
 
+const montserrat = Montserrat({ subsets: ['latin'], preload: true });
+
 /*eslint-disable @next/next/no-img-element*/
 export function StoreHeader({ props }: StoreHeaderProps) {
   return (
     <Box
-      height={{ xl: '80px' }}
+      height={{ xl: '96px' }}
       backgroundColor={'black'}
     >
-      <Grid
+      <Flex
         height={'100%'}
-        margin={'0 auto'}
-        maxWidth={{ xl: '1250px' }}
+        width={['100%']}
         alignItems={'center'}
-        gridTemplateColumns={{ xl: '1fr' }}
+        maxWidth={{ xl: '1170px' }}
+        margin={['0 auto']}
+        gap={['1rem']}
       >
-        <Box
-          width={'64px'}
-          height={'64px'}
-          rounded={'full'}
-          position={'relative'}
-          overflow={'hidden'}
-          margin={'0 auto'}
-        >
-          <Image
-            src={props.store_image}
-            alt={props.store_name}
-            fill
-          />
-        </Box>
-      </Grid>
+        {
+          props.store_image ? (
+            <>
+              <Box
+                width={'64px'}
+                height={'64px'}
+                rounded={'full'}
+                position={'relative'}
+                overflow={'hidden'}
+              >
+                <Image
+                  src={props.store_image}
+                  alt={props.store_name}
+                  fill
+                />
+              </Box>
+              <Heading
+                as={'h1'}
+                fontSize={['1.5rem']}
+                fontFamily={montserrat.style.fontFamily}
+                color={'gray.50'}
+                textTransform={['capitalize']}
+              >
+                {props.store_name}
+              </Heading>
+            </>
+          ) : (
+            <Heading
+              as={'h1'}
+              fontSize={['1.5rem']}
+              fontFamily={montserrat.style.fontFamily}
+              color={'gray.50'}
+              textTransform={['capitalize']}
+            >
+              {props.store_name}
+            </Heading>
+          )
+        }
+
+      </Flex>
     </Box>
   )
 }

@@ -66,9 +66,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           as='main'
           backgroundColor={'gray.50'}
         >
-
           <StoreHeader props={{ store_image: data.data.store_image, store_name: data.data.store_name_display }} />
-
           <Grid
             gridTemplateColumns={{ xl: '9fr 3fr' }}
             maxWidth={['1170px']}
