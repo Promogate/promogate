@@ -3,6 +3,7 @@ import { RegisterFormProps, RequestError } from '@/domain/models';
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -33,6 +34,7 @@ const schema = yup.object({
   email: yup.string().email('Você deve inserir um email válido').required(
     'Email é obrigatório.'
   ),
+  agree_with_policies: yup.boolean().required('Aceitar as nossas políticas é obrigatório para efetuar o cadastro.').oneOf([true], "Você deve aceitar as políticas para efetuar o cadastro"),
   password: yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/, 'Sua senha deve ao menos conter 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.'),
   passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'As senhas não combinam')
 })
@@ -42,10 +44,12 @@ export default function RegisterPage() {
   const router = useRouter();
   const { signUp } = useContext(AuthContext);
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormProps>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm<RegisterFormProps>({
     resolver: yupResolver(schema),
     mode: 'onBlur'
   });
+
+  console.log(watch('agree_with_policies'))
 
   const mutation = useMutation(async (values: RegisterFormProps) => await signUp(values), {
     onSuccess: () => {
@@ -73,7 +77,7 @@ export default function RegisterPage() {
       </Head>
       <Grid
         as='main'
-        height={['100vh']}
+        minHeight={['100vh']}
         alignItems={'center'}
         justifyContent={'center'}
         gridTemplateColumns={['1fr']}
@@ -94,7 +98,7 @@ export default function RegisterPage() {
           />
         </Box>
         <Box
-          margin={'0 auto'}
+          margin={['0 auto']}
           backgroundColor={'white'}
           padding={['1rem']}
           border={['1px']}
@@ -168,6 +172,20 @@ export default function RegisterPage() {
               />
               <FormErrorMessage wordBreak={'break-word'}>
                 {errors.passwordConfirmation && errors.passwordConfirmation.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={!!errors.agree_with_policies}>
+              <Checkbox
+                {...register('agree_with_policies')}
+                size={'md'}
+              >
+                Condordo com as <Link href='/politica-de-privacidade' target='_blank' className='underline'>
+                  Políticas de privacidade</Link>, <Link href='/termos-de-uso' target='_blank' className='underline'>
+                  Termos de Uso</Link> e <Link href='/politica-de-cookies' target='_blank' className='underline'>
+                  Políticas de Cookies</Link>.
+              </Checkbox>
+              <FormErrorMessage wordBreak={'break-word'}>
+                {errors.agree_with_policies && errors.agree_with_policies.message}
               </FormErrorMessage>
             </FormControl>
             <Button
