@@ -9,17 +9,22 @@ import {
 } from '@/presentation/components';
 import {
   Box,
+  Divider,
   Grid,
   Heading,
-  Spinner
+  Spinner,
+  Text
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
-import { Inter } from 'next/font/google';
+import { Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 import { Fragment, useContext } from 'react';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({ subsets: ['latin'], preload: true });
+const openSans = Open_Sans({ subsets: ['latin'], preload: true });
 
 type SingleStoreProps = {
   store_name: string;
@@ -53,8 +58,6 @@ export default function Home({ store_name }: SingleStoreProps) {
 
     const featuredOffers = data.data.resources.offers.filter(offer => offer.is_featured)
 
-    console.log(featuredOffers);
-
     return (
       <Fragment>
         <Head key={data.data.id}>
@@ -72,14 +75,14 @@ export default function Home({ store_name }: SingleStoreProps) {
           <Grid
             gridTemplateColumns={{ xl: '9fr 3fr' }}
             maxWidth={['1170px']}
-            margin={'0 auto'}
+            margin={['1rem auto']}
             padding={['1rem']}
             gap={{ xl: '1.5rem' }}
           >
             <Box maxWidth={['815px']}>
               <Heading
                 fontSize={['2xl']}
-                fontFamily={inter.style.fontFamily}
+                fontFamily={montserrat.style.fontFamily}
                 color={'gray.600'}
               >
                 Destaque
@@ -91,11 +94,33 @@ export default function Home({ store_name }: SingleStoreProps) {
                 <FeaturedSlider offers={featuredOffers} storeName={data.data.store_name} />
               </Box>
               <Box
+                display={['none', 'block']}
+              >
+                <Link
+                  href={'https://wavvves.com.br'}
+                  target='_blank'
+                >
+                  <Box
+                    width={'728px'}
+                    height={'90px'}
+                    position={'relative'}
+                    overflow={'hidden'}
+                    margin={['0 auto']}
+                  >
+                    <Image
+                      src={'/Impulsionando-o-Seu-Sucesso-Online.gif'}
+                      alt={'wavvves - Impulsionando o Seu Sucesso Online'}
+                      fill
+                    />
+                  </Box>
+                </Link>
+              </Box>
+              <Box
                 margin={{ xl: '3rem 0' }}
               >
                 <Heading
                   fontSize={['2xl']}
-                  fontFamily={inter.style.fontFamily}
+                  fontFamily={montserrat.style.fontFamily}
                   color={'gray.600'}
                 >
                   Todas as ofertas
@@ -112,7 +137,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                     ) : isError ? (
                       <Heading
                         fontSize={{ xl: 'xl' }}
-                        fontFamily={inter.style.fontFamily}
+                        fontFamily={montserrat.style.fontFamily}
                         color={'gray.600'}
                       >
                         Destaque
@@ -126,7 +151,90 @@ export default function Home({ store_name }: SingleStoreProps) {
                 </Grid>
               </Box>
             </Box>
-            <Box>
+            <Box position={['relative']}>
+              <Grid gap={['1rem']} marginBottom={['1rem', '1.5rem']}>
+                <Box>
+                  <Heading
+                    fontSize={['1rem']}
+                    fontFamily={montserrat.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Segurança
+                  </Heading>
+                  <Text
+                    fontSize={['0.8rem']}
+                    fontWeight={'normal'}
+                    marginTop={['0.5rem', '1rem']}
+                    fontFamily={openSans.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Todas as lojas, ofertas e cupons anunciados, são verificados para garantir a melhor experiência de
+                    compra
+                  </Text>
+                </Box>
+                <Divider />
+                <Box>
+                  <Heading
+                    fontSize={['1rem']}
+                    fontFamily={montserrat.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Melhores Ofertas
+                  </Heading>
+                  <Text
+                    fontSize={['0.8rem']}
+                    fontWeight={'normal'}
+                    marginTop={['0.5rem', '1rem']}
+                    fontFamily={openSans.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Nossa equipe de especialistas coleta e reúne aqui as melhores ofertas da internet, tudo em um só
+                    lugar.
+                  </Text>
+                </Box>
+                <Divider />
+                <Box>
+                  <Heading
+                    fontSize={['1rem']}
+                    fontFamily={montserrat.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Cupons de Desconto
+                  </Heading>
+                  <Text
+                    fontSize={['0.8rem']}
+                    fontWeight={'normal'}
+                    marginTop={['0.5rem', '1rem']}
+                    fontFamily={openSans.style.fontFamily}
+                    color={'gray.300'}
+                  >
+                    Tenha acesso aos melhores cupons de desconto do Brasil para você economizar ainda mais.
+                  </Text>
+                </Box>
+              </Grid>
+              <Box
+                position={['sticky']}
+                top={3}
+              >
+                <Link
+                  href={'https://promogate.app'}
+                  target='_blank'
+                >
+                  <Box
+                    width={'300px'}
+                    height={'300px'}
+                    position={'relative'}
+                    overflow={'hidden'}
+                    margin={['0 auto']}
+                  >
+                    <Image
+                      src={'/Quer-alavancar-suas-vendas-como-afiliado.gif'}
+                      alt={'Promogate - Quer alavancar suas vendas como afiliado'}
+                      fill
+                    />
+                  </Box>
+                </Link>
+              </Box>
               <Grid gap={'1rem'}>
                 <Box
                   height={'600px'}
