@@ -254,6 +254,66 @@ export default function SingleProductPage(data: SingleProductResponse) {
             gap={['1rem']}
             margin={['1rem', '1rem', 0]}
           >
+            <Grid gap={['1rem']} marginBottom={['1rem', '1.5rem']}>
+                <Box>
+                  <Heading
+                    fontSize={['1rem']}
+                    fontFamily={montserrat.style.fontFamily}
+                    color={'gray.400'}
+                  >
+                    Segurança
+                  </Heading>
+                  <Text
+                    fontSize={['0.8rem']}
+                    fontWeight={'normal'}
+                    marginTop={['0.5rem', '1rem']}
+                    fontFamily={openSans.style.fontFamily}
+                    color={'gray.400'}
+                  >
+                    Todas as lojas, ofertas e cupons anunciados, são verificados para garantir a melhor experiência de
+                    compra
+                  </Text>
+                </Box>
+                <Divider />
+                <Box>
+                  <Heading
+                    fontSize={['1rem']}
+                    fontFamily={montserrat.style.fontFamily}
+                    color={'gray.400'}
+                  >
+                    Melhores Ofertas
+                  </Heading>
+                  <Text
+                    fontSize={['0.8rem']}
+                    fontWeight={'normal'}
+                    marginTop={['0.5rem', '1rem']}
+                    fontFamily={openSans.style.fontFamily}
+                    color={'gray.400'}
+                  >
+                    Nossa equipe de especialistas coleta e reúne aqui as melhores ofertas da internet, tudo em um só
+                    lugar.
+                  </Text>
+                </Box>
+                <Divider />
+                <Box>
+                  <Heading
+                    fontSize={['1rem']}
+                    fontFamily={montserrat.style.fontFamily}
+                    color={'gray.400'}
+                  >
+                    Cupons de Desconto
+                  </Heading>
+                  <Text
+                    fontSize={['0.8rem']}
+                    fontWeight={'normal'}
+                    marginTop={['0.5rem', '1rem']}
+                    fontFamily={openSans.style.fontFamily}
+                    color={'gray.400'}
+                  >
+                    Tenha acesso aos melhores cupons de desconto do Brasil para você economizar ainda mais.
+                  </Text>
+                </Box>
+              </Grid>
             <Box
               position={['sticky']}
               top={3}

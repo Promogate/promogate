@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Img } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import { Montserrat } from 'next/font/google';
 
 type StoreHeaderProps = {
@@ -25,44 +25,15 @@ export function StoreHeader({ props }: StoreHeaderProps) {
         margin={['0 auto']}
         gap={['1rem']}
       >
-        {
-          props.store_image ? (
-            <>
-              <Box
-                width={'64px'}
-                height={'64px'}
-                rounded={'full'}
-                position={'relative'}
-                overflow={'hidden'}
-              >
-                <Img
-                  src={props.store_image}
-                  alt={props.store_name}
-                />
-              </Box>
-              <Heading
-                as={'h1'}
-                fontSize={['1.5rem']}
-                fontFamily={montserrat.style.fontFamily}
-                color={'gray.50'}
-                textTransform={['capitalize']}
-              >
-                {props.store_name}
-              </Heading>
-            </>
-          ) : (
-            <Heading
-              as={'h1'}
-              fontSize={['1.5rem']}
-              fontFamily={montserrat.style.fontFamily}
-              color={'gray.50'}
-              textTransform={['capitalize']}
-            >
-              {props.store_name}
-            </Heading>
-          )
-        }
-
+        <Heading
+          as={'h1'}
+          fontSize={['1.5rem']}
+          fontFamily={montserrat.style.fontFamily}
+          color={'gray.50'}
+          textTransform={['capitalize']}
+        >
+          {props.store_name}
+        </Heading>
       </Flex>
     </Box>
   )

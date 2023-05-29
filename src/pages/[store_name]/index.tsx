@@ -158,7 +158,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                   <Heading
                     fontSize={['1rem']}
                     fontFamily={montserrat.style.fontFamily}
-                    color={'gray.300'}
+                    color={'gray.400'}
                   >
                     Segurança
                   </Heading>
@@ -167,7 +167,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                     fontWeight={'normal'}
                     marginTop={['0.5rem', '1rem']}
                     fontFamily={openSans.style.fontFamily}
-                    color={'gray.300'}
+                    color={'gray.400'}
                   >
                     Todas as lojas, ofertas e cupons anunciados, são verificados para garantir a melhor experiência de
                     compra
@@ -178,7 +178,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                   <Heading
                     fontSize={['1rem']}
                     fontFamily={montserrat.style.fontFamily}
-                    color={'gray.300'}
+                    color={'gray.400'}
                   >
                     Melhores Ofertas
                   </Heading>
@@ -187,7 +187,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                     fontWeight={'normal'}
                     marginTop={['0.5rem', '1rem']}
                     fontFamily={openSans.style.fontFamily}
-                    color={'gray.300'}
+                    color={'gray.400'}
                   >
                     Nossa equipe de especialistas coleta e reúne aqui as melhores ofertas da internet, tudo em um só
                     lugar.
@@ -198,7 +198,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                   <Heading
                     fontSize={['1rem']}
                     fontFamily={montserrat.style.fontFamily}
-                    color={'gray.300'}
+                    color={'gray.400'}
                   >
                     Cupons de Desconto
                   </Heading>
@@ -207,7 +207,7 @@ export default function Home({ store_name }: SingleStoreProps) {
                     fontWeight={'normal'}
                     marginTop={['0.5rem', '1rem']}
                     fontFamily={openSans.style.fontFamily}
-                    color={'gray.300'}
+                    color={'gray.400'}
                   >
                     Tenha acesso aos melhores cupons de desconto do Brasil para você economizar ainda mais.
                   </Text>
