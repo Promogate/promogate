@@ -19,17 +19,17 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Textarea,
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import dynamic from 'next/dynamic'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { TfiAngleLeft } from 'react-icons/tfi'
 
@@ -40,11 +40,6 @@ type SingleOfferPageProps = {
 }
 
 type SingleOffersPageProps = MeResponse
-
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
-})
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -69,8 +64,6 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
     cacheTime: 1000 * 60 * 5
   })
 
-  const [description, setDescription] = useState<any>()
-
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>({
     defaultValues: {
       title: data?.offer.title,
@@ -79,7 +72,8 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
       image: data?.offer.image,
       old_price: data?.offer.old_price,
       price: data?.offer.price,
-      store_name: data?.offer.store_name
+      store_name: data?.offer.store_name,
+      description: data?.offer.description
     },
     values: data?.offer
   });
@@ -91,8 +85,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
     await api.put(`/resources/${user.user_profile.resources.id}/offer/${id}`, {
       ...data,
       price,
-      old_price,
-      description
+      old_price
     }, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
@@ -118,10 +111,6 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
 
   const createOffer: SubmitHandler<OfferDataInput> = async (data) => {
     await mutation.mutateAsync(data);
-  }
-
-  const changeQuillDescription = (e: any) => {
-    setDescription(e)
   }
 
   const deleteMutation = useMutation(async () => {
@@ -250,11 +239,8 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
                 position={'relative'}
               >
                 <FormLabel>Descrição (Opcional)</FormLabel>
-                <Input
-                  as={QuillNoSSRWrapper}
-                  theme='snow'
-                  height={'240px'}
-                  onChange={changeQuillDescription}
+                <Textarea 
+                  {...register('description')}
                 />
               </FormControl>
             </Box>
