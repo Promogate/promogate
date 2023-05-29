@@ -178,20 +178,20 @@ export default function SingleProductPage(data: SingleProductResponse) {
                     </Text>
                     <HStack>
                       <FacebookShareButton
-                        url={`https://promogate.app${router.asPath}`}
+                        url={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)}
                         quote={data.offer.title}
                       >
                         <FacebookIcon size={24} round />
                       </FacebookShareButton>
                       <WhatsappShareButton
-                        url={`https://promogate.app${router.asPath}`}
+                        url={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)}
                         title={data.offer.title}
                         separator=':: '
                       >
                         <WhatsappIcon size={24} round />
                       </WhatsappShareButton>
                       <TelegramShareButton
-                        url={`https://promogate.app${router.asPath}`}
+                        url={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)}
                       >
                         <TelegramIcon size={24} round />
                       </TelegramShareButton>
