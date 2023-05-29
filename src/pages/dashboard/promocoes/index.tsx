@@ -60,7 +60,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
       user: data.user
     }
   }
-}) 
+})
 
 const openSans = Open_Sans({ subsets: ['latin'], preload: true })
 const montserrat = Montserrat({ subsets: ['latin'], preload: true })
@@ -73,6 +73,13 @@ type UpdateOfferShowcase = {
 type UpdateOfferFeatured = {
   is_featured: boolean;
   offerId: string
+}
+
+type MakeSharableUrl = {
+  store_name: string;
+  offer_id: string;
+  resource_id: string;
+  product_name: string;
 }
 
 type OffersPageProps = MeResponse
@@ -160,6 +167,10 @@ export default function OffersPage({ status, user }: OffersPageProps) {
         <Spinner />
       </Grid>
     )
+  }
+
+  const makeSharebleUrl = ({store_name, product_name, offer_id, resource_id}: MakeSharableUrl) => {
+    return `${store_name}/produto/${product_name.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s]/g, '-')}/?oid=${offer_id}&utm_click=1&rid=${resource_id}`
   }
 
   return (
@@ -375,20 +386,24 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   spacing={['1.5rem']}
                                 >
                                   <FacebookShareButton
-                                    url={(`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s]/g, '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}&utm_share=facebook`)}
+                                    url={`https://promogate.app/${makeSharebleUrl({ store_name: offer.store_name, offer_id: offer.id, product_name: offer.title, resource_id: offer.resources_id })}`}
+                                    quote={offer.title}
                                   >
-                                    <FacebookIcon size={32} />
+                                    <FacebookIcon size={24} round />
                                   </FacebookShareButton>
-                                  <TelegramShareButton
-                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s]/g, '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}&utm_share=telegram`}
-                                  >
-                                    <TelegramIcon size={32} />
-                                  </TelegramShareButton>
                                   <WhatsappShareButton
-                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s]/g, '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}&utm_share=whatsapp`}
+                                    url={`https://promogate.app/${makeSharebleUrl({ store_name: offer.store_name, offer_id: offer.id, product_name: offer.title, resource_id: offer.resources_id })}`}
+                                    title={offer.title}
+                                    separator=':: '
                                   >
-                                    <WhatsappIcon size={32} />
+                                    <WhatsappIcon size={24} round />
                                   </WhatsappShareButton>
+                                  <TelegramShareButton
+                                    url={`https://promogate.app/${makeSharebleUrl({ store_name: offer.store_name, offer_id: offer.id, product_name: offer.title, resource_id: offer.resources_id })}`}
+                                    title={offer.title}
+                                  >
+                                    <TelegramIcon size={24} round />
+                                  </TelegramShareButton>
                                 </HStack>
                               </Box>
                               <Button
@@ -518,7 +533,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
               )
             }
           </Box>
-          <Pagination 
+          <Pagination
             totalCountOfRegisters={data.total_offers}
             currentPage={page}
             onPageChange={setPage}
