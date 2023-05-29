@@ -5,7 +5,7 @@ import { SingleProductPageContent, StoreFooter, StoreHeader } from '@/presentati
 import { Box, Button, Divider, Flex, Grid, HStack, Heading, Img, Text, VStack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
-import { Inter, Montserrat, Open_Sans } from 'next/font/google';
+import { Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,28 +14,24 @@ import { Fragment } from 'react';
 import { FaRegComments } from 'react-icons/fa';
 import { FiExternalLink } from 'react-icons/fi';
 
-import parse from 'html-react-parser';
-
 type SingleProductResponse = {
   status: string;
   message: string;
   offer: OfferWithClicks
 }
 
-const inter = Inter({ subsets: ['latin'], preload: true });
 const openSans = Open_Sans({ subsets: ['latin'], preload: true })
 const montserrat = Montserrat({ subsets: ['latin'], preload: true })
-
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { oid, utm_click, rid } = ctx.query as { oid: string, utm_click: string, rid: string };
   const { data } = await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}?utm_click=${utm_click}`)
 
-  console.log(data);
-
   return {
     props: {
-      data
+      status: data.status,
+      message:  data.message,
+      offer: data.offer
     }
   }
 }
@@ -75,8 +71,6 @@ export default function SingleProductPage(data: SingleProductResponse) {
   //   )
   // }
 
-  const description = parse(data.offer.description);
-
   return (
     <Fragment>
       <Head>
@@ -97,7 +91,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
         store_name: data.offer.resources.user_profile.store_name
       }} />
       <Box
-        fontFamily={inter.style.fontFamily}
+        fontFamily={openSans.style.fontFamily}
         padding={['1rem 1rem', '1rem 1rem', 0]}
         backgroundColor={'blackAlpha.50'}
       >
@@ -124,7 +118,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
                 <Heading
                   as='h1'
                   fontSize={['1.3rem', '2xl']}
-                  fontFamily={inter.style.fontFamily}
+                  fontFamily={montserrat.style.fontFamily}
                   padding={{ xl: '0 0 1rem 0' }}
                 >
                   {data.offer.title}
@@ -141,7 +135,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
                   >
                     <Heading
                       as={'h2'}
-                      fontFamily={inter.style.fontFamily}
+                      fontFamily={montserrat.style.fontFamily}
                       fontSize={{ xl: '2xl' }}
                     >
                       {parseCurrency(data.offer.price)}
@@ -202,7 +196,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
                   <Text
                     fontSize={{ xl: '0.9rem' }}
                   >
-                    {description}
+                    {data.offer.description}
                   </Text>
                 </Box>
               </Box>
