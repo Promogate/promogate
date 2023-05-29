@@ -376,24 +376,24 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   spacing={['1.5rem']}
                                 >
                                   <FacebookShareButton
-                                    url={parseAmbientUrl(`${offer.store_name}/produto/${offer.title}/?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
                                     quote={offer.title}
                                   >
-                                    <FacebookIcon size={24} round />
+                                    <FacebookIcon size={32} />
                                   </FacebookShareButton>
+                                  <TelegramShareButton
+                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    title={offer.title}
+                                  >
+                                    <TelegramIcon size={32} />
+                                  </TelegramShareButton>
                                   <WhatsappShareButton
-                                    url={parseAmbientUrl(`${offer.store_name}/produto/${offer.title}/?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
                                     title={offer.title}
                                     separator=':: '
                                   >
-                                    <WhatsappIcon size={24} round />
+                                    <WhatsappIcon size={32} />
                                   </WhatsappShareButton>
-                                  <TelegramShareButton
-                                    url={parseAmbientUrl(`${offer.store_name}/produto/${offer.title}/?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
-                                    title={offer.title}
-                                  >
-                                    <TelegramIcon size={24} round />
-                                  </TelegramShareButton>
                                 </HStack>
                               </Box>
                               <Button
@@ -456,25 +456,30 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                 </Link>
                               </Td>
                               <Td>
-                                <Text fontStyle={openSans.style.fontFamily}>
-                                  <HStack>
-                                    <FacebookShareButton
-                                      url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
-                                    >
-                                      <FacebookIcon size={32} />
-                                    </FacebookShareButton>
-                                    <TelegramShareButton
-                                      url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
-                                    >
-                                      <TelegramIcon size={32} />
-                                    </TelegramShareButton>
-                                    <WhatsappShareButton
-                                      url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
-                                    >
-                                      <WhatsappIcon size={32} />
-                                    </WhatsappShareButton>
-                                  </HStack>
-                                </Text>
+                                <HStack
+                                  margin={['1rem 0']}
+                                  spacing={['0.5rem']}
+                                >
+                                  <FacebookShareButton
+                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    quote={offer.title}
+                                  >
+                                    <FacebookIcon size={32} />
+                                  </FacebookShareButton>
+                                  <TelegramShareButton
+                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    title={offer.title}
+                                  >
+                                    <TelegramIcon size={32} />
+                                  </TelegramShareButton>
+                                  <WhatsappShareButton
+                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    title={offer.title}
+                                    separator=':: '
+                                  >
+                                    <WhatsappIcon size={32} />
+                                  </WhatsappShareButton>
+                                </HStack>
                               </Td>
                               <Td>
                                 <Text fontStyle={openSans.style.fontFamily}>
