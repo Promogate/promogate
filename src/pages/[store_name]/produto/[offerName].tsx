@@ -75,7 +75,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
     <Fragment>
       <Head>
         <title>{data.offer.title}</title>
-        <meta name='robots' content='max-image-preview:large'/>
+        <meta name='robots' content='max-image-preview:large' />
         <meta property='og:title' content={data.offer.title} />
         <meta property='og:description' content={data.offer.description} />
         <meta property='og:type' content='article' />
@@ -86,6 +86,8 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property='og:site_name' content='Promogate' />
         <meta property='og:locale' content='pt_BR' />
         <meta property='og:url' content={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)} />
+        <meta property='product:price.amount' content={data.offer.price} />
+        <meta property='product:price.currency' content='BRL' />
         <meta property='twitter:card' content='summary_large_image' />
         <meta property='twitter:site' content='@promogate' />
         <meta property='twitter:title' content={data.offer.title} />
@@ -267,6 +269,6 @@ export default function SingleProductPage(data: SingleProductResponse) {
       </Box>
       <SingleProductPageContent />
       <StoreFooter />
-    </Fragment>
+    </Fragment >
   )
 }
