@@ -2,8 +2,7 @@ import { api } from '@/config';
 import { OfferWithClicks } from '@/domain/models';
 import { parseAmbientUrl, parseCurrency } from '@/main/utils';
 import { SingleProductPageContent, StoreFooter, StoreHeader } from '@/presentation/components';
-import { Box, Button, Divider, Flex, Grid, HStack, Heading, Img, Spinner, Text, VStack } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { Box, Button, Divider, Flex, Grid, HStack, Heading, Img, Text, VStack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
 import { Inter, Montserrat, Open_Sans } from 'next/font/google';
@@ -27,39 +26,54 @@ const inter = Inter({ subsets: ['latin'], preload: true });
 const openSans = Open_Sans({ subsets: ['latin'], preload: true })
 const montserrat = Montserrat({ subsets: ['latin'], preload: true })
 
-export default function SingleProductPage() {
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { oid, utm_click, rid } = ctx.query as { oid: string, utm_click: string, rid: string };
+  const { data } = await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}?utm_click=${utm_click}`)
+
+  console.log(data);
+
+  return {
+    props: {
+      data
+    }
+  }
+}
+
+export default function SingleProductPage(data: SingleProductResponse) {
   const router = useRouter();
   const { oid, utm_click, rid } = router.query as { oid: string, utm_click: string, rid: string };
 
-  const { data, isLoading } = useQuery(['offer', oid], async () => {
-    const { data } = await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}`)
-    return data
-  }, {
-    cacheTime: 1000 * 60 * 15,
-    staleTime: 1000 * 60 * 15
-  })
+  // const { data, isLoading } = useQuery(['offer', oid], async () => {
+  //   const { data } = await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}`)
+  //   return data
+  // }, {
+  //   cacheTime: 1000 * 60 * 15,
+  //   staleTime: 1000 * 60 * 15,
+  //   initialData: data
+  // })
 
-  if (isLoading) {
-    return (
-      <Grid
-        justifyContent={'center'}
-      >
-        <Spinner />
-      </Grid>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Grid
+  //       justifyContent={'center'}
+  //     >
+  //       <Spinner />
+  //     </Grid>
+  //   )
+  // }
 
-  if (!data) {
-    return (
-      <Grid
-        justifyContent={'center'}
-      >
-        <Heading>
-          Erro ao tentar encontrar o produto
-        </Heading>
-      </Grid>
-    )
-  }
+  // if (!data) {
+  //   return (
+  //     <Grid
+  //       justifyContent={'center'}
+  //     >
+  //       <Heading>
+  //         Erro ao tentar encontrar o produto
+  //       </Heading>
+  //     </Grid>
+  //   )
+  // }
 
   const description = parse(data.offer.description);
 
@@ -253,13 +267,4 @@ export default function SingleProductPage() {
       <StoreFooter />
     </Fragment>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { oid, utm_click, rid } = ctx.query as { oid: string, utm_click: string, rid: string };
-  await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}?utm_click=${utm_click}`)
-
-  return {
-    props: {}
-  }
 }
