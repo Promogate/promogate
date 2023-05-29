@@ -83,6 +83,8 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property='twitter:description' content={data.offer.description} />
         <meta property='twitter:image' content={data.offer.image} />
         <meta property='twitter:creator' content={data.offer.store_name} />
+        <meta property='fb:app_id' content="106988875737461" />
+        
         <script
           key="structured-data"
           type="application/ld+json"
