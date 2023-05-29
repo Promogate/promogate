@@ -1,6 +1,6 @@
 import { api } from '@/config';
 import { OfferWithClicks } from '@/domain/models';
-import { parseAmbientUrl, parseCurrency } from '@/main/utils';
+import { parseCurrency } from '@/main/utils';
 import { SingleProductPageContent, StoreFooter, StoreHeader } from '@/presentation/components';
 import { Box, Button, Divider, Flex, Grid, HStack, Heading, Img, Text, VStack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
@@ -74,7 +74,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property="og:image:alt" content={data.offer.title} />
         <meta property='og:site_name' content='Promogate' />
         <meta property='og:locale' content='pt_BR' />
-        <meta property='og:url' content={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)} />
+        <meta property='og:url' content={`https://promogate.app${router.asPath}`} />
         <meta property='product:price.amount' content={data.offer.price} />
         <meta property='product:price.currency' content='BRL' />
         <meta property='twitter:card' content='summary_large_image' />
