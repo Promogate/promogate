@@ -11,7 +11,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { FaRegComments } from 'react-icons/fa';
 import { FiExternalLink } from 'react-icons/fi';
 
 type SingleProductResponse = {
@@ -234,18 +233,6 @@ export default function SingleProductPage(data: SingleProductResponse) {
                       Abrir na loja
                     </Button>
                   </Box>
-                  <Divider orientation='horizontal' />
-                  <HStack
-                    padding={['1rem 0', '1rem 0', 0]}
-                  >
-                    <Button
-                      leftIcon={<FaRegComments />}
-                      width={['100%']}
-                      size={['lg']}
-                    >
-                      Deixe um comentário
-                    </Button>
-                  </HStack>
                 </VStack>
               </Box>
             </Grid>
