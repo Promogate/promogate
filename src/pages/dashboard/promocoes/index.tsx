@@ -375,17 +375,17 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   spacing={['1.5rem']}
                                 >
                                   <FacebookShareButton
-                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    url={(`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s]/g, '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}&utm_share=facebook`)}
                                   >
                                     <FacebookIcon size={32} />
                                   </FacebookShareButton>
                                   <TelegramShareButton
-                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s]/g, '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}&utm_share=telegram`}
                                   >
                                     <TelegramIcon size={32} />
                                   </TelegramShareButton>
                                   <WhatsappShareButton
-                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.replaceAll(' ', '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`}
+                                    url={`https://promogate.app/${user.user_profile.store_name}/produto/${offer.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s]/g, '-')}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}&utm_share=whatsapp`}
                                   >
                                     <WhatsappIcon size={32} />
                                   </WhatsappShareButton>
