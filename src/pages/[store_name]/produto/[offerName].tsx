@@ -84,10 +84,10 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property='twitter:image' content={data.offer.image} />
         <meta property='twitter:creator' content={data.offer.store_name} />
         <script
-        key="structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+          key="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </Head>
       <StoreHeader props={{
         store_image: data.offer.resources.user_profile.store_image,
@@ -252,12 +252,30 @@ export default function SingleProductPage(data: SingleProductResponse) {
             gap={['1rem']}
             margin={['1rem', '1rem', 0]}
           >
-            <Image
-              src={'/ads/300x250.png'}
-              alt={'_'}
-              width={300}
-              height={250}
-            />
+            <Box
+              position={['sticky']}
+              top={3}
+            >
+              <Link
+                href={'https://promogate.app'}
+                target='_blank'
+              >
+                <Box
+                  width={'300px'}
+                  height={'300px'}
+                  position={'relative'}
+                  overflow={'hidden'}
+                  margin={['0 auto']}
+                >
+                  <Image
+                    src={'/Quer-alavancar-suas-vendas-como-afiliado.gif'}
+                    alt={'Promogate - Quer alavancar suas vendas como afiliado'}
+                    fill
+                    priority
+                  />
+                </Box>
+              </Link>
+            </Box>
           </Grid>
         </Grid>
       </Box>
