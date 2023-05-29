@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       status: data.status,
-      message:  data.message,
+      message: data.message,
       offer: data.offer
     }
   }
@@ -75,22 +75,30 @@ export default function SingleProductPage(data: SingleProductResponse) {
     <Fragment>
       <Head>
         <title>{data.offer.title}</title>
+        <meta name='robots' content='max-image-preview:large'/>
         <meta property='og:title' content={data.offer.title} />
         <meta property='og:description' content={data.offer.description} />
-        <meta property='og:type' content='website' data-rh='true' />
+        <meta property='og:type' content='article' />
         <meta property='og:image' content={data.offer.image} />
-        <meta property="og:image:width" content="400" />
-        <meta property="og:image:height" content="300" />
+        <meta property="og:image:width" content="1680" />
+        <meta property="og:image:height" content="840" />
         <meta property="og:image:alt" content={data.offer.title} />
         <meta property='og:site_name' content='Promogate' />
         <meta property='og:locale' content='pt_BR' />
-        <meta property='og:url' content={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)} data-rh='true' />
+        <meta property='og:url' content={parseAmbientUrl(`${data.offer.resources.user_profile.store_name}/${data.offer.title}?oid=${oid}&utm_click=1&rid=${rid}&utm_medium=share`)} />
+        <meta property='twitter:card' content='summary_large_image' />
+        <meta property='twitter:site' content='@promogate' />
+        <meta property='twitter:title' content={data.offer.title} />
+        <meta property='twitter:description' content={data.offer.description} />
+        <meta property='twitter:image' content={data.offer.image} />
+        <meta property='twitter:creator' content={data.offer.store_name} />
       </Head>
       <StoreHeader props={{
         store_image: data.offer.resources.user_profile.store_image,
         store_name: data.offer.resources.user_profile.store_name
       }} />
       <Box
+        as='article'
         fontFamily={openSans.style.fontFamily}
         padding={['1rem 1rem', '1rem 1rem', 0]}
         backgroundColor={'blackAlpha.50'}

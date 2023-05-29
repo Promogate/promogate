@@ -1,6 +1,5 @@
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, Img } from '@chakra-ui/react';
 import { Montserrat } from 'next/font/google';
-import Image from 'next/image';
 
 type StoreHeaderProps = {
   props: {
@@ -36,11 +35,9 @@ export function StoreHeader({ props }: StoreHeaderProps) {
                 position={'relative'}
                 overflow={'hidden'}
               >
-                <Image
+                <Img
                   src={props.store_image}
                   alt={props.store_name}
-                  fill
-                  priority
                 />
               </Box>
               <Heading
