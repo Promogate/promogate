@@ -40,36 +40,25 @@ export default function SingleProductPage(data: SingleProductResponse) {
   const router = useRouter();
   const { oid, utm_click, rid } = router.query as { oid: string, utm_click: string, rid: string };
 
-  // const { data, isLoading } = useQuery(['offer', oid], async () => {
-  //   const { data } = await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}`)
-  //   return data
-  // }, {
-  //   cacheTime: 1000 * 60 * 15,
-  //   staleTime: 1000 * 60 * 15,
-  //   initialData: data
-  // })
-
-  // if (isLoading) {
-  //   return (
-  //     <Grid
-  //       justifyContent={'center'}
-  //     >
-  //       <Spinner />
-  //     </Grid>
-  //   )
-  // }
-
-  // if (!data) {
-  //   return (
-  //     <Grid
-  //       justifyContent={'center'}
-  //     >
-  //       <Heading>
-  //         Erro ao tentar encontrar o produto
-  //       </Heading>
-  //     </Grid>
-  //   )
-  // }
+  const structuredData = {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": data.offer.title,
+    "image": data.offer.image,
+    "description": data.offer.description,
+    "brand": {
+      "@type": "Brand",
+      "name": data.offer.title
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "BRL",
+      "price": data.offer.price,
+      "url": data.offer.destination_link,
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition"
+    }
+  }
 
   return (
     <Fragment>
@@ -94,6 +83,11 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property='twitter:description' content={data.offer.description} />
         <meta property='twitter:image' content={data.offer.image} />
         <meta property='twitter:creator' content={data.offer.store_name} />
+        <script
+        key="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       </Head>
       <StoreHeader props={{
         store_image: data.offer.resources.user_profile.store_image,
