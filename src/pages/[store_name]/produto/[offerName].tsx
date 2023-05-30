@@ -129,6 +129,36 @@ export default function SingleProductPage(data: SingleProductResponse) {
                 >
                   {data.offer.title}
                 </Heading>
+                <VStack
+                  display={['flex', 'none']}
+                  marginTop={['1.5rem']}
+                  gap={['0.5rem']}
+                  top={0}
+                  left={0}
+                  width={'100%'}
+                  textAlign={'center'}
+                >
+                  <Img
+                    src={data.offer.image}
+                    alt={data.offer.title}
+                    height={'240px'}
+                  />
+                  <Box
+                    margin={['2rem']}
+                  >
+                    <Button
+                      as={Link}
+                      href={`/api/redir/${data.offer.id}`}
+                      target='_blank'
+                      rightIcon={<FiExternalLink />}
+                      colorScheme={'green'}
+                      width={['100%']}
+                      size={['lg']}
+                    >
+                      Abrir na loja
+                    </Button>
+                  </Box>
+                </VStack>
                 <Flex
                   alignItems={'center'}
                   width={'100%'}
@@ -171,14 +201,16 @@ export default function SingleProductPage(data: SingleProductResponse) {
                   margin={{ xl: '1rem 0' }}
                 >
                   <HStack
-                    margin={{ xl: '1rem 0' }}
+                    margin={['1rem 0']}
                   >
                     <Text
                       color={'gray.400'}
                     >
                       Compartilhe esta oferta:
                     </Text>
-                    <HStack>
+                    <HStack
+                      spacing={['1rem']}
+                    >
                       <FacebookShareButton
                         url={`https://promogate.app${router.asPath}`}
                         quote={data.offer.title}
@@ -206,9 +238,11 @@ export default function SingleProductPage(data: SingleProductResponse) {
                   </Text>
                 </Box>
               </Box>
-              <Box>
+              <Box
+                marginBottom={['2rem', '2rem', 0]}
+              >
                 <VStack
-                  gap={{ xl: '0.5rem' }}
+                  gap={['0.5rem']}
                   top={0}
                   left={0}
                   width={'100%'}

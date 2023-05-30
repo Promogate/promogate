@@ -16,7 +16,8 @@ const montserrat = Montserrat({ subsets: ['latin'], preload: true });
 export function StoreHeader({ props }: StoreHeaderProps) {
   return (
     <Box
-      height={{ xl: '96px' }}
+      height={['80px', '96px']}
+      padding={['1rem']}
       backgroundColor={'black'}
     >
       <Flex
