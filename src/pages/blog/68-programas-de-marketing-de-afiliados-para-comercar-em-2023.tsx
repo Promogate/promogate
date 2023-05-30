@@ -74,9 +74,9 @@ export default function BlogPost({ isLogged }: PageProps) {
             marginTop={['24px', '32px']}
             fontFamily={openSans.style.fontFamily}
           >
-            Cookies são pequenos arquivos de texto que são armazenados no navegador do usuário quando ele visita um site.
-            Eles desempenham um papel importante na coleta e armazenamento de informações sobre as interações dos usuários
-            com um determinado site.
+            Você sabia que o Marketing de Performance ou programas de afiliados é muito mais que vender infoprodutos e 
+            cursos de como vender cursos? Vou te mostrar o caminho de como você pode, investindo somente tempo e 
+            esforço, gerar renda extra que pode até se tornar sua renda principal.
           </Text>
           <Text
             fontWeight={'normal'}
