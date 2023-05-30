@@ -92,7 +92,8 @@ export default function SingleProductPage(data: SingleProductResponse) {
       </Head>
       <StoreHeader props={{
         store_image: data.offer.resources.user_profile.store_image,
-        store_name: data.offer.resources.user_profile.store_name
+        store_name: data.offer.resources.user_profile.store_name,
+        store_name_display: data.offer.resources.user_profile.store_name
       }} />
       <Box
         as='article'

@@ -1,9 +1,11 @@
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import { Montserrat } from 'next/font/google';
+import Link from 'next/link';
 
 type StoreHeaderProps = {
   props: {
     store_image: string;
+    store_name_display: string;
     store_name: string;
   }
 }
@@ -18,7 +20,8 @@ export function StoreHeader({ props }: StoreHeaderProps) {
       backgroundColor={'black'}
     >
       <Flex
-        height={'100%'}
+        as={Link}
+        href={`/${props.store_name}`}        height={'100%'}
         width={['100%']}
         alignItems={'center'}
         maxWidth={{ xl: '1170px' }}
@@ -32,7 +35,7 @@ export function StoreHeader({ props }: StoreHeaderProps) {
           color={'gray.50'}
           textTransform={['capitalize']}
         >
-          {props.store_name}
+          {props.store_name_display}
         </Heading>
       </Flex>
     </Box>
