@@ -82,7 +82,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
     const price = makeCurrencyStringReadable(data.price);
     const old_price = makeCurrencyStringReadable(data.old_price);
 
-    await api.put(`/resources/${user.user_profile.resources.id}/offer/${id}`, {
+    await api.put(`/resources/${user.user_profile.resources.id}/offer/${id}/update`, {
       ...data,
       price,
       old_price
