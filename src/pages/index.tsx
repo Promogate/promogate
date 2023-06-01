@@ -219,11 +219,11 @@ export default function Home({ isLogged }: HomepageProps) {
                 overflow={'hidden'}
                 margin={['40px auto', '0 auto']}
               >
-                <Image src='/novo_promogate.png' alt='Loja Promogate' fill />
+                <Image src='/achei-barato.webp' alt='Loja Promogate' fill />
               </Box>
               <Button
                 as={Link}
-                href={'/promogate'}
+                href={'/achei-barato'}
                 target='_blank'
                 maxWidth={'max-content'}
                 backgroundColor={'#5528FF'}

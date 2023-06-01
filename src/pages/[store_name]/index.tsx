@@ -45,7 +45,12 @@ export default function Home({ store_name }: SingleStoreProps) {
         <Head>
           <title>Promogate</title>
         </Head>
-        <StoreHeader props={{ store_image: '/promogate-logo.svg', store_name_display: 'Loja Parceira', store_name: 'Loja Parceira' }} />
+        <StoreHeader props={{
+          store_image: '/promogate-logo.svg',
+          store_name_display: 'Loja Parceira',
+          store_name: 'Loja Parceira',
+          social_media: null
+        }} />
         <Grid
           placeItems={'center'}
           height={'100vh'}
@@ -71,7 +76,12 @@ export default function Home({ store_name }: SingleStoreProps) {
           as='main'
           backgroundColor={'gray.50'}
         >
-          <StoreHeader props={{ store_image: data.data.store_image, store_name_display: data.data.store_name_display, store_name: data.data.store_name }} />
+          <StoreHeader props={{
+            store_image: data.data.store_image,
+            store_name_display: data.data.store_name_display,
+            store_name: data.data.store_name,
+            social_media: data.data.social_media
+          }} />
           <Grid
             gridTemplateColumns={{ xl: '9fr 3fr' }}
             maxWidth={['1170px']}
