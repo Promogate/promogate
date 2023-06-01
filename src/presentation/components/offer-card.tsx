@@ -1,6 +1,6 @@
 import { OfferWithClicks } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
-import { Badge, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Badge, Box, Button, Flex, HStack, Heading, Tag, Text } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
@@ -24,96 +24,84 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
       href={offerUrl}
       target='_blank'
       borderRadius={['lg']}
-      padding={['1rem']}
       backgroundColor={'white'}
       flexDirection={'column'}
-      _hover={{
-        transform: 'scale(1.025)',
-      }}
-      transition={'175ms ease-in-out'}
+      justifyContent={['space-between']}
       fontFamily={inter.style.fontFamily}
-      position={'relative'}
     >
-      {data.is_featured ? (
-        <Box
-
-          position={'absolute'}
+      <Flex
+        padding={['1rem']}
+        flexDirection={'column'}
+        flex={1}
+      >
+        <HStack
+          spacing={['0.5rem']}
+          marginBottom={['1rem ']}
         >
-          <Badge
-            variant={'outline'}
-            colorScheme={'green'}
+          <Tag
+            colorScheme={'blackAlpha'}
             fontWeight={['normal']}
             textTransform={['none']}
           >
-            Destaque
-          </Badge>
-        </Box>
-      ) : null}
-      <Box
-        borderRadius={['1rem']}
-        overflow={['hidden']}
-        height={['160px']}
-      >
+            {data.store_name}
+          </Tag>
+          {data.is_featured ? (
+            <Badge
+              variant={'outline'}
+              colorScheme={'green'}
+              fontWeight={['normal']}
+              textTransform={['none']}
+            >
+              Destaque
+            </Badge>
+          ) : null}
+        </HStack>
+        <Box
+          borderRadius={['1rem']}
+          overflow={['hidden']}
+          height={['160px']}
+        >
 
-        <img
-          className='object-contain h-full w-full'
-          src={data.image}
-          alt={data.title}
-        />
-      </Box>
-      <Heading
-        as='h3'
-        margin={['0.5rem 0']}
-        fontSize={['1.275rem', '1rem']}
-        fontWeight={['medium']}
-        color={['gray.600']}
-        flex={1}
-      >
-        {data.title}
-      </Heading>
-      <Box
-        margin={['1rem 0']}
-      >
-        <Text
-          as='span'
-          color={'red.400'}
-          textDecoration={'line-through'}
-          fontSize={['xs']}
+          <img
+            className='object-contain h-full w-full'
+            src={data.image}
+            alt={data.title}
+          />
+        </Box>
+        <Heading
+          as='h3'
+          margin={['0.5rem 0']}
+          fontSize={['1.275rem', '1rem']}
+          fontWeight={['medium']}
+          color={['gray.600']}
+          flex={1}
         >
-          {data.old_price && data.old_price !== '0' ? parseCurrency(data.old_price) : null}
-        </Text>
-        <Text
-          color={'gray.700'}
-          fontSize={['lg']}
-          fontWeight={['semibold']}
-        >
-          {parseCurrency(data.price)}
-        </Text>
-      </Box>
-      <Flex
-        width={['100%']}
-        justifyContent={['flex-end']}
-        gap={['1rem', '1rem', '1.5rem']}
-        flexDir={['column', 'column', 'row']}
-      >
-        <Button
-          colorScheme='purple'
-          display={['block', 'block', 'none']}
-        >
-          Ver Oferta
-        </Button>
-        <Flex
-          width={['100%']}
-          justifyContent={['space-between']}
-          alignItems={['center']}
+          {data.title}
+        </Heading>
+        <Box
+          margin={['1rem 0']}
         >
           <Text
             as='span'
-            color={'gray.400'}
+            color={'red.400'}
+            textDecoration={'line-through'}
             fontSize={['xs']}
           >
-            {data.store_name}
+            {data.old_price && data.old_price !== '0' ? parseCurrency(data.old_price) : null}
           </Text>
+          <Text
+            color={'gray.700'}
+            fontSize={['xl']}
+            fontWeight={['semibold']}
+          >
+            {parseCurrency(data.price)}
+          </Text>
+        </Box>
+        <Flex
+          width={['100%']}
+          justifyContent={['flex-end']}
+          gap={['1rem', '1rem', '1.5rem']}
+        >
           <Text
             as='span'
             color={'gray.400'}
@@ -123,6 +111,12 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
           </Text>
         </Flex>
       </Flex>
+      <Button
+        colorScheme='purple'
+        borderRadius={['0 0 0.5rem 0.5rem']}
+      >
+        Ver Oferta
+      </Button>
     </Flex>
   )
 }
