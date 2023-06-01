@@ -1,6 +1,6 @@
 import { OfferWithClicks } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
-import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Badge, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
@@ -64,14 +64,16 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
       <Heading
         as='h3'
         margin={['0.5rem 0']}
-        fontSize={['1rem']}
+        fontSize={['1.275rem', '1rem']}
         fontWeight={['medium']}
         color={['gray.600']}
         flex={1}
       >
         {data.title}
       </Heading>
-      <Box>
+      <Box
+        margin={['1rem 0']}
+      >
         <Text
           as='span'
           color={'red.400'}
@@ -91,14 +93,35 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
       <Flex
         width={['100%']}
         justifyContent={['flex-end']}
+        gap={['1rem', '1rem', '1.5rem']}
+        flexDir={['column', 'column', 'row']}
       >
-        <Text
-          as='span'
-          color={'gray.400'}
-          fontSize={['xs']}
+        <Button
+          colorScheme='purple'
+          display={['block', 'block', 'none']}
         >
-          {data._count.offer_clicks > 1 ? `${data._count.offer_clicks} visualizações` : `${data._count.offer_clicks} visualização`}
-        </Text>
+          Ver Oferta
+        </Button>
+        <Flex
+          width={['100%']}
+          justifyContent={['space-between']}
+          alignItems={['center']}
+        >
+          <Text
+            as='span'
+            color={'gray.400'}
+            fontSize={['xs']}
+          >
+            {data.store_name}
+          </Text>
+          <Text
+            as='span'
+            color={'gray.400'}
+            fontSize={['xs']}
+          >
+            {data._count.offer_clicks > 1 ? `${data._count.offer_clicks} visualizações` : `${data._count.offer_clicks} visualização`}
+          </Text>
+        </Flex>
       </Flex>
     </Flex>
   )
