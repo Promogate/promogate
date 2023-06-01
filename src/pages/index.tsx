@@ -231,7 +231,7 @@ export default function Home({ isLogged }: HomepageProps) {
                 color={'white'}
                 rightIcon={<FiExternalLink />}
               >
-                Visite nossa loja
+                Visite uma Loja Parceira
               </Button>
             </GridItem>
           </Grid>

@@ -49,7 +49,6 @@ export default function Home({ store_name }: SingleStoreProps) {
           store_image: '/promogate-logo.svg',
           store_name_display: 'Loja Parceira',
           store_name: 'Loja Parceira',
-          social_media: null
         }} />
         <Grid
           placeItems={'center'}

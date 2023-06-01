@@ -15,7 +15,7 @@ type StoreHeaderProps = {
     store_image: string;
     store_name_display: string;
     store_name: string;
-    social_media: SocialMedia
+    social_media?: SocialMedia
   }
 }
 
