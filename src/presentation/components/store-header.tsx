@@ -1,5 +1,6 @@
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import { Montserrat } from 'next/font/google';
+import Image from 'next/image';
 import Link from 'next/link';
 
 type SocialMedia = ({
@@ -41,15 +42,38 @@ export function StoreHeader({ props }: StoreHeaderProps) {
         gap={['1rem']}
         justifyContent={['space-between']}
       >
-        <Heading
-          as={'h1'}
-          fontSize={['1.5rem']}
-          fontFamily={montserrat.style.fontFamily}
-          color={'gray.50'}
-          textTransform={['capitalize']}
+        <Flex
+          alignItems={'center'}
+          gap={['1rem']}
         >
-          {props.store_name_display}
-        </Heading>
+          {
+            props.store_image ? (
+              <Box
+                position='relative'
+                width={'64px'}
+                height={'64px'}
+                rounded={'full'}
+                overflow={'hidden'}
+              >
+                <Image
+                  src={props.store_image}
+                  alt={props.store_name_display}
+                  fill
+                  priority
+                />
+              </Box>
+            ) : null
+          }
+          <Heading
+            as={'h1'}
+            fontSize={['1.5rem']}
+            fontFamily={montserrat.style.fontFamily}
+            color={'gray.50'}
+            textTransform={['capitalize']}
+          >
+            {props.store_name_display}
+          </Heading>
+        </Flex>
       </Flex>
     </Box>
   )
