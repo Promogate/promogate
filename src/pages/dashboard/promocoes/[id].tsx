@@ -146,7 +146,11 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
   }
 
   const shortlinkMutation = useMutation(async (): Promise<void> => {
-    await api.put(`resources/offer/${id}/shortlink`)
+    await api.put(`resources/offer/${id}/shortlink`, {
+      headers: {
+        Authorization: `Bearer ${cookies['promogate.token']}`
+      }
+    })
   }, {
     onSuccess: () => {
       query.invalidateQueries(['offer', id]);
