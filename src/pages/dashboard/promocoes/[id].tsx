@@ -20,6 +20,7 @@ import {
   ModalOverlay,
   Spinner,
   Textarea,
+  useClipboard,
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
@@ -31,6 +32,7 @@ import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
 import { Fragment } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { RiFileCopyLine } from 'react-icons/ri'
 import { TfiAngleLeft } from 'react-icons/tfi'
 
 type SingleOfferPageProps = {
@@ -50,6 +52,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
   const { id } = router.query as { id: string };
   const deletePopup = useDisclosure();
   const query = useQueryClient();
+  const { onCopy, value, setValue, hasCopied } = useClipboard('');
 
   const { data, isLoading } = useQuery(['offer', id], async () => {
     const { data } = await api.get<SingleOfferPageProps>(`/resources/${user.user_profile.resources.id}/offer/${id}`, {
@@ -57,6 +60,8 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
+
+    setValue(data.offer.short_link);
 
     return data
   }, {
@@ -114,7 +119,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
   }
 
   const deleteMutation = useMutation(async () => {
-    await api.delete(`/resources/offer/${id}`,{
+    await api.delete(`/resources/offer/${id}`, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
@@ -139,6 +144,28 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
   const handleDeleteOffer = async () => {
     await deleteMutation.mutateAsync();
   }
+
+  const shortlinkMutation = useMutation(async (): Promise<void> => {
+    await api.put(`resources/offer/${id}/shortlink`)
+  }, {
+    onSuccess: () => {
+      query.invalidateQueries(['offer', id]);
+      toast({
+        status: 'success',
+        description: 'Shortlink atualizado com sucesso!'
+      });
+    },
+    onError: (e: any) => {
+      toast({
+        status: 'error',
+        description: e.message
+      })
+    }
+  });
+
+  const handleShortlinkUpdate = async (): Promise<void> => {
+    await shortlinkMutation.mutateAsync();
+  };
 
   return (
     <Fragment>
@@ -233,13 +260,34 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
                   {...register('expiration_date')}
                 />
               </FormControl>
+              <FormControl>
+                <FormLabel>Shortlink</FormLabel>
+                <Flex gap={['0.5rem']}>
+                  <Input
+                    readOnly
+                    value={data?.offer.short_link}
+                    type='text'
+                  />
+                  <Button
+                    onClick={handleShortlinkUpdate}
+                    isLoading={shortlinkMutation.isLoading}
+                  >
+                    Atualizar
+                  </Button>
+                  <IconButton
+                    aria-label='Copiar shortlink'
+                    onClick={onCopy}
+                    icon={<RiFileCopyLine />}
+                  />
+                </Flex>
+              </FormControl>
               <FormControl
                 as={GridItem}
                 colSpan={[1, 1, 2]}
                 position={'relative'}
               >
                 <FormLabel>Descrição (Opcional)</FormLabel>
-                <Textarea 
+                <Textarea
                   {...register('description')}
                 />
               </FormControl>

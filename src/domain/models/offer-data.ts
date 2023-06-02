@@ -1,30 +1,31 @@
 export type OfferDataInput = {
-  image: string,
-  title: string,
-  price: string,
-  old_price: string,
-  destination_link: string,
-  store_name: string,
-  expiration_date: string,
-  description: string
+  image: string;
+  title: string;
+  price: string;
+  old_price: string;
+  destination_link: string;
+  store_name: string;
+  expiration_date: string;
+  description: string;
 }
 
 export type Offer = {
-  id: string,
-  image: string,
-  title: string,
-  old_price: string,
-  price: string,
-  destination_link: string,
-  store_image: string,
-  store_name: string,
-  description: string,
-  expiration_date: string,
-  created_at: string,
-  is_on_showcase: boolean,
-  is_featured: boolean,
-  is_free_shipping: boolean,
-  resources_id: string
+  id: string;
+  image: string;
+  title: string;
+  old_price: string;
+  price: string;
+  destination_link: string;
+  store_image: string;
+  store_name: string;
+  description: string;
+  expiration_date: string;
+  created_at: string;
+  is_on_showcase: boolean;
+  is_featured: boolean;
+  is_free_shipping: boolean;
+  resources_id: string;
+  short_link: string;
 }
 
 export type OfferWithClicks = Offer & {
