@@ -2,7 +2,6 @@ import { PromogateContext } from '@/application/contexts';
 import { getDashboardOffers } from '@/application/utils';
 import { api } from '@/config';
 import { MeResponse, RequestError } from '@/domain/models';
-import { parseAmbientUrl } from '@/main/utils';
 import { DashboardLayout, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
@@ -461,19 +460,19 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   spacing={['0.5rem']}
                                 >
                                   <FacebookShareButton
-                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={offer.short_link}
                                     quote={offer.title}
                                   >
                                     <FacebookIcon size={32} />
                                   </FacebookShareButton>
                                   <TelegramShareButton
-                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={offer.short_link}
                                     title={offer.title}
                                   >
                                     <TelegramIcon size={32} />
                                   </TelegramShareButton>
                                   <WhatsappShareButton
-                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={offer.short_link}
                                     title={offer.title}
                                     separator=':: '
                                   >
