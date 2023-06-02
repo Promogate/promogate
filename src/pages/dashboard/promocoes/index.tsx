@@ -182,13 +182,6 @@ export default function OffersPage({ status, user }: OffersPageProps) {
           >
             Promoções
           </Heading>
-          <Button
-            as={Link}
-            href={'/dashboard/promocoes/adicionar'}
-            variant={'outline'}
-          >
-            Adicionar Oferta
-          </Button>
         </Flex>
         <Box
           padding={{ xl: '2rem 0' }}
@@ -197,7 +190,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
           <Grid
             width={['full', 'full', '50%']}
             gridTemplateColumns={['1fr', '1fr 1fr']}
-            margin={['0 0 1rem']}
+            margin={['0 0 2rem']}
             gap={['1rem']}
           >
             <Card
@@ -245,25 +238,42 @@ export default function OffersPage({ status, user }: OffersPageProps) {
               </Skeleton>
             </Card>
           </Grid>
-          <Button
-            margin={['1rem 0']}
-            rightIcon={<RxUpdate />}
-            variant={'outline'}
-            onClick={handleQueryInvalidation}
-            size={['sm']}
+          <Flex
+            width={['100%']}
+            justifyContent={['space-between']}
+            alignItems={['center']}
           >
-            Atualizar ofertas
-          </Button>
-          <Pagination
-            totalCountOfRegisters={data.total_offers}
-            currentPage={page}
-            onPageChange={setPage}
-          />
+            <Flex
+              alignItems={['stretch']}
+              gap={['1rem']}
+
+            >
+              <Button
+                rightIcon={<RxUpdate />}
+                variant={'outline'}
+                onClick={handleQueryInvalidation}
+              >
+                Atualizar ofertas
+              </Button>
+              <Button
+                as={Link}
+                href={'/dashboard/promocoes/adicionar'}
+                variant={'outline'}
+              >
+                Adicionar Oferta
+              </Button>
+            </Flex>
+            <Pagination
+              totalCountOfRegisters={data.total_offers}
+              currentPage={page}
+              onPageChange={setPage}
+            />
+          </Flex>
           <Box
             backgroundColor={'white'}
             padding={{ xl: '2rem 1rem' }}
             borderRadius={{ xl: '1rem' }}
-            marginTop={['1.5rem']}
+            margin={['1.5rem 0']}
           >
             {
               isLoading ? (
