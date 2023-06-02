@@ -2,6 +2,7 @@ import { PromogateContext } from '@/application/contexts';
 import { getDashboardOffers } from '@/application/utils';
 import { api } from '@/config';
 import { MeResponse, RequestError } from '@/domain/models';
+import { parseCurrency } from '@/main/utils';
 import { DashboardLayout, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
@@ -388,7 +389,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   </TelegramShareButton>
                                   <WhatsappShareButton
                                     url={offer.short_link}
-                                    title={offer.title}
+                                    title={`${offer.title} - ${ offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}` }`}
                                     separator=':: '
                                   >
                                     <WhatsappIcon size={32} />
@@ -473,7 +474,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   </TelegramShareButton>
                                   <WhatsappShareButton
                                     url={offer.short_link}
-                                    title={offer.title}
+                                    title={`${offer.title} - ${ offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}` }`}
                                     separator=':: '
                                   >
                                     <WhatsappIcon size={32} />
