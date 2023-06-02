@@ -376,19 +376,19 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   spacing={['1.5rem']}
                                 >
                                   <FacebookShareButton
-                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={offer.short_link}
                                     quote={offer.title}
                                   >
                                     <FacebookIcon size={32} />
                                   </FacebookShareButton>
                                   <TelegramShareButton
-                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={offer.short_link}
                                     title={offer.title}
                                   >
                                     <TelegramIcon size={32} />
                                   </TelegramShareButton>
                                   <WhatsappShareButton
-                                    url={parseAmbientUrl(`${user.user_profile.store_name}/produto/${offer.title}?oid=${offer.id}&utm_click=1&rid=${offer.resources_id}`)}
+                                    url={offer.short_link}
                                     title={offer.title}
                                     separator=':: '
                                   >
