@@ -254,10 +254,16 @@ export default function OffersPage({ status, user }: OffersPageProps) {
           >
             Atualizar ofertas
           </Button>
+          <Pagination
+            totalCountOfRegisters={data.total_offers}
+            currentPage={page}
+            onPageChange={setPage}
+          />
           <Box
             backgroundColor={'white'}
             padding={{ xl: '2rem 1rem' }}
             borderRadius={{ xl: '1rem' }}
+            marginTop={['1.5rem']}
           >
             {
               isLoading ? (
@@ -377,19 +383,19 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                 >
                                   <FacebookShareButton
                                     url={offer.short_link}
-                                    quote={offer.title}
+                                    quote={`${offer.title} %0A ${offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}`}`}
                                   >
                                     <FacebookIcon size={32} />
                                   </FacebookShareButton>
                                   <TelegramShareButton
                                     url={offer.short_link}
-                                    title={offer.title}
+                                    title={`${offer.title} %0A ${offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}`}`}
                                   >
                                     <TelegramIcon size={32} />
                                   </TelegramShareButton>
                                   <WhatsappShareButton
                                     url={offer.short_link}
-                                    title={`${offer.title} - ${ offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}` }`}
+                                    title={`${offer.title} - ${offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}`}`}
                                     separator=':: '
                                   >
                                     <WhatsappIcon size={32} />
@@ -462,19 +468,19 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                 >
                                   <FacebookShareButton
                                     url={offer.short_link}
-                                    quote={offer.title}
+                                    quote={`${offer.title} %0A ${offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}`}`}
                                   >
                                     <FacebookIcon size={32} />
                                   </FacebookShareButton>
                                   <TelegramShareButton
                                     url={offer.short_link}
-                                    title={offer.title}
+                                    title={`${offer.title} %0A ${offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}`}`}
                                   >
                                     <TelegramIcon size={32} />
                                   </TelegramShareButton>
                                   <WhatsappShareButton
                                     url={offer.short_link}
-                                    title={`${offer.title} - ${ offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}` }`}
+                                    title={`${offer.title} %0A ${offer.old_price ? ` de *${parseCurrency(offer.old_price)}* por *${parseCurrency(offer.price)}*` : `por ${parseCurrency(offer.price)}`}`}
                                     separator=':: '
                                   >
                                     <WhatsappIcon size={32} />

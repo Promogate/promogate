@@ -212,20 +212,21 @@ export default function SingleProductPage(data: SingleProductResponse) {
                       spacing={['1rem']}
                     >
                       <FacebookShareButton
-                        url={`https://promogate.app${router.asPath}`}
-                        quote={data.offer.title}
+                        url={data.offer.short_link}
+                        quote={`${data.offer.title} %0A ${ data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}` }`}
                       >
                         <FacebookIcon size={24} round />
                       </FacebookShareButton>
                       <WhatsappShareButton
-                        url={`https://promogate.app${router.asPath}`}
-                        title={data.offer.title}
+                        url={data.offer.short_link}
+                        title={`${data.offer.title} %0A ${ data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}` }`}
                         separator=':: '
                       >
                         <WhatsappIcon size={24} round />
                       </WhatsappShareButton>
                       <TelegramShareButton
-                        url={`https://promogate.app${router.asPath}`}
+                        url={data.offer.short_link}
+                        title={`${data.offer.title} %0A ${ data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}` }`}
                       >
                         <TelegramIcon size={24} round />
                       </TelegramShareButton>
