@@ -2,17 +2,6 @@ import { Box, Grid, Spinner } from '@chakra-ui/react'
 import Head from 'next/head'
 import Image from 'next/image'
 
-// type PageLoaderProps = {
-//   children: JSX.Element,
-//   isLoading: boolean
-// }
-
-// export function PageLoader({ children }: PageLoaderProps) {
-//   return (
-//     {children}
-//   )
-// }
-
 export function PageLoader() {
   return (
     <>

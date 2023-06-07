@@ -40,7 +40,11 @@ export function SocialIcons({ social }: SocialIconsProps) {
                 size={['xs', 'sm']}
                 aria-label={`Rede social ${element[0]}`}
                 icon={icons[`${element[0]}`]}
-                colorScheme={`${element[0]}`}
+                backgroundColor={'gray.400'}
+                color={'white'}
+                _hover={{
+                  backgroundColor: 'gray.500'
+                }}
               />
             </Link>
           )

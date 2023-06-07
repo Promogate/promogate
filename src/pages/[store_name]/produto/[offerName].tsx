@@ -83,201 +83,202 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property='twitter:image' content={data.offer.image} />
         <meta property='twitter:creator' content={data.offer.store_name} />
         <meta property='fb:app_id' content="106988875737461" />
-        
+
         <script
           key="structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </Head>
-      <StoreHeader props={{
-        store_image: data.offer.resources.user_profile.store_image,
-        store_name: data.offer.resources.user_profile.store_name,
-        store_name_display: data.offer.resources.user_profile.store_name
-      }} />
-      <Box
-        as='article'
-        fontFamily={openSans.style.fontFamily}
-        padding={['1rem 1rem', '1rem 1rem', 0]}
-        backgroundColor={'blackAlpha.50'}
-      >
-        <Grid
-          maxWidth={['1170px']}
-          minHeight={['100vh']}
-          margin={'0 auto'}
-          gridTemplateColumns={['1fr', '1fr', 'auto 300px']}
-          gap={{ xl: '24px' }}
-          padding={{ xl: '1rem 0' }}
+      <Box backgroundColor={'blackAlpha.50'}>
+        <StoreHeader props={{
+          store_image: data.offer.resources.user_profile.store_image,
+          store_name: data.offer.resources.user_profile.store_name,
+          store_name_display: data.offer.resources.user_profile.store_name,
+          social_media: data.offer.resources.user_profile.social_media
+        }} />
+        <Box
+          as='article'
+          fontFamily={openSans.style.fontFamily}
+          padding={['1rem 1rem', '1rem 1rem', 0]}
         >
-          <Box
-            borderRadius={['lg']}
-            backgroundColor={'white'}
-            height={'max-content'}
+          <Grid
+            maxWidth={['1170px']}
+            minHeight={['100vh']}
+            margin={'0 auto'}
+            gridTemplateColumns={['1fr', '1fr', 'auto 300px']}
+            gap={{ xl: '24px' }}
+            padding={{ xl: '1rem 0' }}
           >
-            <Grid
-              gridTemplateColumns={['1fr', '1fr', '8fr 4fr']}
-              gap={['24px']}
+            <Box
+              borderRadius={['lg']}
+              backgroundColor={'white'}
+              height={'max-content'}
             >
-              <Box
-                padding={['1rem']}
+              <Grid
+                gridTemplateColumns={['1fr', '1fr', '8fr 4fr']}
+                gap={['24px']}
               >
-                <Heading
-                  as='h1'
-                  fontSize={['1.3rem', '2xl']}
-                  fontFamily={montserrat.style.fontFamily}
-                  padding={{ xl: '0 0 1rem 0' }}
+                <Box
+                  padding={['1rem']}
                 >
-                  {data.offer.title}
-                </Heading>
-                <VStack
-                  display={['flex', 'none']}
-                  marginTop={['1.5rem']}
-                  gap={['0.5rem']}
-                  top={0}
-                  left={0}
-                  width={'100%'}
-                  textAlign={'center'}
-                >
-                  <Img
-                    src={data.offer.image}
-                    alt={data.offer.title}
-                    height={'240px'}
-                  />
-                  <Box
-                    margin={['2rem']}
+                  <Heading
+                    as='h1'
+                    fontSize={['1.3rem', '2xl']}
+                    fontFamily={montserrat.style.fontFamily}
+                    padding={{ xl: '0 0 1rem 0' }}
                   >
-                    <Button
-                      as={Link}
-                      href={`/api/redir/${data.offer.id}`}
-                      target='_blank'
-                      rightIcon={<FiExternalLink />}
-                      colorScheme={'green'}
-                      width={['100%']}
-                      size={['lg']}
-                    >
-                      Abrir na loja
-                    </Button>
-                  </Box>
-                </VStack>
-                <Flex
-                  alignItems={'center'}
-                  width={'100%'}
-                  justifyContent={'space-between'}
-                  margin={['1rem 0', '1rem 0', 0]}
-                >
-                  <Flex
-                    gap={{ xl: '0.5rem' }}
-                    flexDirection={['column-reverse', 'column', 'row']}
+                    {data.offer.title}
+                  </Heading>
+                  <VStack
+                    display={['flex', 'none']}
+                    marginTop={['1.5rem']}
+                    gap={['0.5rem']}
+                    top={0}
+                    left={0}
+                    width={'100%'}
+                    textAlign={'center'}
                   >
-                    <Heading
-                      as={'h2'}
-                      fontFamily={montserrat.style.fontFamily}
-                      fontSize={{ xl: '2xl' }}
+                    <Img
+                      src={data.offer.image}
+                      alt={data.offer.title}
+                      height={'240px'}
+                    />
+                    <Box
+                      margin={['2rem']}
                     >
-                      {parseCurrency(data.offer.price)}
-                    </Heading>
-                    {data.offer.old_price && (
-                      <Text
-                        as={'span'}
-                        color={'red.400'}
-                        textDecoration={'line-through'}
+                      <Button
+                        as={Link}
+                        href={`/api/redir/${data.offer.id}`}
+                        target='_blank'
+                        rightIcon={<FiExternalLink />}
+                        colorScheme={'green'}
+                        width={['100%']}
+                        size={['lg']}
                       >
-                        {parseCurrency(data.offer.old_price)}
-                      </Text>
-                    )}
-                  </Flex>
+                        Abrir na loja
+                      </Button>
+                    </Box>
+                  </VStack>
                   <Flex
                     alignItems={'center'}
-                    fontSize={['0.825rem']}
-                    gap={{ xl: '0.25rem' }}
+                    width={'100%'}
+                    justifyContent={'space-between'}
+                    margin={['1rem 0', '1rem 0', 0]}
                   >
-                    <Text>
-                      Oferta vista {data.offer._count.offer_clicks} vezes
-                    </Text>
+                    <Flex
+                      gap={{ xl: '0.5rem' }}
+                      flexDirection={['column-reverse', 'column', 'row']}
+                    >
+                      <Heading
+                        as={'h2'}
+                        fontFamily={montserrat.style.fontFamily}
+                        fontSize={{ xl: '2xl' }}
+                      >
+                        {parseCurrency(data.offer.price)}
+                      </Heading>
+                      {data.offer.old_price && (
+                        <Text
+                          as={'span'}
+                          color={'red.400'}
+                          textDecoration={'line-through'}
+                        >
+                          {parseCurrency(data.offer.old_price)}
+                        </Text>
+                      )}
+                    </Flex>
+                    <Flex
+                      alignItems={'center'}
+                      fontSize={['0.825rem']}
+                      gap={{ xl: '0.25rem' }}
+                    >
+                      <Text>
+                        Oferta vista {data.offer._count.offer_clicks} vezes
+                      </Text>
+                    </Flex>
                   </Flex>
-                </Flex>
-                <Divider orientation='horizontal' />
-                <Box
-                  margin={{ xl: '1rem 0' }}
-                >
-                  <HStack
-                    margin={['1rem 0']}
-                  >
-                    <Text
-                      color={'gray.400'}
-                    >
-                      Compartilhe esta oferta:
-                    </Text>
-                    <HStack
-                      spacing={['1rem']}
-                    >
-                      <FacebookShareButton
-                        url={data.offer.short_link}
-                        quote={`${data.offer.title} %0A ${ data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}` }`}
-                      >
-                        <FacebookIcon size={24} round />
-                      </FacebookShareButton>
-                      <WhatsappShareButton
-                        url={data.offer.short_link}
-                        title={`${data.offer.title} %0A ${ data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}` }`}
-                        separator=':: '
-                      >
-                        <WhatsappIcon size={24} round />
-                      </WhatsappShareButton>
-                      <TelegramShareButton
-                        url={data.offer.short_link}
-                        title={`${data.offer.title} %0A ${ data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}` }`}
-                      >
-                        <TelegramIcon size={24} round />
-                      </TelegramShareButton>
-                    </HStack>
-                  </HStack>
-                  <Text
-                    fontSize={{ xl: '0.9rem' }}
-                  >
-                    {data.offer.description}
-                  </Text>
-                </Box>
-              </Box>
-              <Box
-                marginBottom={['2rem', '2rem', 0]}
-              >
-                <VStack
-                  gap={['0.5rem']}
-                  top={0}
-                  left={0}
-                  width={'100%'}
-                  textAlign={'center'}
-                >
-                  <Img
-                    src={data.offer.image}
-                    alt={data.offer.title}
-                    height={'240px'}
-                  />
+                  <Divider orientation='horizontal' />
                   <Box
-                    margin={['2rem']}
+                    margin={{ xl: '1rem 0' }}
                   >
-                    <Button
-                      as={Link}
-                      href={`/api/redir/${data.offer.id}`}
-                      target='_blank'
-                      rightIcon={<FiExternalLink />}
-                      colorScheme={'green'}
-                      width={['100%']}
-                      size={['lg']}
+                    <HStack
+                      margin={['1rem 0']}
                     >
-                      Abrir na loja
-                    </Button>
+                      <Text
+                        color={'gray.400'}
+                      >
+                        Compartilhe esta oferta:
+                      </Text>
+                      <HStack
+                        spacing={['1rem']}
+                      >
+                        <FacebookShareButton
+                          url={data.offer.short_link}
+                          quote={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
+                        >
+                          <FacebookIcon size={24} round />
+                        </FacebookShareButton>
+                        <WhatsappShareButton
+                          url={data.offer.short_link}
+                          title={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
+                          separator=':: '
+                        >
+                          <WhatsappIcon size={24} round />
+                        </WhatsappShareButton>
+                        <TelegramShareButton
+                          url={data.offer.short_link}
+                          title={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
+                        >
+                          <TelegramIcon size={24} round />
+                        </TelegramShareButton>
+                      </HStack>
+                    </HStack>
+                    <Text
+                      fontSize={{ xl: '0.9rem' }}
+                    >
+                      {data.offer.description}
+                    </Text>
                   </Box>
-                </VStack>
-              </Box>
-            </Grid>
-          </Box>
-          <Grid
-            gap={['1rem']}
-            margin={['1rem', '1rem', 0]}
-          >
-            <Grid gap={['1rem']} marginBottom={['1rem', '1.5rem']}>
+                </Box>
+                <Box
+                  marginBottom={['2rem', '2rem', 0]}
+                >
+                  <VStack
+                    gap={['0.5rem']}
+                    top={0}
+                    left={0}
+                    width={'100%'}
+                    textAlign={'center'}
+                  >
+                    <Img
+                      src={data.offer.image}
+                      alt={data.offer.title}
+                      height={'240px'}
+                    />
+                    <Box
+                      margin={['2rem']}
+                    >
+                      <Button
+                        as={Link}
+                        href={`/api/redir/${data.offer.id}`}
+                        target='_blank'
+                        rightIcon={<FiExternalLink />}
+                        colorScheme={'green'}
+                        width={['100%']}
+                        size={['lg']}
+                      >
+                        Abrir na loja
+                      </Button>
+                    </Box>
+                  </VStack>
+                </Box>
+              </Grid>
+            </Box>
+            <Grid
+              gap={['1rem']}
+              margin={['1rem', '1rem', 0]}
+            >
+              <Grid gap={['1rem']} marginBottom={['1rem', '1.5rem']}>
                 <Box>
                   <Heading
                     fontSize={['1rem']}
@@ -337,35 +338,36 @@ export default function SingleProductPage(data: SingleProductResponse) {
                   </Text>
                 </Box>
               </Grid>
-            <Box
-              position={['sticky']}
-              top={3}
-            >
-              <Link
-                href={'https://promogate.app'}
-                target='_blank'
+              <Box
+                position={['sticky']}
+                top={3}
               >
-                <Box
-                  width={'300px'}
-                  height={'300px'}
-                  position={'relative'}
-                  overflow={'hidden'}
-                  margin={['0 auto']}
+                <Link
+                  href={'https://promogate.app'}
+                  target='_blank'
                 >
-                  <Image
-                    src={'/Quer-alavancar-suas-vendas-como-afiliado.gif'}
-                    alt={'Promogate - Quer alavancar suas vendas como afiliado'}
-                    fill
-                    priority
-                  />
-                </Box>
-              </Link>
-            </Box>
+                  <Box
+                    width={'300px'}
+                    height={'300px'}
+                    position={'relative'}
+                    overflow={'hidden'}
+                    margin={['0 auto']}
+                  >
+                    <Image
+                      src={'/Quer-alavancar-suas-vendas-como-afiliado.gif'}
+                      alt={'Promogate - Quer alavancar suas vendas como afiliado'}
+                      fill
+                      priority
+                    />
+                  </Box>
+                </Link>
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
+        <SingleProductPageContent />
+        <StoreFooter />
       </Box>
-      <SingleProductPageContent />
-      <StoreFooter />
     </Fragment >
   )
 }
