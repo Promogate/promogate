@@ -32,6 +32,24 @@ export default function Home({ isLogged }: HomepageProps) {
       <Head>
         <title>Promogate - Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado</title>
         <meta name="lomadee-verification" content="22803701" />
+        <meta name='robots' content='max-image-preview:large' />
+        <meta property='og:title' content="Promogate" />
+        <meta property='og:description' content="Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado"/>
+        <meta property='og:type' content='site' />
+        <meta property='og:image' content={'/logo_1080x1080.png'} />
+        <meta property="og:image:width" content="1080" />
+        <meta property="og:image:height" content="1080" />
+        <meta property="og:image:alt" content="Promogate - Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado"/>
+        <meta property='og:site_name' content='Promogate' />
+        <meta property='og:locale' content='pt_BR' />
+        <meta property='og:url' content={`https://promogate.app${router.asPath}`} />
+        <meta property='twitter:card' content='summary_large_image' />
+        <meta property='twitter:site' content='@promogate' />
+        <meta property='twitter:title' content="Promogate - Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado" />
+        <meta property='twitter:description' content="Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado" />
+        <meta property='twitter:image' content={'/logo_1080x1080.png'} />
+        <meta property='twitter:creator' content="@promogate" />
+        <meta property='fb:app_id' content="106988875737461" />
       </Head>
       <MainMenu isLogged={isLogged} />
       <Box
