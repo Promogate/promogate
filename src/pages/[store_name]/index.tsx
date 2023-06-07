@@ -4,6 +4,7 @@ import {
   FeaturedSlider,
   HomeFooter,
   OfferCard,
+  PageLoader,
   StoreFooterContent,
   StoreHeader
 } from '@/presentation/components';
@@ -41,22 +42,7 @@ export default function Home({ store_name }: SingleStoreProps) {
 
   if (!data || isLoading) {
     return (
-      <>
-        <Head>
-          <title>Promogate</title>
-        </Head>
-        <StoreHeader props={{
-          store_image: '/promogate-logo.svg',
-          store_name_display: 'Loja Parceira',
-          store_name: 'Loja Parceira',
-        }} />
-        <Grid
-          placeItems={'center'}
-          height={'100vh'}
-        >
-          <Spinner />
-        </Grid>
-      </>
+      <PageLoader />
     )
   } else {
 
