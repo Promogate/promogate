@@ -28,13 +28,13 @@ export type FetchStoreOffersResponse = {
     admitad_verification: string | null,
     role: string,
     user_id: string,
-    social_media: ({
-      facebook: string | null;
-      whatsapp: string | null;
-      instagram: string | null;
-      telegram: string | null;
-      twitter: string | null;
-    } | null),
+    social_media: {
+      facebook?: string;
+      whatsapp?: string;
+      instagram?: string;
+      telegram?: string;
+      twitter?: string;
+    },
     resources: {
       offers: OfferWithClicks[]
     }
