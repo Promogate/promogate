@@ -56,6 +56,23 @@ export default function Home({ store_name }: SingleStoreProps) {
           </title>
           <meta name="lomadee-verification" content={data.data.lomadee_source_id as string} />
           <meta name="verify-admitad" content={data.data.admitad_verification as string} />
+          <meta property='og:title' content={`Promogate - ${data.data.store_name_display}`} />
+          <meta property='og:description' content="Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado" />
+          <meta property='og:type' content='site' />
+          <meta property='og:image' content={data.data.store_image} />
+          <meta property="og:image:width" content="1080" />
+          <meta property="og:image:height" content="1080" />
+          <meta property="og:image:alt" content="Promogate - Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado" />
+          <meta property='og:site_name' content='Promogate' />
+          <meta property='og:locale' content='pt_BR' />
+          <meta property='og:url' content={`https://promogate.app/${data.data.store_name}`} />
+          <meta property='twitter:card' content='summary_large_image' />
+          <meta property='twitter:site' content='@promogate' />
+          <meta property='twitter:title' content={data.data.store_name} />
+          <meta property='twitter:description' content="Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado" />
+          <meta property='twitter:image' content={data.data.store_image}  />
+          <meta property='twitter:creator' content="@promogate" />
+          <meta property='fb:app_id' content="106988875737461" />
         </Head>
         <Box
           as='main'
