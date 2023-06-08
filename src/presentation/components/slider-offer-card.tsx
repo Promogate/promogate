@@ -1,6 +1,6 @@
 import { OfferWithClicks } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
-import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Badge, Box, Flex, HStack, Heading, Tag, Text } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
@@ -33,13 +33,20 @@ export function SliderOfferCard({ data, storeName }: OfferCardProps) {
       transition={'175ms ease-in-out'}
       fontFamily={inter.style.fontFamily}
       position={'relative'}
-      justifyContent={'space-between'}
+      minHeight={['424px']}
     >
-      {data.is_featured ? (
-        <Box
-
-          position={'absolute'}
+      <HStack
+        spacing={['0.5rem']}
+        marginBottom={['1rem ']}
+      >
+        <Tag
+          colorScheme={'blackAlpha'}
+          fontWeight={['normal']}
+          textTransform={['none']}
         >
+          {data.store_name}
+        </Tag>
+        {data.is_featured ? (
           <Badge
             variant={'outline'}
             colorScheme={'green'}
@@ -48,8 +55,8 @@ export function SliderOfferCard({ data, storeName }: OfferCardProps) {
           >
             Destaque
           </Badge>
-        </Box>
-      ) : null}
+        ) : null}
+      </HStack>
       <Box
         borderRadius={['1rem']}
         overflow={['hidden']}
@@ -62,32 +69,41 @@ export function SliderOfferCard({ data, storeName }: OfferCardProps) {
           alt={data.title}
         />
       </Box>
-      <Heading
-        as='h3'
-        margin={['0.5rem 0']}
-        fontSize={['1rem']}
-        fontWeight={['medium']}
-        color={['gray.600']}
+      <Flex
+        flexDirection={['column']}
+        flex={1}
       >
-        {data.title}
-      </Heading>
-      <Box>
-        <Text
-          as='span'
-          color={'red.400'}
-          textDecoration={'line-through'}
-          fontSize={['xs']}
+        <Flex
+          flex={1}
         >
-          {data.old_price && data.old_price !== '0' ? parseCurrency(data.old_price) : null}
-        </Text>
-        <Text
-          color={'gray.700'}
-          fontSize={['lg']}
-          fontWeight={['semibold']}
-        >
-          {parseCurrency(data.price)}
-        </Text>
-      </Box>
+          <Heading
+            as='h3'
+            margin={['0.5rem 0']}
+            fontSize={['1rem']}
+            fontWeight={['medium']}
+            color={['gray.600']}
+          >
+            {data.title}
+          </Heading>
+        </Flex>
+        <Box>
+          <Text
+            as='span'
+            color={'red.400'}
+            textDecoration={'line-through'}
+            fontSize={['xs']}
+          >
+            {data.old_price && data.old_price !== '0' ? parseCurrency(data.old_price) : null}
+          </Text>
+          <Text
+            color={'gray.700'}
+            fontSize={['lg']}
+            fontWeight={['semibold']}
+          >
+            {parseCurrency(data.price)}
+          </Text>
+        </Box>
+      </Flex>
       <Flex
         width={['100%']}
         justifyContent={['flex-end']}

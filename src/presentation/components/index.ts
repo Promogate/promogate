@@ -11,6 +11,7 @@ export * from './page-loader';
 export * from './pagination';
 export * from './single-production-page-content';
 export * from './slider';
+export * from './slider-offer-card';
 export * from './store-footer';
 export * from './store-footer-content';
 export * from './store-header';

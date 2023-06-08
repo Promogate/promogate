@@ -1,6 +1,7 @@
 import { PromogateContext } from '@/application/contexts';
 import { OfferWithClicks } from '@/domain/models';
 import {
+  FeaturedSlider,
   HomeFooter,
   OfferCard,
   PageLoader,
@@ -74,6 +75,19 @@ export default function Home({ store_name }: SingleStoreProps) {
             gap={{ xl: '1.5rem' }}
           >
             <Box maxWidth={['815px']}>
+              <Heading
+                fontSize={['2xl']}
+                fontFamily={montserrat.style.fontFamily}
+                color={'gray.600'}
+              >
+                Destaque
+              </Heading>
+              <Box
+                margin={['1rem 0']}
+                width={['360px', '768px', 'auto']}
+              >
+                <FeaturedSlider offers={featuredOffers} storeName={data.data.store_name} />
+              </Box>
               <Box
                 display={['none', 'block']}
               >

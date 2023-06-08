@@ -12,7 +12,7 @@ type FeaturedSliderProps = {
 export function FeaturedSlider({ offers, storeName }: FeaturedSliderProps) {
   const variant = useBreakpointValue({
     base: 1,
-    md: 3.5
+    md: 3.5,
   });
 
   const settings: SwiperProps = {
