@@ -45,6 +45,9 @@ export function MainMenu({ isLogged }: MainMenuProps) {
         <Text as={Link} href={'/como-funciona'}>
           Como funciona
         </Text>
+        <Text as={Link} href={'https://blog.promogate.app'} fontSize={['1rem']} target='_blank'>
+          Blog
+        </Text>
       </Flex>
       <Flex
         gap={'16px'}

@@ -66,6 +66,9 @@ export function HomeFooter() {
             <Text as={Link} href={'/como-funciona'} fontSize={['1rem']}>
               Como funciona?
             </Text>
+            <Text as={Link} href={'https://blog.promogate.app'} fontSize={['1rem']} target='_blank'>
+              Blog
+            </Text>
           </GridItem>
           <GridItem
             display='flex'
