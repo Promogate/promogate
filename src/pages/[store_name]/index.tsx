@@ -70,7 +70,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           <meta property='twitter:site' content='@promogate' />
           <meta property='twitter:title' content={data.data.store_name} />
           <meta property='twitter:description' content="Plataforma Digital Gratuita, Métricas e Compartilhamento para o Afiliado" />
-          <meta property='twitter:image' content={data.data.store_image}  />
+          <meta property='twitter:image' content={data.data.store_image} />
           <meta property='twitter:creator' content="@promogate" />
           <meta property='fb:app_id' content="106988875737461" />
         </Head>
@@ -85,11 +85,11 @@ export default function Home({ store_name }: SingleStoreProps) {
             social_media: data.data.social_media
           }} />
           <Grid
-            gridTemplateColumns={{ xl: '9fr 3fr' }}
+            gridTemplateColumns={['1fr', '9fr 3fr']}
             maxWidth={['1170px']}
             margin={['1rem auto']}
             padding={['1rem']}
-            gap={{ xl: '1.5rem' }}
+            gap={['1.5rem']}
           >
             <Box maxWidth={['815px']}>
               <Heading
@@ -99,12 +99,7 @@ export default function Home({ store_name }: SingleStoreProps) {
               >
                 Destaque
               </Heading>
-              <Box
-                margin={['1rem 0']}
-                width={['360px', '768px', 'auto']}
-              >
-                <FeaturedSlider offers={featuredOffers} storeName={data.data.store_name} />
-              </Box>
+              <FeaturedSlider offers={featuredOffers} storeName={data.data.store_name} />
               <Box
                 display={['none', 'block']}
               >
