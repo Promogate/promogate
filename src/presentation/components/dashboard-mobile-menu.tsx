@@ -1,6 +1,5 @@
 import { MeResponse } from '@/domain/models';
 import {
-  Badge,
   Box,
   Drawer,
   DrawerBody,
@@ -19,14 +18,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { destroyCookie } from 'nookies';
-import { AiOutlineCloseCircle, AiOutlineTeam, AiOutlineWhatsApp } from 'react-icons/ai';
-import { BiNetworkChart } from 'react-icons/bi';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { BsGear } from 'react-icons/bs';
 import { FiExternalLink } from 'react-icons/fi';
-import { MdOutlineCategory } from 'react-icons/md';
 import { RiLogoutCircleLine, RiMenu3Line } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
-import { TbDiscount2, TbPlugConnected } from 'react-icons/tb';
+import { TbDiscount2 } from 'react-icons/tb';
 
 const openSans = Open_Sans({ subsets: ['latin'], preload: true });
 
@@ -59,6 +56,7 @@ export function DashboardMobileMenu({ me }: DashboardMobileMenuProps) {
         padding={['2rem 1rem']}
         width={'100%'}
         justifyContent={'space-between'}
+        backgroundColor={['white']}
       >
         <Box
           as={Link}
@@ -167,61 +165,6 @@ export function DashboardMobileMenu({ me }: DashboardMobileMenuProps) {
                 >
                   Promoções
                   <TbDiscount2 />
-                </Flex>
-                <Flex
-                  alignItems={'center'}
-                  gap={'8px'}
-                  color={'gray.300'}
-                >
-                  <Badge ml='1' colorScheme='yellow'>
-                    Em breve
-                  </Badge>
-                  Integrações
-                  <BiNetworkChart />
-                </Flex>
-                <Flex
-                  alignItems={'center'}
-                  gap={'8px'}
-                  color={'gray.300'}
-                >
-                  <Badge ml='1' colorScheme='yellow'>
-                    Em breve
-                  </Badge>
-                  Categorias
-                  <MdOutlineCategory />
-                </Flex>
-                <Flex
-                  alignItems={'center'}
-                  gap={'8px'}
-                  color={'gray.300'}
-                >
-                  <Badge ml='1' colorScheme='yellow'>
-                    Em breve
-                  </Badge>
-                  <TbPlugConnected />
-                  API
-                </Flex>
-                <Flex
-                  alignItems={'center'}
-                  gap={'8px'}
-                  color={'gray.300'}
-                >
-                  <Badge ml='1' colorScheme='yellow'>
-                    Em breve
-                  </Badge>
-                  Team
-                  <AiOutlineTeam />
-                </Flex>
-                <Flex
-                  alignItems={'center'}
-                  gap={'8px'}
-                  color={'gray.300'}
-                >
-                  <Badge ml='1' colorScheme='yellow'>
-                    Em breve
-                  </Badge>
-                  Whatsapp
-                  <AiOutlineWhatsApp />
                 </Flex>
               </Flex>
               <IconButton

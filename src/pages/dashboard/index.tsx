@@ -62,10 +62,11 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
               <Heading
                 as={'h2'}
                 fontSize={['2rem']}
+                marginTop={['1rem']}
                 fontFamily={inter.style.fontFamily}
                 color={'gray.600'}
               >
-                Dashboard
+                Dashboard - {user.user_profile.store_name_display}
               </Heading>
               <Grid
                 gridTemplateColumns={{ xl: 'repeat(4, 1fr)' }}

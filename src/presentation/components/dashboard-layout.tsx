@@ -51,6 +51,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         <Box
           display={['block', 'block', 'none']}
+          position={['sticky']}
+          top={0}
+          zIndex={99}
         >
           <DashboardMobileMenu me={data} />
         </Box>
