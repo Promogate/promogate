@@ -1,5 +1,6 @@
 export * from './dashboard-layout';
 export * from './dashboard-mobile-menu';
+export * from './dashboardNavigationLink';
 export * from './featured-slider';
 export * from './hero';
 export * from './home-footer';

@@ -1,24 +1,35 @@
 import { MeResponse } from '@/domain/models';
-import { Badge, Box, Flex, useToast } from '@chakra-ui/react';
+import { Box, Flex, useToast } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { destroyCookie } from 'nookies';
-import { AiOutlineTeam, AiOutlineWhatsApp } from 'react-icons/ai';
-import { BiNetworkChart } from 'react-icons/bi';
 import { BsGear } from 'react-icons/bs';
 import { FiExternalLink } from 'react-icons/fi';
-import { MdOutlineCategory } from 'react-icons/md';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
-import { TbDiscount2, TbPlugConnected } from 'react-icons/tb';
+import { TbDiscount2 } from 'react-icons/tb';
+import { DashboardNavigationLinks } from './dashboardNavigationLink';
 
 const inter = Inter({ subsets: ['latin'] })
 
 type DashboardMenuProps = {
   me: MeResponse | undefined
 }
+
+const links = [
+  {
+    name: 'Dashboard',
+    destination: '/dashboard',
+    icon: <RxDashboard />
+  },
+  {
+    name: 'Promoções',
+    destination: '/dashboard/promocoes',
+    icon: <TbDiscount2 />
+  },
+]
 
 export function DashboardMenu({ me }: DashboardMenuProps) {
   const router = useRouter();
@@ -57,92 +68,13 @@ export function DashboardMenu({ me }: DashboardMenuProps) {
         />
       </Box>
       <Flex
-        padding={{ xl: '2rem 0' }}
+        padding={['2rem 0']}
         flexDirection={'column'}
         justifyContent={'space-between'}
         height={'100vh'}
         fontSize={{ xl: '0.8rem' }}
       >
-        <Flex
-          flexDirection={'column'}
-          gap={{ xl: '16px' }}
-        >
-          <Flex
-            as={Link}
-            href={'/dashboard'}
-            alignItems={'center'}
-            gap={'8px'}
-            color={'gray.600'}
-          >
-            <RxDashboard />
-            Dashboard
-          </Flex>
-          <Flex
-            as={Link}
-            href={'/dashboard/promocoes'}
-            alignItems={'center'}
-            gap={'8px'}
-            color={'gray.600'}
-          >
-            <TbDiscount2 />
-            Promoções
-          </Flex>
-          <Flex
-            alignItems={'center'}
-            gap={'8px'}
-            color={'gray.300'}
-          >
-            <BiNetworkChart />
-            Integrações
-            <Badge ml='1' colorScheme='yellow'>
-              Em breve
-            </Badge>
-          </Flex>
-          <Flex
-            alignItems={'center'}
-            gap={'8px'}
-            color={'gray.300'}
-          >
-            <MdOutlineCategory />
-            Categorias
-            <Badge ml='1' colorScheme='yellow'>
-              Em breve
-            </Badge>
-          </Flex>
-          <Flex
-            alignItems={'center'}
-            gap={'8px'}
-            color={'gray.300'}
-          >
-            <TbPlugConnected />
-            API
-            <Badge ml='1' colorScheme='yellow'>
-              Em breve
-            </Badge>
-          </Flex>
-          <Flex
-            alignItems={'center'}
-            gap={'8px'}
-            color={'gray.300'}
-          >
-            <AiOutlineTeam />
-            Team
-            <Badge ml='1' colorScheme='yellow'>
-              Em breve
-            </Badge>
-          </Flex>
-          <Flex
-            alignItems={'center'}
-            gap={'8px'}
-            color={'gray.300'}
-          >
-            <AiOutlineWhatsApp />
-            Whatsapp
-            <Badge ml='1' colorScheme='yellow'>
-              Em breve
-            </Badge>
-          </Flex>
-        </Flex>
+        <DashboardNavigationLinks links={links} />
         <Flex
           padding={{ xl: '2rem 0' }}
           flexDirection={'column'}
