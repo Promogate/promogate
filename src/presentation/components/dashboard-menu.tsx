@@ -1,10 +1,10 @@
+import { AuthContext } from '@/application/contexts';
 import { MeResponse } from '@/domain/models';
-import { Box, Flex, useToast } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { destroyCookie } from 'nookies';
+import { useContext } from 'react';
 import { BsGear } from 'react-icons/bs';
 import { FiExternalLink } from 'react-icons/fi';
 import { RiLogoutCircleLine } from 'react-icons/ri';
@@ -32,21 +32,7 @@ const links = [
 ]
 
 export function DashboardMenu({ me }: DashboardMenuProps) {
-  const router = useRouter();
-  const toast = useToast();
-
-  const handleLogout = () => {
-    try {
-      destroyCookie(null, 'promogate.token');
-    } catch {
-      toast({
-        status: 'error',
-        description: 'Erro eu tentar fazer logout'
-      })
-    } finally {
-      router.push('/login');
-    }
-  }
+  const { signOut }= useContext(AuthContext);
 
   return (
     <Flex
@@ -105,7 +91,7 @@ export function DashboardMenu({ me }: DashboardMenuProps) {
             Ver loja
           </Flex>
           <Flex
-            onClick={handleLogout}
+            onClick={signOut}
             alignItems={'center'}
             gap={'8px'}
             color={'gray.600'}
