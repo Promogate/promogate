@@ -1,7 +1,7 @@
 import { PromogateContext } from '@/application/contexts';
 import { api } from '@/config';
 import { MeResponse } from '@/domain/models';
-import { DashboardLayout } from '@/presentation/components';
+import { ContentLoader, DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
   Box,
@@ -11,7 +11,6 @@ import {
   Heading,
   Link,
   Skeleton,
-  Spinner,
   Table,
   Tbody,
   Td,
@@ -120,7 +119,7 @@ export default function Dashboard({ status, user }: DashboardPageProps) {
                 </Heading>
                 {
                   isLoading ? (
-                    <Spinner />
+                    <ContentLoader />
                   ) : (data?.resources.offers.length === 0) ? (
                     <Box
                       margin={'0 auto'}

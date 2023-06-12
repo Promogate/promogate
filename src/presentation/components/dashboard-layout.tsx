@@ -37,16 +37,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       fontFamily={inter.style.fontFamily}
     >
       <GridItem
-        height={'100vh'}
+        height={['100vh']}
         position={'relative'}
-        borderRadius={{ xl: '0 16px 16px 0' }}
+        borderRadius={['0 16px 16px 0']}
         display={['none', 'none', 'flex']}
       >
         <DashboardMenu me={data} />
       </GridItem>
       <GridItem
-        padding={{ xl: '2rem' }}
-        backgroundColor={'#F5F4F7'}
+        padding={[0, 0, '2rem']}
+        backgroundColor={'#F4F4F7'}
         minHeight={['100vh', '100vh', 'max-content']}
       >
         <Box
