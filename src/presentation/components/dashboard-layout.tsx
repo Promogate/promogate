@@ -39,8 +39,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <GridItem
         height={['100vh']}
         position={'relative'}
-        borderRadius={['0 16px 16px 0']}
         display={['none', 'none', 'flex']}
+        borderRight={['1px']}
+        borderColor={['gray.200']}
       >
         <DashboardMenu me={data} />
       </GridItem>

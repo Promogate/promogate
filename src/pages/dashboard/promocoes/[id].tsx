@@ -45,7 +45,24 @@ type SingleOffersPageProps = MeResponse
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  const { data } = await api.get<MeResponse>('/users/me', {
+    headers: {
+      Authorization: `Bearer ${cookies['promogate.token']}`
+    }
+  })
+
+  return {
+    props: {
+      status: data.status,
+      user: data.user
+    }
+  }
+})
+
+export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
   const cookies = parseCookies();
   const toast = useToast();
   const router = useRouter();
@@ -174,9 +191,21 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
   return (
     <Fragment>
       <Head>
-        <title>Dashboard</title>
+        <title>Promogate - Editar Promoção</title>
       </Head>
       <DashboardLayout>
+        <Flex
+          width={['100%']}
+          marginBottom={['2rem']}
+        >
+          <Heading
+            as={'h2'}
+            fontSize={['2rem']}
+            color={'gray.600'}
+          >
+            Loja - {data?.offer.resources.user_profile.store_name_display}
+          </Heading>
+        </Flex>
         <Flex
           width={'100%'}
           justifyContent={'space-between'}
@@ -191,7 +220,7 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
             <TfiAngleLeft />
           </IconButton>
           <Heading
-            as={'h2'}
+            as={'h3'}
             fontSize={['2rem']}
             color={'gray.600'}
           >
@@ -255,13 +284,6 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
                 <Input
                   type='text'
                   {...register('store_name')}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Data de expiração (Opcional)</FormLabel>
-                <Input
-                  type='datetime-local'
-                  {...register('expiration_date')}
                 />
               </FormControl>
               <FormControl>
@@ -372,20 +394,3 @@ export default function AddOffersPage({ status, user }: SingleOffersPageProps) {
     </Fragment>
   )
 }
-
-export const getServerSideProps = withSSRAuth(async (ctx) => {
-  const cookies = parseCookies(ctx);
-
-  const { data } = await api.get<MeResponse>('/users/me', {
-    headers: {
-      Authorization: `Bearer ${cookies['promogate.token']}`
-    }
-  })
-
-  return {
-    props: {
-      status: data.status,
-      user: data.user
-    }
-  }
-}) 

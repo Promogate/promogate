@@ -3,7 +3,7 @@ import { getDashboardOffers } from '@/application/utils';
 import { api } from '@/config';
 import { MeResponse, RequestError } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
-import { DashboardLayout, Pagination } from '@/presentation/components';
+import { DashboardLayout, PageLoader, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import {
   Box,
@@ -25,6 +25,7 @@ import {
   Thead,
   Tooltip,
   Tr,
+  useClipboard,
   useToast
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -44,6 +45,7 @@ import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 import { ChangeEvent, Fragment, useContext, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
+import { RiFileCopyLine } from 'react-icons/ri';
 import { RxUpdate } from 'react-icons/rx';
 
 export const getServerSideProps = withSSRAuth(async (ctx) => {
@@ -84,6 +86,7 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   const query = useQueryClient();
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const { onCopy, value, setValue, hasCopied } = useClipboard('');
 
   const { authorization } = useContext(PromogateContext);
 
@@ -156,11 +159,12 @@ export default function OffersPage({ status, user }: OffersPageProps) {
   }
 
   if (!data || isLoading) {
-    return (
-      <Grid placeItems={'center'} height={'100vh'}>
-        <Spinner />
-      </Grid>
-    )
+    return <PageLoader />
+  }
+
+  function handleCopyClipboard(value: string): void {
+    setValue(value)
+    onCopy()
   }
 
   return (
@@ -410,6 +414,11 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   >
                                     <WhatsappIcon size={32} />
                                   </WhatsappShareButton>
+                                  <IconButton
+                                    aria-label='Copiar shortlink'
+                                    onClick={onCopy}
+                                    icon={<RiFileCopyLine />}
+                                  />
                                 </HStack>
                               </Box>
                               <Button
@@ -495,6 +504,16 @@ export default function OffersPage({ status, user }: OffersPageProps) {
                                   >
                                     <WhatsappIcon size={32} />
                                   </WhatsappShareButton>
+                                  <Tooltip
+                                    label='Copiar o link'
+                                  >
+                                    <IconButton
+                                      aria-label='Copiar shortlink'
+                                      value={offer.short_link}
+                                      onClick={(e) => handleCopyClipboard(e.currentTarget.value)}
+                                      icon={<RiFileCopyLine />}
+                                    />
+                                  </Tooltip>
                                 </HStack>
                               </Td>
                               <Td>

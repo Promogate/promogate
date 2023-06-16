@@ -32,6 +32,7 @@ export type OfferWithClicks = Offer & {
   resources: {
     user_profile: {
       store_name: string,
+      store_name_display: string,
       store_image: string,
       social_media: {
         id: string,

@@ -1,6 +1,6 @@
+import { PromogateContext } from '@/application/contexts'
 import { api } from '@/config'
 import { MeResponse, OfferDataInput } from '@/domain/models'
-import { makeCurrencyStringReadable } from '@/main/utils'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
 import {
@@ -17,12 +17,11 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import dayjs from 'dayjs'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { parseCookies } from 'nookies'
-import { Fragment } from 'react'
+import { Fragment, useContext } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { TfiAngleLeft } from 'react-icons/tfi'
 
@@ -34,25 +33,12 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
   const router = useRouter();
   const query = useQueryClient();
 
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>();
+  const { createOffer } = useContext(PromogateContext);
+
+  const { register, handleSubmit, formState: { isSubmitting }, watch } = useForm<OfferDataInput>();
 
   const mutation = useMutation({
-    mutationFn: async (data: OfferDataInput) => {
-      const price = makeCurrencyStringReadable(data.price);
-      const old_price = makeCurrencyStringReadable(data.old_price);
-
-      await api.post(`/resources/${user.user_profile.resources.id}/offer/create`, {
-        ...data,
-        expiration_date: data.expiration_date ? data.expiration_date : dayjs().add(30, 'days'),
-        price,
-        old_price
-      }, {
-        headers: {
-          Authorization: `Bearer ${cookies['promogate.token']}`
-        }
-      })
-
-    },
+    mutationFn: async (input: OfferDataInput) => await createOffer(input, user.user_profile.resources.id),
     onSuccess: () => {
       query.invalidateQueries(['offers', user.id]);
       toast({
@@ -61,22 +47,22 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
       });
       router.push('/dashboard/promocoes');
     },
-    onError: (e: any) => {
-      toast({
-        status: 'error',
-        description: e.message
-      })
-    }
-  })
+      onError: (e: any) => {
+        toast({
+          status: 'error',
+          description: e.message
+        })
+      }
+  });
 
-  const createOffer: SubmitHandler<OfferDataInput> = async (data) => {
+  const handleCreateOffer: SubmitHandler<OfferDataInput> = async (data) => {
     await mutation.mutateAsync(data);
-  }
+  };
 
   return (
     <Fragment>
       <Head>
-        <title>Dashboard</title>
+        <title>Promogate - Adicionar Nova Promoção</title>
       </Head>
       <DashboardLayout>
         <Flex
@@ -103,7 +89,7 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
         </Flex>
         <Box
           as={'form'}
-          onSubmit={handleSubmit(createOffer)}
+          onSubmit={handleSubmit(handleCreateOffer)}
           height={['max-content']}
         >
           <Box
@@ -159,13 +145,6 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
               <Input
                 type='text'
                 {...register('store_name')}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Data de expiração (Opcional)</FormLabel>
-              <Input
-                type='datetime-local'
-                {...register('expiration_date')}
               />
             </FormControl>
             <FormControl

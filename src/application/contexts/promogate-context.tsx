@@ -1,7 +1,8 @@
 import { api } from '@/config';
-import { DashboardData, OfferWithClicks, RequestError } from '@/domain/models';
+import { DashboardData, OfferDataInput, OfferWithClicks, RequestError } from '@/domain/models';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 import { ReactNode, createContext } from 'react';
@@ -42,7 +43,8 @@ export type FetchStoreOffersResponse = {
 }
 
 interface PromogateContextProps {
-  createUserProfile(input: CreateProfileInput): Promise<void>
+  createUserProfile(input: CreateProfileInput): Promise<void>;
+  createOffer(input: OfferDataInput, userId: string): Promise<void>;
   fetchDashboardData(profileId: string): Promise<DashboardData>;
   fetchStoreOffers(storeName: string): Promise<FetchStoreOffersResponse>
   fetchUserData(): Promise<any>;
@@ -112,6 +114,17 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
     return data
   }
 
+  async function createOffer(input: OfferDataInput, userId: string): Promise<void> {
+    await api.post(`/resources/${userId}/offer/create`, {
+      ...input,
+      expiration_date: input.expiration_date ? input.expiration_date : dayjs().add(30, 'days'),
+    }, {
+      headers: {
+        Authorization: `Bearer ${cookies['promogate.token']}`
+      }
+    })
+  }
+
   return (
     <PromogateContext.Provider value={{
       fetchDashboardData,
@@ -120,6 +133,7 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
       fetchStoreOffers,
       fetchStoreData,
       authorization: `Bearer ${cookies['promogate.token']}`,
+      createOffer
     }}>
       {children}
     </PromogateContext.Provider>
