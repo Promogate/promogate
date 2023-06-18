@@ -1,6 +1,6 @@
 import { api } from '@/config'
 import { MeResponse, OfferDataInput, OfferWithClicks } from '@/domain/models'
-import { parseBRLCurrencytoInteger } from '@/main/utils'
+import { parseBRLCurrencytoInteger, parseCurrencyWithoutSign } from '@/main/utils'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
 import {
@@ -20,13 +20,12 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Spinner,
   Textarea,
   useClipboard,
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -43,14 +42,21 @@ type SingleOfferPageProps = {
   offer: OfferWithClicks
 }
 
-type SingleOffersPageProps = MeResponse
+type SingleOffersPageProps = MeResponse & { offer: OfferWithClicks }
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const getServerSideProps = withSSRAuth(async (ctx) => {
   const cookies = parseCookies(ctx);
+  const { id } = ctx.query as { id: string };
 
   const { data } = await api.get<MeResponse>('/users/me', {
+    headers: {
+      Authorization: `Bearer ${cookies['promogate.token']}`
+    }
+  })
+
+  const offer = await api.get<SingleOfferPageProps>(`/resources/${data.user.user_profile.resources.id}/offer/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
@@ -59,13 +65,14 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   return {
     props: {
       status: data.status,
-      user: data.user
+      user: data.user,
+      offer: offer.data.offer
     }
   }
 })
 
 /*eslint-disable react/no-children-prop*/
-export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
+export default function EditOfferPage({ status, user, offer }: SingleOffersPageProps) {
   const cookies = parseCookies();
   const toast = useToast();
   const router = useRouter();
@@ -74,34 +81,7 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
   const query = useQueryClient();
   const { onCopy, value, setValue, hasCopied } = useClipboard('');
 
-  const { data, isLoading } = useQuery(['offer', id], async () => {
-    const { data } = await api.get<SingleOfferPageProps>(`/resources/${user.user_profile.resources.id}/offer/${id}`, {
-      headers: {
-        Authorization: `Bearer ${cookies['promogate.token']}`
-      }
-    })
-
-    setValue(data.offer.short_link);
-
-    return data
-  }, {
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 5
-  })
-
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>({
-    defaultValues: {
-      title: data?.offer.title,
-      destination_link: data?.offer.destination_link,
-      expiration_date: data?.offer.expiration_date,
-      image: data?.offer.image,
-      old_price: data?.offer.old_price,
-      price: data?.offer.price,
-      store_name: data?.offer.store_name,
-      description: data?.offer.description
-    },
-    values: data?.offer
-  });
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>();
 
   const mutation = useMutation(async (data: OfferDataInput) => {
     const old_price = parseBRLCurrencytoInteger(data.old_price);
@@ -124,7 +104,6 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
         status: 'success',
         description: 'Oferta atualizada com sucesso!'
       });
-      // router.push('/dashboard/promocoes');
     },
     onError: (e: any) => {
       toast({
@@ -206,7 +185,7 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
             fontSize={['2rem']}
             color={'gray.600'}
           >
-            Loja - {data?.offer.resources.user_profile.store_name_display}
+            Loja - {offer.resources.user_profile.store_name_display}
           </Heading>
         </Flex>
         <Flex
@@ -230,133 +209,135 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
             Editar oferta
           </Heading>
         </Flex>
-        {isLoading ? (
-          <Spinner />
-        ) : (
+        <Box
+          as={'form'}
+          onSubmit={handleSubmit(createOffer)}
+          margin={['1rem 0']}
+        >
           <Box
-            as={'form'}
-            onSubmit={handleSubmit(createOffer)}
-            margin={['1rem 0']}
+            display={'grid'}
+            gridTemplateColumns={{ xl: '1fr 1fr' }}
+            gap={['1rem']}
+            backgroundColor={'white'}
+            padding={['1rem']}
+            borderRadius={{ xl: '1rem' }}
+            overflow={'auto'}
           >
-            <Box
-              display={'grid'}
-              gridTemplateColumns={{ xl: '1fr 1fr' }}
-              gap={['1rem']}
-              backgroundColor={'white'}
-              padding={['1rem']}
-              borderRadius={{ xl: '1rem' }}
-              overflow={'auto'}
+            <FormControl>
+              <FormLabel>(Link) Imagem da Oferta</FormLabel>
+              <Input
+                type='text'
+                placeholder={offer.image}
+                {...register('image')}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Título da Oferta</FormLabel>
+              <Input
+                type='text'
+                placeholder={offer.title}
+                {...register('title')}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Preço antigo (Opcional) </FormLabel>
+              <InputGroup>
+                <InputLeftAddon children='R$' />
+                <Input
+                  type='text'
+                  placeholder={parseCurrencyWithoutSign(offer.old_price)}
+                  {...register('old_price')}
+                />
+              </InputGroup>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Preço final</FormLabel>
+              <InputGroup>
+                <InputLeftAddon children='R$' />
+                <Input
+                  type='text'
+                  placeholder={parseCurrencyWithoutSign(offer.price)}
+                  {...register('price')}
+                />
+              </InputGroup>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Destino (Link Afiliado)</FormLabel>
+              <Input
+                type='text'
+                placeholder={offer.destination_link}
+                {...register('destination_link')}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Nome da loja (Anunciante)</FormLabel>
+              <Input
+                type='text'
+                placeholder={offer.store_name}
+                {...register('store_name')}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Shortlink</FormLabel>
+              <Flex gap={['0.5rem']}>
+                <Input
+                  readOnly
+                  value={offer.short_link}
+                  type='text'
+                />
+                <Button
+                  onClick={handleShortlinkUpdate}
+                  isLoading={shortlinkMutation.isLoading}
+                >
+                  Atualizar
+                </Button>
+                <IconButton
+                  aria-label='Copiar shortlink'
+                  onClick={onCopy}
+                  icon={<RiFileCopyLine />}
+                />
+              </Flex>
+            </FormControl>
+            <FormControl
+              as={GridItem}
+              colSpan={[1, 1, 2]}
+              position={'relative'}
             >
-              <FormControl>
-                <FormLabel>(Link) Imagem da Oferta</FormLabel>
-                <Input
-                  type='text'
-                  {...register('image')}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Título da Oferta</FormLabel>
-                <Input
-                  type='text'
-                  {...register('title')}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Preço antigo (Opcional) </FormLabel>
-                <InputGroup>
-                  <InputLeftAddon children='R$' />
-                  <Input
-                    type='text'
-                    {...register('old_price')}
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Preço final</FormLabel>
-                <InputGroup>
-                  <InputLeftAddon children='R$' />
-                  <Input
-                    type='text'
-                    {...register('price')}
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Destino (Link Afiliado)</FormLabel>
-                <Input
-                  type='text'
-                  {...register('destination_link')}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Nome da loja (Anunciante)</FormLabel>
-                <Input
-                  type='text'
-                  {...register('store_name')}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Shortlink</FormLabel>
-                <Flex gap={['0.5rem']}>
-                  <Input
-                    readOnly
-                    value={data?.offer.short_link}
-                    type='text'
-                  />
-                  <Button
-                    onClick={handleShortlinkUpdate}
-                    isLoading={shortlinkMutation.isLoading}
-                  >
-                    Atualizar
-                  </Button>
-                  <IconButton
-                    aria-label='Copiar shortlink'
-                    onClick={onCopy}
-                    icon={<RiFileCopyLine />}
-                  />
-                </Flex>
-              </FormControl>
-              <FormControl
-                as={GridItem}
-                colSpan={[1, 1, 2]}
-                position={'relative'}
-              >
-                <FormLabel>Descrição (Opcional)</FormLabel>
-                <Textarea
-                  {...register('description')}
-                />
-              </FormControl>
-            </Box>
-            <Flex
-              justifyContent={'space-between'}
-              width={'100%'}
-              padding={['2rem 0']}
-              alignItems={'center'}
-            >
-              <Button
-                colorScheme={'red'}
-                variant={'outline'}
-                margin={{ xl: '1rem 0' }}
-                size={'sm'}
-                onClick={deletePopup.onOpen}
-              >
-                Deletar Oferta
-              </Button>
-              <Button
-                size={'lg'}
-                backgroundColor={'black'}
-                _hover={{
-                  backgroundColor: 'black'
-                }}
-                color={'white'}
-                type='submit'
-                isLoading={isSubmitting}
-              >
-                Atualizar oferta
-              </Button>
-            </Flex>
+              <FormLabel>Descrição (Opcional)</FormLabel>
+              <Textarea
+                {...register('description')}
+              />
+            </FormControl>
           </Box>
-        )}
+          <Flex
+            justifyContent={'space-between'}
+            width={'100%'}
+            padding={['2rem 0']}
+            alignItems={'center'}
+          >
+            <Button
+              colorScheme={'red'}
+              variant={'outline'}
+              margin={{ xl: '1rem 0' }}
+              size={'sm'}
+              onClick={deletePopup.onOpen}
+            >
+              Deletar Oferta
+            </Button>
+            <Button
+              size={'lg'}
+              backgroundColor={'black'}
+              _hover={{
+                backgroundColor: 'black'
+              }}
+              color={'white'}
+              type='submit'
+              isLoading={isSubmitting}
+            >
+              Atualizar oferta
+            </Button>
+          </Flex>
+        </Box>
       </DashboardLayout>
 
       <Modal
@@ -373,7 +354,7 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
               fontFamily={inter.style.fontFamily}
               fontWeight={'medium'}
             >
-              Você tem certeza que deseja excluir a oferta {`: ${data?.offer.title}?` ?? '?'}
+              Você tem certeza que deseja excluir a oferta {`: ${offer.title}?` ?? '?'}
             </Heading>
             <Flex width={'100%'} justifyContent={'space-between'}>
               <Button
