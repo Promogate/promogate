@@ -1,6 +1,6 @@
 import { api } from '@/config'
 import { MeResponse, OfferDataInput, OfferWithClicks } from '@/domain/models'
-import { makeCurrencyStringReadable } from '@/main/utils'
+import { parseBRLCurrencytoInteger } from '@/main/utils'
 import { DashboardLayout } from '@/presentation/components'
 import { withSSRAuth } from '@/utils'
 import {
@@ -13,6 +13,8 @@ import {
   Heading,
   IconButton,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Modal,
   ModalBody,
   ModalContent,
@@ -62,6 +64,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
   }
 })
 
+/*eslint-disable react/no-children-prop*/
 export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
   const cookies = parseCookies();
   const toast = useToast();
@@ -101,13 +104,12 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
   });
 
   const mutation = useMutation(async (data: OfferDataInput) => {
-    const price = makeCurrencyStringReadable(data.price);
-    const old_price = makeCurrencyStringReadable(data.old_price);
-
+    const old_price = parseBRLCurrencytoInteger(data.old_price);
+    const price = parseBRLCurrencytoInteger(data.price);
     await api.put(`/resources/${user.user_profile.resources.id}/offer/${id}/update`, {
       ...data,
-      price,
-      old_price
+      old_price,
+      price
     }, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
@@ -121,7 +123,7 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
         status: 'success',
         description: 'Oferta atualizada com sucesso!'
       });
-      router.push('/dashboard/promocoes');
+      // router.push('/dashboard/promocoes');
     },
     onError: (e: any) => {
       toast({
@@ -260,17 +262,23 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
               </FormControl>
               <FormControl>
                 <FormLabel>Preço antigo (Opcional) </FormLabel>
-                <Input
-                  type='text'
-                  {...register('old_price')}
-                />
+                <InputGroup>
+                  <InputLeftAddon children='R$' />
+                  <Input
+                    type='text'
+                    {...register('old_price')}
+                  />
+                </InputGroup>
               </FormControl>
               <FormControl>
                 <FormLabel>Preço final</FormLabel>
-                <Input
-                  type='text'
-                  {...register('price')}
-                />
+                <InputGroup>
+                  <InputLeftAddon children='R$' />
+                  <Input
+                    type='text'
+                    {...register('price')}
+                  />
+                </InputGroup>
               </FormControl>
               <FormControl>
                 <FormLabel>Destino (Link Afiliado)</FormLabel>
