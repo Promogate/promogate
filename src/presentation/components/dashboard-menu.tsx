@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useContext } from 'react';
+import { AiOutlineApi } from 'react-icons/ai';
 import { BsGear } from 'react-icons/bs';
 import { FiExternalLink } from 'react-icons/fi';
 import { RiLogoutCircleLine } from 'react-icons/ri';
@@ -28,6 +29,11 @@ const links = [
     name: 'Promoções',
     destination: '/dashboard/promocoes',
     icon: <TbDiscount2 />
+  },
+  {
+    name: 'Integrações',
+    destination: '/dashboard/integracoes',
+    icon: <AiOutlineApi />
   },
 ]
 
