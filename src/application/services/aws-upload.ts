@@ -42,4 +42,18 @@ export class AWSUploadService implements IAWSUploadService {
       url: Location
     }
   }
+
+  async uploadFile(input: IAWSUpload.Input): Promise<IAWSUpload.Output> {
+    const params = {
+      Bucket: 'promogate',
+      Key: input.file.name,
+      Body: input.file,
+    }
+
+    const upload = this.s3.upload(params);
+    const { Location } = await upload.promise();
+    return {
+      url: Location
+    }
+  }
 }
