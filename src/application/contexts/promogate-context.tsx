@@ -1,5 +1,6 @@
 import { api } from '@/config';
 import { DashboardData, OfferDataInput, OfferWithClicks, RequestError } from '@/domain/models';
+import { parseBRLCurrencytoInteger } from '@/main/utils';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
@@ -115,8 +116,12 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
   }
 
   async function createOffer(input: OfferDataInput, userId: string): Promise<void> {
+    const old_price = parseBRLCurrencytoInteger(input.old_price);
+    const price = parseBRLCurrencytoInteger(input.price);
     await api.post(`/resources/${userId}/offer/create`, {
       ...input,
+      old_price,
+      price,
       expiration_date: dayjs().add(30, 'days'),
     }, {
       headers: {
