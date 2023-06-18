@@ -13,6 +13,8 @@ import {
   Heading,
   IconButton,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Textarea,
   useToast
 } from '@chakra-ui/react'
@@ -27,8 +29,8 @@ import { TfiAngleLeft } from 'react-icons/tfi'
 
 type AddOffersPageProps = MeResponse
 
+/*eslint-disable react/no-children-prop*/
 export default function AddOffersPage({ status, user }: AddOffersPageProps) {
-  const cookies = parseCookies();
   const toast = useToast();
   const router = useRouter();
   const query = useQueryClient();
@@ -47,12 +49,12 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
       });
       router.push('/dashboard/promocoes');
     },
-      onError: (e: any) => {
-        toast({
-          status: 'error',
-          description: e.message
-        })
-      }
+    onError: (e: any) => {
+      toast({
+        status: 'error',
+        description: e.message
+      })
+    }
   });
 
   const handleCreateOffer: SubmitHandler<OfferDataInput> = async (data) => {
@@ -121,17 +123,23 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
             </FormControl>
             <FormControl>
               <FormLabel>Preço antigo (Opcional) </FormLabel>
-              <Input
-                type='text'
-                {...register('old_price')}
-              />
+              <InputGroup>
+                <InputLeftAddon children='R$' />
+                <Input
+                  type='text'
+                  {...register('old_price')}
+                />
+              </InputGroup>
             </FormControl>
             <FormControl>
               <FormLabel>Preço final</FormLabel>
-              <Input
-                type='text'
-                {...register('price')}
-              />
+              <InputGroup>
+                <InputLeftAddon children='R$' />
+                <Input
+                  type='text'
+                  {...register('price')}
+                />
+              </InputGroup>
             </FormControl>
             <FormControl>
               <FormLabel>Destino (Link Afiliado)</FormLabel>

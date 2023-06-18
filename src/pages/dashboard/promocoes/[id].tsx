@@ -115,6 +115,7 @@ export default function EditOfferPage({ status, user }: SingleOffersPageProps) {
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
+    console.log(old_price, price);
 
   }, {
     onSuccess: () => {

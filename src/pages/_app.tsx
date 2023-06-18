@@ -16,9 +16,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
         <PromogateContextProvider>
-          <ChakraProvider>
-            <Component {...pageProps} />
-          </ChakraProvider>
+            <ChakraProvider>
+              <Component {...pageProps} />
+            </ChakraProvider>
         </PromogateContextProvider>
       </AuthContextProvider>
     </QueryClientProvider>
