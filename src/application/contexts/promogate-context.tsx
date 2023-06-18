@@ -117,7 +117,7 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
   async function createOffer(input: OfferDataInput, userId: string): Promise<void> {
     await api.post(`/resources/${userId}/offer/create`, {
       ...input,
-      expiration_date: input.expiration_date ? input.expiration_date : dayjs().add(30, 'days'),
+      expiration_date: dayjs().add(30, 'days'),
     }, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
