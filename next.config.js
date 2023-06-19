@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   rewrites: async () => [
     {
-      source: "/public/:first/:path",
+      source: "/api/:first/:path",
       destination: "/:first/:path",
     },
   ],

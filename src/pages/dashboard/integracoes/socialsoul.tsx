@@ -13,9 +13,6 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
       Authorization: `Bearer ${cookies['promogate.token']}`
     }
   })
-
-  console.log(data)
-
   return {
     props: {
       status: data.status,

@@ -49,8 +49,6 @@ export default function RegisterPage() {
     mode: 'onBlur'
   });
 
-  console.log(watch('agree_with_policies'))
-
   const mutation = useMutation(async (values: RegisterFormProps) => await signUp(values), {
     onSuccess: () => {
       toast({

@@ -106,8 +106,6 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
         Authorization: `Bearer ${cookies['promogate.token']}`
       }
     })
-    console.log(old_price, price);
-
   }, {
     onSuccess: () => {
       query.invalidateQueries(['offers', user.id]);
