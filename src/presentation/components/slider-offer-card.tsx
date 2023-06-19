@@ -33,7 +33,7 @@ export function SliderOfferCard({ data, storeName }: OfferCardProps) {
       transition={'175ms ease-in-out'}
       fontFamily={inter.style.fontFamily}
       position={'relative'}
-      minHeight={['424px']}
+      minHeight={['360px']}
     >
       <HStack
         spacing={['0.5rem']}
@@ -83,7 +83,7 @@ export function SliderOfferCard({ data, storeName }: OfferCardProps) {
             fontWeight={['medium']}
             color={['gray.600']}
           >
-            {truncateString(data.title, 40)}
+            {truncateString(data.title, 36)}
           </Heading>
         </Flex>
         <Box>
