@@ -49,8 +49,6 @@ export default function SocialSoulIntegrationPage({ status, user }: MeResponse) 
     setFormData({ ...formData, [event.currentTarget.name]: event.currentTarget.value });
   }
 
-  console.log(formData);
-
   const mutation = useMutation({
     mutationFn: async () => await handleUploadFormData(),
     onError: (error: any) => {
