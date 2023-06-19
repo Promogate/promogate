@@ -1,5 +1,5 @@
 import { OfferWithClicks } from '@/domain/models';
-import { parseCurrency } from '@/main/utils';
+import { parseCurrency, truncateString } from '@/main/utils';
 import { Badge, Box, Flex, HStack, Heading, Tag, Text } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
@@ -83,7 +83,7 @@ export function SliderOfferCard({ data, storeName }: OfferCardProps) {
             fontWeight={['medium']}
             color={['gray.600']}
           >
-            {data.title}
+            {truncateString(data.title, 40)}
           </Heading>
         </Flex>
         <Box>

@@ -1,5 +1,5 @@
 import { OfferWithClicks } from '@/domain/models';
-import { parseCurrency } from '@/main/utils';
+import { parseCurrency, truncateString } from '@/main/utils';
 import { Badge, Box, Button, Flex, HStack, Heading, Tag, Text } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
@@ -76,7 +76,7 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
           color={['gray.600']}
           flex={1}
         >
-          {data.title}
+          {truncateString(data.title)}
         </Heading>
         <Box
           margin={['1rem 0']}
