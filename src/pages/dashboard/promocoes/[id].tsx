@@ -81,7 +81,18 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
   const query = useQueryClient();
   const { onCopy, value, setValue, hasCopied } = useClipboard('');
 
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>();
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>({
+    defaultValues: {
+      description: offer.description,
+      destination_link: offer.destination_link,
+      image: offer.image,
+      old_price: parseCurrencyWithoutSign(offer.old_price),
+      price: parseCurrencyWithoutSign(offer.price),
+      store_name: offer.store_name,
+      title: offer.title,
+      expiration_date: offer.expiration_date
+    },
+  });
 
   const mutation = useMutation(async (data: OfferDataInput) => {
     const old_price = parseBRLCurrencytoInteger(data.old_price);
