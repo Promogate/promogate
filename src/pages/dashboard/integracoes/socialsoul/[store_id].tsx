@@ -39,7 +39,9 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
 
   const { data, isLoading } = useQuery({
     queryKey: [user.user_profile.user_id, store_id],
-    queryFn: fetchStoreOffers
+    queryFn: fetchStoreOffers,
+    staleTime: 1000 * 60 * 60 * 12,
+    cacheTime: 1000 * 60 * 60 * 12,
   })
 
   async function fetchStoreOffers() {

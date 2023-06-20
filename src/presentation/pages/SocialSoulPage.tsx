@@ -25,7 +25,9 @@ export function SocialSoulPage({ status, user }: MeResponse) {
 
   const { data, isLoading } = useQuery({
     queryKey: ['socialSoulStores' + user.user_profile.lomadee_source_id],
-    queryFn: async () => await getSocialSoulStores()
+    queryFn: async () => await getSocialSoulStores(),
+    staleTime: 1000 * 60 * 60 * 12,
+    cacheTime: 1000 * 60 * 60 * 12,
   });
 
   if (isLoading) {
