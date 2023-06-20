@@ -2,7 +2,7 @@ import { api } from '@/config';
 import { MeResponse } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
-import { Box, Button, Flex, Grid, GridItem, Heading } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Flex, Grid, GridItem, Heading } from '@chakra-ui/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -55,6 +55,13 @@ export default function Integrations() {
             Integrações
           </Heading>
         </Flex>
+        <Alert
+          status='warning'
+          marginBottom={['2rem']}
+        >
+          <AlertIcon />
+          Estamos trabalhando para finalizar a integração com a SocialSoul
+        </Alert>
         <Grid
           gridTemplateColumns={['1fr', '1fr', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}
         >

@@ -2,8 +2,9 @@ import { PromogateContext } from '@/application/contexts';
 import { api } from '@/config';
 import { MeResponse } from '@/domain/models';
 import { DashboardLayout } from '@/presentation/components';
+import { SocialSoulPage } from '@/presentation/pages';
 import { withSSRAuth } from '@/utils';
-import { Box, Button, FormControl, FormLabel, Grid, Input, useToast } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Flex, FormControl, FormLabel, Grid, Heading, Input, useToast } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -108,6 +109,25 @@ export default function SocialSoulIntegrationPage({ status, user }: MeResponse) 
           <title>Promogate - Integração SocialSoul</title>
         </Head>
         <DashboardLayout>
+          <Flex
+            width={['100%']}
+            marginBottom={['2rem']}
+          >
+            <Heading
+              as={'h2'}
+              fontSize={['2rem']}
+              color={'gray.600'}
+            >
+              Integrações
+            </Heading>
+          </Flex>
+          <Alert
+            status='warning'
+            marginBottom={['2rem']}
+          >
+            <AlertIcon />
+            Estamos trabalhando para finalizar a integração com a SocialSoul
+          </Alert>
           <Grid
             height={['100vh']}
             placeItems={['center']}
@@ -162,7 +182,26 @@ export default function SocialSoulIntegrationPage({ status, user }: MeResponse) 
         <title>Promogate - Integração SocialSoul</title>
       </Head>
       <DashboardLayout>
-
+        <Flex
+          width={['100%']}
+          marginBottom={['2rem']}
+        >
+          <Heading
+            as={'h2'}
+            fontSize={['2rem']}
+            color={'gray.600'}
+          >
+            Integrações
+          </Heading>
+        </Flex>
+        <Alert
+          status='warning'
+          marginBottom={['2rem']}
+        >
+          <AlertIcon />
+          Estamos trabalhando para finalizar a integração com a SocialSoul
+        </Alert>
+        <SocialSoulPage user={user} status={status} />
       </DashboardLayout>
     </>
   )
