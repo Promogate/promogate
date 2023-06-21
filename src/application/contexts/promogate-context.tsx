@@ -1,4 +1,5 @@
 import { api } from '@/config';
+import { SocialSoulOfferDataInput } from '@/domain/@types';
 import { DashboardData, OfferDataInput, OfferWithClicks, RequestError } from '@/domain/models';
 import { parseBRLCurrencytoInteger } from '@/main/utils';
 import { useToast } from '@chakra-ui/react';
@@ -46,6 +47,7 @@ export type FetchStoreOffersResponse = {
 interface PromogateContextProps {
   createUserProfile(input: CreateProfileInput): Promise<void>;
   createOffer(input: OfferDataInput, userId: string): Promise<void>;
+  createOfferFromSocialSoul(input: SocialSoulOfferDataInput, userId: string): Promise<void>;
   fetchDashboardData(profileId: string): Promise<DashboardData>;
   fetchStoreOffers(storeName: string): Promise<FetchStoreOffersResponse>
   fetchUserData(): Promise<any>;
@@ -130,6 +132,19 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
     })
   }
 
+  async function createOfferFromSocialSoul(input: SocialSoulOfferDataInput, resourceId: string): Promise<void> {
+    await api.post(`/resources/${resourceId}/offer/create`, {
+      ...input,
+      price: input.price.toString(),
+      old_price: input.old_price ? input.old_price.toString() : '',
+      expiration_date: dayjs().add(30, 'days'),
+    }, {
+      headers: {
+        Authorization: `Bearer ${cookies['promogate.token']}`
+      }
+    })
+  }
+
   return (
     <PromogateContext.Provider value={{
       fetchDashboardData,
@@ -138,7 +153,8 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
       fetchStoreOffers,
       fetchStoreData,
       authorization: `Bearer ${cookies['promogate.token']}`,
-      createOffer
+      createOffer,
+      createOfferFromSocialSoul
     }}>
       {children}
     </PromogateContext.Provider>

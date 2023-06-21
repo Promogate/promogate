@@ -117,3 +117,24 @@ export type GetOffersParams = {
   page?: number;
   sort?: string;
 }
+
+export type OfferDataInput = {
+  image: string;
+  title: string;
+  price: string;
+  old_price: string;
+  destination_link: string;
+  store_name: string;
+  expiration_date: string;
+  description: string;
+}
+
+export type SocialSoulOfferDataInput = {
+  image: string;
+  title: string;
+  price: number;
+  old_price: number;
+  destination_link: string;
+  store_name: string;
+  description: string;
+}

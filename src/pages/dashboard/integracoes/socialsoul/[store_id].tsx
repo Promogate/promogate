@@ -1,17 +1,17 @@
 import { PromogateContext } from '@/application/contexts';
 import { api, promogateApi } from '@/config';
-import { OffersResponse } from '@/domain/@types';
+import { OffersResponse, SocialSoulOfferDataInput } from '@/domain/@types';
 import { MeResponse } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
 import { DashboardLayout, PageLoader, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
-import { Alert, AlertIcon, Box, Button, Flex, Grid, GridItem, HStack, Heading, IconButton, Image, Skeleton, Text, Tooltip } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { Alert, AlertIcon, Box, Button, Flex, Grid, GridItem, HStack, Heading, IconButton, Image, Skeleton, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { BsCloudDownload } from 'react-icons/bs';
 import { FiArrowLeft } from 'react-icons/fi';
 import { RxExternalLink } from 'react-icons/rx';
@@ -34,8 +34,18 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 export default function SingleSocialSoulStore({ status, user }: MeResponse) {
   const router = useRouter();
   const { store_id } = router.query as { store_id: string };
+  const [offerData, supplyOfferData] = useState<SocialSoulOfferDataInput>({
+    image: '',
+    title: '',
+    price: 0,
+    old_price: 0,
+    destination_link: '',
+    store_name: '',
+    description: '',
+  });
+  const toast = useToast();
 
-  const { authorization } = useContext(PromogateContext);
+  const { authorization, createOfferFromSocialSoul } = useContext(PromogateContext);
 
   const { data, isLoading } = useQuery({
     queryKey: [user.user_profile.user_id, store_id],
@@ -57,6 +67,26 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
     return data
   }
 
+  const createOfferMutation = useMutation({
+    mutationFn: async () => await createOfferFromSocialSoul(offerData, user.user_profile.resources.id),
+    onSuccess: () => {
+      toast({
+        status: 'success',
+        description: 'Oferta importada com sucesso!'
+      })
+    },
+    onError: () => {
+      toast({
+        status: 'error',
+        description: 'Houve algum erro'
+      })
+    }
+  })
+
+  async function triggerMutation() {
+    await createOfferMutation.mutateAsync();
+  }
+  
   return (
     <>
       <Head>
@@ -152,7 +182,7 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
                               <Text
                                 fontSize={['0.8rem']}
                               >
-                                {offer.priceFrom ? offer.priceFrom : 'Não informado'}
+                                {offer.priceFrom ? parseCurrency(offer.priceFrom) : 'Não informado'}
                               </Text>
                             </Box>
                             <Box>
@@ -185,6 +215,17 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
                             <Button
                               leftIcon={<BsCloudDownload />}
                               size={'sm'}
+                              onMouseOver={() => supplyOfferData({
+                                title: offer.name,
+                                description: '',
+                                image: offer.thumbnail,
+                                store_name: offer.store.name,
+                                destination_link: offer.link,
+                                old_price: offer.priceFrom ? offer.priceFrom : 0,
+                                price: offer.price
+                              })}
+                              onClick={triggerMutation}
+                              isLoading={createOfferMutation.isLoading}
                             >
                               Importar para Loja
                             </Button>
