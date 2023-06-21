@@ -1,22 +1,18 @@
-import { PromogateContext } from '@/application/contexts';
-import { api } from '@/config';
+import { promogateApi } from '@/config';
 import { StoresResponse } from '@/domain/@types';
 import { MeResponse } from '@/domain/models';
 import { Grid, GridItem, Heading, Image, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
 import { PageLoader } from '../components';
 
 export function SocialSoulPage({ status, user }: MeResponse) {
-  const { authorization } = useContext(PromogateContext);
   const router = useRouter();
 
   async function getSocialSoulStores() {
-    const { data } = await api.get<StoresResponse>('/social-soul/stores', {
+    const { data } = await promogateApi.get<StoresResponse>('/social-soul/stores', {
       headers: {
-        Authorization: authorization,
         'X-SOURCE-ID': user.user_profile.lomadee_source_id
       }
     });
