@@ -10,3 +10,7 @@ export const api = axios.create({
     Authorization: `Bearer ${cookies['promogate.token']}`
   }
 })
+
+export const promogateApi = axios.create({
+  baseURL: '/api'
+})
