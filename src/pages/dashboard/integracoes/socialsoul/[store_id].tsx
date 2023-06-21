@@ -1,5 +1,5 @@
 import { PromogateContext } from '@/application/contexts';
-import { api } from '@/config';
+import { api, promogateApi } from '@/config';
 import { OffersResponse } from '@/domain/@types';
 import { MeResponse } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
@@ -45,7 +45,7 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
   })
 
   async function fetchStoreOffers() {
-    const { data } = await api.get<OffersResponse>(`/social-soul/offers/store/${store_id}`, {
+    const { data } = await promogateApi.get<OffersResponse>(`/social-soul/offers/store/${store_id}`, {
       headers: {
         Authorization: authorization,
         'x-source-id': user.user_profile.lomadee_source_id
