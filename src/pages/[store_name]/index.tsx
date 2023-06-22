@@ -73,6 +73,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           <meta property='twitter:image' content={data.data.store_image} />
           <meta property='twitter:creator' content="@promogate" />
           <meta property='fb:app_id' content="106988875737461" />
+          <link rel='canonical' content={`https://promogate.app/${data.data.store_name}`} />
         </Head>
         <Box
           as='main'

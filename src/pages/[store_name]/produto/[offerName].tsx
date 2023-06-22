@@ -74,6 +74,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property='og:site_name' content='Promogate' />
         <meta property='og:locale' content='pt_BR' />
         <meta property='og:url' content={`https://promogate.app${router.asPath}`} />
+        <link rel='canonical' content={`https://promogate.app/${data.offer.resources.user_profile.store_name}`} />
         <meta property='product:price.amount' content={data.offer.price} />
         <meta property='product:price.currency' content='BRL' />
         <meta property='twitter:card' content='summary_large_image' />
