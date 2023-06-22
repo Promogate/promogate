@@ -136,5 +136,6 @@ export type SocialSoulOfferDataInput = {
   old_price: number;
   destination_link: string;
   store_name: string;
+  store_image: string;
   description: string;
 }

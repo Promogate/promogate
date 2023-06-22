@@ -41,6 +41,7 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
     old_price: 0,
     destination_link: '',
     store_name: '',
+    store_image: '',
     description: '',
   });
   const toast = useToast();
@@ -220,6 +221,7 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
                                 description: '',
                                 image: offer.thumbnail,
                                 store_name: offer.store.name,
+                                store_image: offer.store.thumbnail,
                                 destination_link: offer.link,
                                 old_price: offer.priceFrom ? offer.priceFrom : 0,
                                 price: offer.price

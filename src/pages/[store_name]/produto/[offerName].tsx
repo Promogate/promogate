@@ -2,7 +2,7 @@ import { api } from '@/config';
 import { OfferWithClicks } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
 import { SingleProductPageContent, StoreFooter, StoreHeader } from '@/presentation/components';
-import { Box, Button, Divider, Flex, Grid, HStack, Heading, Img, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Grid, Heading, Img, Text, VStack } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
 import { Montserrat, Open_Sans } from 'next/font/google';
@@ -25,6 +25,8 @@ const montserrat = Montserrat({ subsets: ['latin'], preload: true })
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { oid, utm_click, rid } = ctx.query as { oid: string, utm_click: string, rid: string };
   const { data } = await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}?utm_click=${utm_click}`)
+
+  console.log(data);
 
   return {
     props: {
@@ -84,7 +86,6 @@ export default function SingleProductPage(data: SingleProductResponse) {
         <meta property='twitter:image' content={data.offer.image} />
         <meta property='twitter:creator' content={data.offer.store_name} />
         <meta property='fb:app_id' content="106988875737461" />
-
         <script
           key="structured-data"
           type="application/ld+json"
@@ -98,6 +99,152 @@ export default function SingleProductPage(data: SingleProductResponse) {
           store_name_display: data.offer.resources.user_profile.store_name,
           social_media: data.offer.resources.user_profile.social_media
         }} />
+        <Grid
+          maxWidth={['1170px']}
+          margin={['1.5rem auto']}
+          borderRadius={['lg']}
+          gridTemplateColumns={['1fr', '1fr', '240px 8fr 4fr']}
+          gap={['0', '1rem']}
+          backgroundColor={['white']}
+          padding={['1rem']}
+          alignItems={['center']}
+        >
+          <Box
+            marginBottom={['1rem', '2rem', 0]}
+          >
+            <VStack
+              gap={['0.5rem']}
+              top={0}
+              left={0}
+              width={'100%'}
+              textAlign={'center'}
+            >
+              <Img
+                src={data.offer.image}
+                alt={data.offer.title}
+                width={['120px', '160px', '240px']}
+              />
+            </VStack>
+          </Box>
+          <Box
+            padding={['1rem']}
+          >
+
+            <Heading
+              as='h1'
+              fontSize={['1.3rem', '2rem']}
+              fontFamily={montserrat.style.fontFamily}
+              padding={{ xl: '0 0 1rem 0' }}
+              fontWeight={['extrabold']}
+            >
+              {data.offer.title}
+            </Heading>
+            {
+              data.offer.store_image ? (
+                <Box
+                  alignItems={'center'}
+                  width={'100%'}
+                  justifyContent={'space-between'}
+                  margin={['0.5rem 0', '1rem 0', 0]}
+                >
+                  <Text
+                    color={['gray.400']}
+                    fontSize={['0.6rem']}
+                  >
+                    Vendido por
+                  </Text>
+                  <Img
+                    src={data.offer.store_image}
+                    alt={data.offer.title}
+                    width={'80px'}
+                  />
+                </Box>
+              ) : null
+            }
+          </Box>
+          <Box>
+            <Box
+              margin={['0', '1rem', '2rem']}
+            >
+              <Grid
+                placeItems={['center']}
+                margin={['0.5rem 0']}
+              >
+                {data.offer.old_price && (
+                  <Text
+                    as={'span'}
+                    color={'red.400'}
+                    textDecoration={'line-through'}
+                  >
+                    {parseCurrency(data.offer.old_price)}
+                  </Text>
+                )}
+                <Heading
+                  as={'h2'}
+                  fontFamily={montserrat.style.fontFamily}
+                  color={['gray.700']}
+                  fontSize={['1.8rem']}
+                  fontWeight={['extrabold']}
+                >
+                  {parseCurrency(data.offer.price)}
+                </Heading>
+              </Grid>
+              <Button
+                as={Link}
+                href={`/api/redir/${data.offer.id}`}
+                target='_blank'
+                rightIcon={<FiExternalLink />}
+                colorScheme={'green'}
+                width={['100%']}
+                size={['lg']}
+              >
+                Pegar promoção
+              </Button>
+              <Text
+                color={['gray.900']}
+                textAlign={['center']}
+                margin={['0.5rem 0']}
+              >
+                Oferta vista {data.offer._count.offer_clicks} vezes
+              </Text>
+              <Box
+                textAlign={['center']}
+              >
+                <Text
+                  color={'gray.400'}
+                >
+                  Compartilhe esta oferta:
+                </Text>
+                <Flex
+                  gap={['1rem']}
+                  margin={['0.5rem auto']}
+                  justifyContent={['center']}
+                  width={['100%']}
+                >
+                  <FacebookShareButton
+                    url={data.offer.short_link}
+                    quote={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
+                  >
+                    <FacebookIcon size={24} round />
+                  </FacebookShareButton>
+                  <WhatsappShareButton
+                    url={data.offer.short_link}
+                    title={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
+                    separator=':: '
+                  >
+                    <WhatsappIcon size={24} round />
+                  </WhatsappShareButton>
+                  <TelegramShareButton
+                    url={data.offer.short_link}
+                    title={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
+                  >
+                    <TelegramIcon size={24} round />
+                  </TelegramShareButton>
+                </Flex>
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
         <Box
           as='article'
           fontFamily={openSans.style.fontFamily}
@@ -116,164 +263,22 @@ export default function SingleProductPage(data: SingleProductResponse) {
               backgroundColor={'white'}
               height={'max-content'}
             >
-              <Grid
-                gridTemplateColumns={['1fr', '1fr', '8fr 4fr']}
-                gap={['24px']}
-              >
-                <Box
-                  padding={['1rem']}
-                >
-                  <Heading
-                    as='h1'
-                    fontSize={['1.3rem', '2xl']}
-                    fontFamily={montserrat.style.fontFamily}
-                    padding={{ xl: '0 0 1rem 0' }}
-                  >
-                    {data.offer.title}
-                  </Heading>
-                  <VStack
-                    display={['flex', 'none']}
-                    marginTop={['1.5rem']}
-                    gap={['0.5rem']}
-                    top={0}
-                    left={0}
-                    width={'100%'}
-                    textAlign={'center'}
-                  >
-                    <Img
-                      src={data.offer.image}
-                      alt={data.offer.title}
-                      height={'240px'}
-                    />
-                    <Box
-                      margin={['2rem']}
-                    >
-                      <Button
-                        as={Link}
-                        href={`/api/redir/${data.offer.id}`}
-                        target='_blank'
-                        rightIcon={<FiExternalLink />}
-                        colorScheme={'green'}
-                        width={['100%']}
-                        size={['lg']}
-                      >
-                        Abrir na loja
-                      </Button>
-                    </Box>
-                  </VStack>
-                  <Flex
-                    alignItems={'center'}
-                    width={'100%'}
-                    justifyContent={'space-between'}
-                    margin={['1rem 0', '1rem 0', 0]}
-                  >
-                    <Flex
-                      gap={{ xl: '0.5rem' }}
-                      flexDirection={['column-reverse', 'column', 'row']}
-                    >
-                      <Heading
-                        as={'h2'}
-                        fontFamily={montserrat.style.fontFamily}
-                        fontSize={{ xl: '2xl' }}
-                      >
-                        {parseCurrency(data.offer.price)}
-                      </Heading>
-                      {data.offer.old_price && (
-                        <Text
-                          as={'span'}
-                          color={'red.400'}
-                          textDecoration={'line-through'}
-                        >
-                          {parseCurrency(data.offer.old_price)}
-                        </Text>
-                      )}
-                    </Flex>
-                    <Flex
-                      alignItems={'center'}
-                      fontSize={['0.825rem']}
-                      gap={{ xl: '0.25rem' }}
-                    >
-                      <Text>
-                        Oferta vista {data.offer._count.offer_clicks} vezes
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Divider orientation='horizontal' />
+              {
+                data.offer.description ? (
+                  null
+                ) : (
                   <Box
                     margin={{ xl: '1rem 0' }}
                   >
-                    <HStack
-                      margin={['1rem 0']}
-                    >
-                      <Text
-                        color={'gray.400'}
-                      >
-                        Compartilhe esta oferta:
-                      </Text>
-                      <HStack
-                        spacing={['1rem']}
-                      >
-                        <FacebookShareButton
-                          url={data.offer.short_link}
-                          quote={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
-                        >
-                          <FacebookIcon size={24} round />
-                        </FacebookShareButton>
-                        <WhatsappShareButton
-                          url={data.offer.short_link}
-                          title={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
-                          separator=':: '
-                        >
-                          <WhatsappIcon size={24} round />
-                        </WhatsappShareButton>
-                        <TelegramShareButton
-                          url={data.offer.short_link}
-                          title={`${data.offer.title} %0A ${data.offer.old_price ? ` de *${parseCurrency(data.offer.old_price)}* por *${parseCurrency(data.offer.price)}*` : `por ${parseCurrency(data.offer.price)}`}`}
-                        >
-                          <TelegramIcon size={24} round />
-                        </TelegramShareButton>
-                      </HStack>
-                    </HStack>
                     <Text
                       fontSize={{ xl: '0.9rem' }}
                     >
                       {data.offer.description}
                     </Text>
                   </Box>
-                </Box>
-                <Box
-                  marginBottom={['2rem', '2rem', 0]}
-                >
-                  <VStack
-                    gap={['0.5rem']}
-                    top={0}
-                    left={0}
-                    width={'100%'}
-                    textAlign={'center'}
-                  >
-                    <Img
-                      src={data.offer.image}
-                      alt={data.offer.title}
-                      height={'240px'}
-                    />
-                    <Box
-                      margin={['2rem']}
-                    >
-                      <Button
-                        as={Link}
-                        href={`/api/redir/${data.offer.id}`}
-                        target='_blank'
-                        rightIcon={<FiExternalLink />}
-                        colorScheme={'green'}
-                        width={['100%']}
-                        size={['lg']}
-                      >
-                        Abrir na loja
-                      </Button>
-                    </Box>
-                  </VStack>
-                </Box>
-              </Grid>
+                )
+              }
+              {/* FEATURED PRODUCTS */}
             </Box>
             <Grid
               gap={['1rem']}
@@ -368,7 +373,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
         </Box>
         <SingleProductPageContent />
         <StoreFooter />
-      </Box>
+      </Box >
     </Fragment >
   )
 }
