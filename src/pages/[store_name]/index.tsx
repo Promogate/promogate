@@ -66,6 +66,7 @@ export default function Home({ store_name }: SingleStoreProps) {
           <meta property='og:site_name' content='Promogate' />
           <meta property='og:locale' content='pt_BR' />
           <meta property='og:url' content={`https://promogate.app/${data.data.store_name}`} />
+          <link rel='canonical' content={`https://promogate.app/${data.data.store_name}`} />
           <meta property='twitter:card' content='summary_large_image' />
           <meta property='twitter:site' content='@promogate' />
           <meta property='twitter:title' content={data.data.store_name} />
@@ -73,7 +74,6 @@ export default function Home({ store_name }: SingleStoreProps) {
           <meta property='twitter:image' content={data.data.store_image} />
           <meta property='twitter:creator' content="@promogate" />
           <meta property='fb:app_id' content="106988875737461" />
-          <link rel='canonical' content={`https://promogate.app/${data.data.store_name}`} />
         </Head>
         <Box
           as='main'
