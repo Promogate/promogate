@@ -41,9 +41,6 @@ export function Pagination({
       justify={['flex-end']}
       align={['center']}
     >
-      {/* <Box>
-        <strong>0</strong> - <strong>50</strong> de <strong>{totalCountOfRegisters}</strong>
-      </Box> */}
       <Stack
         direction={['row']}
         spacing={['2']}

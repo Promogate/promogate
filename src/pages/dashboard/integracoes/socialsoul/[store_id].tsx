@@ -6,7 +6,7 @@ import { parseCurrency } from '@/main/utils';
 import { DashboardLayout, PageLoader, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import { Alert, AlertIcon, Box, Button, Flex, Grid, GridItem, HStack, Heading, IconButton, Image, Skeleton, Text, Tooltip, useToast } from '@chakra-ui/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -34,6 +34,7 @@ export const getServerSideProps = withSSRAuth(async (ctx) => {
 export default function SingleSocialSoulStore({ status, user }: MeResponse) {
   const router = useRouter();
   const { store_id } = router.query as { store_id: string };
+  const [page, setPage] = useState(1);
   const [offerData, supplyOfferData] = useState<SocialSoulOfferDataInput>({
     image: '',
     title: '',
@@ -44,12 +45,14 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
     store_image: '',
     description: '',
   });
+  
   const toast = useToast();
+  const query = useQueryClient();
 
   const { authorization, createOfferFromSocialSoul } = useContext(PromogateContext);
 
-  const { data, isLoading } = useQuery({
-    queryKey: [user.user_profile.user_id, store_id],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [user.user_profile.user_id, store_id, page],
     queryFn: fetchStoreOffers,
     staleTime: 1000 * 60 * 60 * 12,
     cacheTime: 1000 * 60 * 60 * 12,
@@ -62,7 +65,8 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
         'x-source-id': user.user_profile.lomadee_source_id
       },
       params: {
-        size: 25
+        size: 25,
+        page: page
       }
     })
     return data
@@ -133,7 +137,8 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
                     <Pagination
                       totalCountOfRegisters={data?.pagination.totalSize!}
                       registersPerPage={25}
-                      onPageChange={() => { }}
+                      currentPage={page}
+                      onPageChange={setPage}
                     />
                   </Box>
                   <Grid
@@ -242,7 +247,8 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
                     <Pagination
                       totalCountOfRegisters={data?.pagination.totalSize!}
                       registersPerPage={25}
-                      onPageChange={() => { }}
+                      currentPage={page}
+                      onPageChange={setPage}
                     />
                   </Box>
                 </>
