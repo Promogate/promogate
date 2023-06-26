@@ -35,7 +35,7 @@ export default function Home({ store_name }: SingleStoreProps) {
   const { fetchStoreOffers } = useContext(PromogateContext)
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['showcase', store_name],
+    queryKey: ['showcase' + store_name],
     queryFn: async () => await fetchStoreOffers(store_name),
     staleTime: 1000 * 60 * 5
   });

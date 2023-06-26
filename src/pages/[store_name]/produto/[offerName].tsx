@@ -16,7 +16,7 @@ import { FiExternalLink } from 'react-icons/fi';
 type SingleProductResponse = {
   status: string;
   message: string;
-  offer: OfferWithClicks
+  offer: OfferWithClicks;
 }
 
 const openSans = Open_Sans({ subsets: ['latin'], preload: true })
@@ -25,8 +25,6 @@ const montserrat = Montserrat({ subsets: ['latin'], preload: true })
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { oid, utm_click, rid } = ctx.query as { oid: string, utm_click: string, rid: string };
   const { data } = await api.get<SingleProductResponse>(`/resources/${rid}/offer/${oid}?utm_click=${utm_click}`)
-
-  console.log(data);
 
   return {
     props: {
@@ -39,7 +37,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function SingleProductPage(data: SingleProductResponse) {
   const router = useRouter();
-  const { oid, utm_click, rid } = router.query as { oid: string, utm_click: string, rid: string };
 
   const structuredData = {
     "@context": "http://schema.org/",
