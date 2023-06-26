@@ -98,208 +98,212 @@ export default function Home({ store_name, offerData }: SingleStoreProps) {
           store_name: offerData.data.store_name,
           social_media: offerData.data.social_media
         }} />
-        {
-          isLoading ? (
-            <PageLoader />
-          ) : (
-            <Grid
-              gridTemplateColumns={['1fr', '9fr 3fr']}
-              maxWidth={['1170px']}
-              margin={['1rem auto']}
-              padding={['1rem']}
-              gap={['1.5rem']}
-            >
-              <Box maxWidth={['815px']}>
-                <Heading
-                  fontSize={['2xl']}
-                  fontFamily={montserrat.style.fontFamily}
-                  color={'gray.600'}
-                >
-                  Destaque
-                </Heading>
-                <FeaturedSlider offers={featuredOffers} storeName={offerData.data.store_name} />
-                <Box
-                  display={['none', 'block']}
-                >
-                  <Link
-                    href={'https://wavvves.com.br'}
-                    target='_blank'
-                  >
-                    <Box
-                      width={'728px'}
-                      height={'90px'}
-                      position={'relative'}
-                      overflow={'hidden'}
-                      margin={['0 auto']}
-                    >
-                      <Image
-                        src={'/Impulsionando-o-Seu-Sucesso-Online.gif'}
-                        alt={'wavvves - Impulsionando o Seu Sucesso Online'}
-                        fill
-                        priority
-                      />
-                    </Box>
-                  </Link>
-                </Box>
-                <Box
-                  margin={{ xl: '3rem 0' }}
-                >
+
+        <Grid
+          gridTemplateColumns={['1fr', '9fr 3fr']}
+          maxWidth={['1170px']}
+          margin={['1rem auto']}
+          padding={['1rem']}
+          gap={['1.5rem']}
+        >
+          <Box maxWidth={['815px']}>
+            {
+              isLoading ? (
+                <PageLoader />
+              ) : (
+                <>
                   <Heading
                     fontSize={['2xl']}
                     fontFamily={montserrat.style.fontFamily}
                     color={'gray.600'}
                   >
-                    Todas as ofertas
+                    Destaque
                   </Heading>
-                  <Grid
-                    gridTemplateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
-                    margin={['1rem 0']}
-                    gap={['1rem']}
-                    position={'relative'}
+                  <FeaturedSlider offers={featuredOffers} storeName={offerData.data.store_name} />
+                  <Box
+                    display={['none', 'block']}
                   >
-                    {
-                      isLoading ? (
-                        <Spinner />
-                      ) : isError ? (
-                        <Heading
-                          fontSize={{ xl: 'xl' }}
-                          fontFamily={montserrat.style.fontFamily}
-                          color={'gray.600'}
-                        >
-                          Destaque
-                        </Heading>
-                      ) : (
-                        data.data.resources.offers.map((offer: OfferWithClicks) => {
-                          return <OfferCard key={offer.id} data={offer} storeName={data.data.store_name} />
-                        })
-                      )
-                    }
-                  </Grid>
-                </Box>
-              </Box>
-              <Box position={['relative']}>
-                <Grid gap={['1rem']} marginBottom={['1rem', '1.5rem']}>
-                  <Box>
-                    <Heading
-                      fontSize={['1rem']}
-                      fontFamily={montserrat.style.fontFamily}
-                      color={'gray.400'}
+                    <Link
+                      href={'https://wavvves.com.br'}
+                      target='_blank'
                     >
-                      Segurança
-                    </Heading>
-                    <Text
-                      fontSize={['0.8rem']}
-                      fontWeight={'normal'}
-                      marginTop={['0.5rem', '1rem']}
-                      fontFamily={openSans.style.fontFamily}
-                      color={'gray.400'}
-                    >
-                      Todas as lojas, ofertas e cupons anunciados, são verificados para garantir a melhor experiência de
-                      compra
-                    </Text>
+                      <Box
+                        width={'728px'}
+                        height={'90px'}
+                        position={'relative'}
+                        overflow={'hidden'}
+                        margin={['0 auto']}
+                      >
+                        <Image
+                          src={'/Impulsionando-o-Seu-Sucesso-Online.gif'}
+                          alt={'wavvves - Impulsionando o Seu Sucesso Online'}
+                          fill
+                          priority
+                        />
+                      </Box>
+                    </Link>
                   </Box>
-                  <Divider />
-                  <Box>
-                    <Heading
-                      fontSize={['1rem']}
-                      fontFamily={montserrat.style.fontFamily}
-                      color={'gray.400'}
-                    >
-                      Melhores Ofertas
-                    </Heading>
-                    <Text
-                      fontSize={['0.8rem']}
-                      fontWeight={'normal'}
-                      marginTop={['0.5rem', '1rem']}
-                      fontFamily={openSans.style.fontFamily}
-                      color={'gray.400'}
-                    >
-                      Nossa equipe de especialistas coleta e reúne aqui as melhores ofertas da internet, tudo em um só
-                      lugar.
-                    </Text>
-                  </Box>
-                  <Divider />
-                  <Box>
-                    <Heading
-                      fontSize={['1rem']}
-                      fontFamily={montserrat.style.fontFamily}
-                      color={'gray.400'}
-                    >
-                      Cupons de Desconto
-                    </Heading>
-                    <Text
-                      fontSize={['0.8rem']}
-                      fontWeight={'normal'}
-                      marginTop={['0.5rem', '1rem']}
-                      fontFamily={openSans.style.fontFamily}
-                      color={'gray.400'}
-                    >
-                      Tenha acesso aos melhores cupons de desconto do Brasil para você economizar ainda mais.
-                    </Text>
-                  </Box>
-                </Grid>
-                <Box
-                  position={['sticky']}
-                  top={3}
-                >
-                  <Link
-                    href={'https://promogate.app'}
-                    target='_blank'
+                  <Box
+                    margin={{ xl: '3rem 0' }}
                   >
-                    <Box
-                      width={'300px'}
-                      height={'300px'}
+                    <Heading
+                      fontSize={['2xl']}
+                      fontFamily={montserrat.style.fontFamily}
+                      color={'gray.600'}
+                    >
+                      Todas as ofertas
+                    </Heading>
+                    <Grid
+                      gridTemplateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
+                      margin={['1rem 0']}
+                      gap={['1rem']}
                       position={'relative'}
-                      overflow={'hidden'}
-                      margin={['0 auto']}
                     >
-                      <Image
-                        src={'/Quer-alavancar-suas-vendas-como-afiliado.gif'}
-                        alt={'Promogate - Quer alavancar suas vendas como afiliado'}
-                        fill
-                        priority
-                      />
-                    </Box>
-                  </Link>
-                </Box>
-                <Grid gap={'1rem'}>
-                  <Box
-                    height={'600px'}
-                    width={'300px'}
-                  >
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
-                      crossOrigin="anonymous"></script>
-                    <ins className="adsbygoogle"
-                      style={{ display: "block" }}
-                      data-ad-client="ca-pub-9258286762385899"
-                      data-ad-slot="1379343231"
-                      data-ad-format="auto"
-                      data-full-width-responsive="true"></ins>
-                    <script>
-                      (adsbygoogle = window.adsbygoogle || []).push({ });
-                    </script>
+                      {
+                        isLoading ? (
+                          <Spinner />
+                        ) : isError ? (
+                          <Heading
+                            fontSize={{ xl: 'xl' }}
+                            fontFamily={montserrat.style.fontFamily}
+                            color={'gray.600'}
+                          >
+                            Destaque
+                          </Heading>
+                        ) : (
+                          data.data.resources.offers.map((offer: OfferWithClicks) => {
+                            return <OfferCard key={offer.id} data={offer} storeName={data.data.store_name} />
+                          })
+                        )
+                      }
+                    </Grid>
                   </Box>
-                  <Box
-                    height={'300px'}
-                    width={'300px'}
-                  >
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
-                      crossOrigin="anonymous"></script>
-                    <ins className="adsbygoogle"
-                      style={{ display: "block" }}
-                      data-ad-client="ca-pub-9258286762385899"
-                      data-ad-slot="1379343231"
-                      data-ad-format="auto"
-                      data-full-width-responsive="true"></ins>
-                    <script>
-                      (adsbygoogle = window.adsbygoogle || []).push({ });
-                    </script>
-                  </Box>
-                </Grid>
+                </>
+              )
+            }
+          </Box>
+          <Box position={['relative']}>
+            <Grid gap={['1rem']} marginBottom={['1rem', '1.5rem']}>
+              <Box>
+                <Heading
+                  fontSize={['1rem']}
+                  fontFamily={montserrat.style.fontFamily}
+                  color={'gray.400'}
+                >
+                  Segurança
+                </Heading>
+                <Text
+                  fontSize={['0.8rem']}
+                  fontWeight={'normal'}
+                  marginTop={['0.5rem', '1rem']}
+                  fontFamily={openSans.style.fontFamily}
+                  color={'gray.400'}
+                >
+                  Todas as lojas, ofertas e cupons anunciados, são verificados para garantir a melhor experiência de
+                  compra
+                </Text>
+              </Box>
+              <Divider />
+              <Box>
+                <Heading
+                  fontSize={['1rem']}
+                  fontFamily={montserrat.style.fontFamily}
+                  color={'gray.400'}
+                >
+                  Melhores Ofertas
+                </Heading>
+                <Text
+                  fontSize={['0.8rem']}
+                  fontWeight={'normal'}
+                  marginTop={['0.5rem', '1rem']}
+                  fontFamily={openSans.style.fontFamily}
+                  color={'gray.400'}
+                >
+                  Nossa equipe de especialistas coleta e reúne aqui as melhores ofertas da internet, tudo em um só
+                  lugar.
+                </Text>
+              </Box>
+              <Divider />
+              <Box>
+                <Heading
+                  fontSize={['1rem']}
+                  fontFamily={montserrat.style.fontFamily}
+                  color={'gray.400'}
+                >
+                  Cupons de Desconto
+                </Heading>
+                <Text
+                  fontSize={['0.8rem']}
+                  fontWeight={'normal'}
+                  marginTop={['0.5rem', '1rem']}
+                  fontFamily={openSans.style.fontFamily}
+                  color={'gray.400'}
+                >
+                  Tenha acesso aos melhores cupons de desconto do Brasil para você economizar ainda mais.
+                </Text>
               </Box>
             </Grid>
-          )
-        }
+            <Box
+              position={['sticky']}
+              top={3}
+            >
+              <Link
+                href={'https://promogate.app'}
+                target='_blank'
+              >
+                <Box
+                  width={'300px'}
+                  height={'300px'}
+                  position={'relative'}
+                  overflow={'hidden'}
+                  margin={['0 auto']}
+                >
+                  <Image
+                    src={'/Quer-alavancar-suas-vendas-como-afiliado.gif'}
+                    alt={'Promogate - Quer alavancar suas vendas como afiliado'}
+                    fill
+                    priority
+                  />
+                </Box>
+              </Link>
+            </Box>
+            <Grid gap={'1rem'}>
+              <Box
+                height={'600px'}
+                width={'300px'}
+              >
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
+                  crossOrigin="anonymous"></script>
+                <ins className="adsbygoogle"
+                  style={{ display: "block" }}
+                  data-ad-client="ca-pub-9258286762385899"
+                  data-ad-slot="1379343231"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"></ins>
+                <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({ });
+                </script>
+              </Box>
+              <Box
+                height={'300px'}
+                width={'300px'}
+              >
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9258286762385899"
+                  crossOrigin="anonymous"></script>
+                <ins className="adsbygoogle"
+                  style={{ display: "block" }}
+                  data-ad-client="ca-pub-9258286762385899"
+                  data-ad-slot="1379343231"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"></ins>
+                <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({ });
+                </script>
+              </Box>
+            </Grid>
+          </Box>
+        </Grid>
+
         <StoreFooterContent />
         <HomeFooter />
       </Box>
