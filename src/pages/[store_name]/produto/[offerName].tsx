@@ -147,7 +147,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
               <Img
                 src={data.offer.image}
                 alt={data.offer.title}
-                width={['120px', '160px', '240px']}
+                maxHeight={['120px', '160px']}
               />
             </VStack>
           </Box>
