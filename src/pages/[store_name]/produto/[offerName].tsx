@@ -1,17 +1,44 @@
+import { featuredOffersState } from '@/application/atoms/FeaturedAtom';
 import { api } from '@/config';
 import { OfferWithClicks } from '@/domain/models';
 import { parseCurrency } from '@/main/utils';
-import { SingleProductPageContent, StoreFooter, StoreHeader } from '@/presentation/components';
-import { Box, Button, Divider, Flex, Grid, Heading, Img, Text, VStack } from '@chakra-ui/react';
+import {
+  FeaturedSlider,
+  SingleProductPageContent,
+  StoreFooter,
+  StoreHeader
+} from '@/presentation/components';
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Heading,
+  Img,
+  Text,
+  VStack
+} from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
-import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'next-share';
-import { Montserrat, Open_Sans } from 'next/font/google';
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  WhatsappIcon,
+  WhatsappShareButton
+} from 'next-share';
+import {
+  Montserrat,
+  Open_Sans
+} from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { FiExternalLink } from 'react-icons/fi';
+import { useRecoilState } from 'recoil';
 
 type SingleProductResponse = {
   status: string;
@@ -37,6 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function SingleProductPage(data: SingleProductResponse) {
   const router = useRouter();
+  const [featuredOffers, _] = useRecoilState(featuredOffersState);
 
   const structuredData = {
     "@context": "http://schema.org/",
@@ -259,6 +287,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
               borderRadius={['lg']}
               backgroundColor={'white'}
               height={'max-content'}
+              maxWidth={['815px']}
             >
               {
                 data.offer.description ? (
@@ -275,7 +304,7 @@ export default function SingleProductPage(data: SingleProductResponse) {
                   </Box>
                 )
               }
-              {/* FEATURED PRODUCTS */}
+              <FeaturedSlider offers={featuredOffers} storeName={data.offer.resources.user_profile.store_name} />
             </Box>
             <Grid
               gap={['1rem']}

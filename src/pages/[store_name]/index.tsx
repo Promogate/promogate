@@ -37,7 +37,8 @@ export default function Home({ store_name }: SingleStoreProps) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['showcase' + store_name],
     queryFn: async () => await fetchStoreOffers(store_name),
-    staleTime: 1000 * 60 * 5
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 5,
   });
 
   if (!data || isLoading) {

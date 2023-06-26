@@ -8,6 +8,8 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 import { ReactNode, createContext } from 'react';
+import { useRecoilState } from 'recoil';
+import { featuredOffersState } from '../atoms/FeaturedAtom';
 
 type CreateProfileInput = {
   store_name: string;
@@ -41,7 +43,8 @@ export type FetchStoreOffersResponse = {
     resources: {
       offers: OfferWithClicks[]
     }
-  }
+  },
+  featured: OfferWithClicks[]
 }
 
 interface PromogateContextProps {
@@ -62,6 +65,7 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
   const toast = useToast();
   const cookies = parseCookies();
   const router = useRouter();
+  const [_, setFeaturedOffersState]= useRecoilState(featuredOffersState);
 
   async function fetchDashboardData(profileId: string): Promise<DashboardData> {
     const { data } = await api.get<DashboardData>(`/analytics/profile/${profileId}`, {
@@ -84,7 +88,12 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
 
   async function fetchStoreOffers(storeName: string): Promise<FetchStoreOffersResponse> {
     const { data } = await api.get<FetchStoreOffersResponse>(`/resources/offers/${storeName}`)
-    return data
+    const featuredOffers = data.data.resources.offers.filter(offer => offer.is_featured)
+    setFeaturedOffersState(featuredOffers);
+    return {
+      ...data,
+      featured: featuredOffers
+    }
   }
 
   async function createUserProfile(input: CreateProfileInput): Promise<void> {
