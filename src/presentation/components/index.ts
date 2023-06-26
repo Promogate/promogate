@@ -1,3 +1,4 @@
+export * from './SocialSoulStoreLoader';
 export * from './contentLoader';
 export * from './dashboard-layout';
 export * from './dashboard-mobile-menu';
