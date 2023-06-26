@@ -6,7 +6,7 @@ import {
   FeaturedSlider,
   HomeFooter,
   OfferCard,
-  PageLoader,
+  SingleStorePageLoader,
   StoreFooterContent,
   StoreHeader
 } from '@/presentation/components';
@@ -109,7 +109,7 @@ export default function Home({ store_name, offerData }: SingleStoreProps) {
           <Box maxWidth={['815px']}>
             {
               isLoading ? (
-                <PageLoader />
+                <SingleStorePageLoader />
               ) : (
                 <>
                   <Heading

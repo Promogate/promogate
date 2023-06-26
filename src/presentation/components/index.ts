@@ -1,3 +1,4 @@
+export * from './SingleStorePageLoader';
 export * from './SocialSoulStoreLoader';
 export * from './contentLoader';
 export * from './dashboard-layout';
