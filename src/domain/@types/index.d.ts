@@ -100,6 +100,7 @@ export type Offer = {
   priceFrom?: number;
   discount?: number;
   installment: Record<string, unknown>;
+  is_featured: boolean;
   store: OfferStore;
 }
 
@@ -138,4 +139,71 @@ export type SocialSoulOfferDataInput = {
   store_name: string;
   store_image: string;
   description: string;
+}
+
+export type FetchStoreOffersResponse = {
+  status: string,
+  message: string,
+  data: {
+    id: string,
+    store_image: string,
+    store_name: string,
+    store_name_display: string,
+    lomadee_source_id: string | null,
+    admitad_verification: string | null,
+    role: string,
+    user_id: string,
+    social_media: {
+      facebook?: string;
+      whatsapp?: string;
+      instagram?: string;
+      telegram?: string;
+      twitter?: string;
+    },
+    resources: {
+      offers: OfferWithClicks[]
+    }
+  },
+  featured: OfferWithClicks[]
+}
+
+export type APIOffer = {
+  id: string;
+  image: string;
+  title: string;
+  old_price: string;
+  price: string;
+  destination_link: string;
+  store_image: string;
+  store_name: string;
+  description: string;
+  expiration_date: string;
+  created_at: string;
+  is_on_showcase: boolean;
+  is_featured: boolean;
+  is_free_shipping: boolean;
+  resources_id: string;
+  short_link: string;
+}
+
+export type OfferWithClicks = APIOffer & {
+  resources: {
+    user_profile: {
+      store_name: string,
+      store_name_display: string,
+      store_image: string,
+      social_media: {
+        id: string,
+        facebook: string,
+        whatsapp: string,
+        instagram: string,
+        telegram: string,
+        twitter:string,
+        user_profile_id: string
+      }
+    }
+  },
+  _count: {
+    offer_clicks: number;
+  };
 }

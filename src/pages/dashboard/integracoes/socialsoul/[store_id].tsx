@@ -6,7 +6,7 @@ import { parseCurrency } from '@/main/utils';
 import { DashboardLayout, PageLoader, Pagination } from '@/presentation/components';
 import { withSSRAuth } from '@/utils';
 import { Alert, AlertIcon, Box, Button, Flex, Grid, GridItem, HStack, Heading, IconButton, Image, Skeleton, Text, Tooltip, useToast } from '@chakra-ui/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -47,7 +47,6 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
   });
   
   const toast = useToast();
-  const query = useQueryClient();
 
   const { authorization, createOfferFromSocialSoul } = useContext(PromogateContext);
 
