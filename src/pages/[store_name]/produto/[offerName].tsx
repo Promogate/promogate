@@ -38,7 +38,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { FiExternalLink } from 'react-icons/fi';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 type SingleProductResponse = {
   status: string;
@@ -64,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function SingleProductPage(data: SingleProductResponse) {
   const router = useRouter();
-  const [featuredOffers, _] = useRecoilState(featuredOffersState);
+  const featuredOffers = useRecoilValue(featuredOffersState);
 
   const structuredData = {
     "@context": "http://schema.org/",
