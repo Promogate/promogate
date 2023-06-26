@@ -175,10 +175,6 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
     }
   });
 
-  const handleShortlinkUpdate = async (): Promise<void> => {
-    await shortlinkMutation.mutateAsync();
-  };
-
   return (
     <Fragment>
       <Head>
@@ -294,12 +290,6 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
                   value={offer.short_link}
                   type='text'
                 />
-                <Button
-                  onClick={handleShortlinkUpdate}
-                  isLoading={shortlinkMutation.isLoading}
-                >
-                  Atualizar
-                </Button>
                 <IconButton
                   aria-label='Copiar shortlink'
                   onClick={onCopy}
