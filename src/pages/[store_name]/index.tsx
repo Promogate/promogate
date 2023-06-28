@@ -1,4 +1,3 @@
-import { PromogateContext } from '@/application/contexts';
 import { api } from '@/config';
 import { FetchStoreOffersResponse } from '@/domain/@types';
 import { OfferWithClicks } from '@/domain/models';
@@ -6,7 +5,6 @@ import {
   FeaturedSlider,
   HomeFooter,
   OfferCard,
-  SingleStorePageLoader,
   StoreFooterContent,
   StoreHeader
 } from '@/presentation/components';
@@ -15,17 +13,15 @@ import {
   Divider,
   Grid,
   Heading,
-  Spinner,
   Text
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import { Montserrat, Open_Sans } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { parseCookies } from 'nookies';
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 
 const montserrat = Montserrat({ subsets: ['latin'], preload: true });
 const openSans = Open_Sans({ subsets: ['latin'], preload: true });
@@ -52,13 +48,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 }
 
 export default function Home({ store_name, offerData }: SingleStoreProps) {
-  const { fetchStoreOffers } = useContext(PromogateContext)
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['showcase' + store_name],
-    queryFn: async () => await fetchStoreOffers(store_name),
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 5
-  });
   const featuredOffers = offerData.data.resources.offers.filter(offer => offer.is_featured)
   return (
     <Fragment>
@@ -107,80 +96,62 @@ export default function Home({ store_name, offerData }: SingleStoreProps) {
           gap={['1.5rem']}
         >
           <Box maxWidth={['815px']}>
-            {
-              isLoading ? (
-                <SingleStorePageLoader />
-              ) : (
-                <>
-                  <Heading
-                    fontSize={['2xl']}
-                    fontFamily={montserrat.style.fontFamily}
-                    color={'gray.600'}
-                  >
-                    Destaque
-                  </Heading>
-                  <FeaturedSlider offers={featuredOffers} storeName={offerData.data.store_name} />
-                  <Box
-                    display={['none', 'block']}
-                  >
-                    <Link
-                      href={'https://wavvves.com.br'}
-                      target='_blank'
-                    >
-                      <Box
-                        width={'728px'}
-                        height={'90px'}
-                        position={'relative'}
-                        overflow={'hidden'}
-                        margin={['0 auto']}
-                      >
-                        <Image
-                          src={'/Impulsionando-o-Seu-Sucesso-Online.gif'}
-                          alt={'wavvves - Impulsionando o Seu Sucesso Online'}
-                          fill
-                          priority
-                        />
-                      </Box>
-                    </Link>
-                  </Box>
-                  <Box
-                    margin={{ xl: '3rem 0' }}
-                  >
-                    <Heading
-                      fontSize={['2xl']}
-                      fontFamily={montserrat.style.fontFamily}
-                      color={'gray.600'}
-                    >
-                      Todas as ofertas
-                    </Heading>
-                    <Grid
-                      gridTemplateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
-                      margin={['1rem 0']}
-                      gap={['1rem']}
-                      position={'relative'}
-                    >
-                      {
-                        isLoading ? (
-                          <Spinner />
-                        ) : isError ? (
-                          <Heading
-                            fontSize={{ xl: 'xl' }}
-                            fontFamily={montserrat.style.fontFamily}
-                            color={'gray.600'}
-                          >
-                            Destaque
-                          </Heading>
-                        ) : (
-                          data.data.resources.offers.map((offer: OfferWithClicks) => {
-                            return <OfferCard key={offer.id} data={offer} storeName={data.data.store_name} />
-                          })
-                        )
-                      }
-                    </Grid>
-                  </Box>
-                </>
-              )
-            }
+
+            <Heading
+              fontSize={['2xl']}
+              fontFamily={montserrat.style.fontFamily}
+              color={'gray.600'}
+            >
+              Destaque
+            </Heading>
+            <FeaturedSlider offers={featuredOffers} storeName={offerData.data.store_name} />
+            <Box
+              display={['none', 'block']}
+            >
+              <Link
+                href={'https://wavvves.com.br'}
+                target='_blank'
+              >
+                <Box
+                  width={'728px'}
+                  height={'90px'}
+                  position={'relative'}
+                  overflow={'hidden'}
+                  margin={['0 auto']}
+                >
+                  <Image
+                    src={'/Impulsionando-o-Seu-Sucesso-Online.gif'}
+                    alt={'wavvves - Impulsionando o Seu Sucesso Online'}
+                    fill
+                    priority
+                  />
+                </Box>
+              </Link>
+            </Box>
+            <Box
+              margin={{ xl: '3rem 0' }}
+            >
+              <Heading
+                fontSize={['2xl']}
+                fontFamily={montserrat.style.fontFamily}
+                color={'gray.600'}
+              >
+                Todas as ofertas
+              </Heading>
+              <Grid
+                gridTemplateColumns={['1fr', 'repeat(3, 1fr)', 'repeat(3, 1fr)']}
+                margin={['1rem 0']}
+                gap={['1rem']}
+                position={'relative'}
+              >
+
+                {
+                  offerData.data.resources.offers.map((offer: OfferWithClicks) => {
+                    return <OfferCard key={offer.id} data={offer} storeName={offerData.data.store_name} />
+                  })
+                }
+              </Grid>
+            </Box>
           </Box>
           <Box position={['relative']}>
             <Grid gap={['1rem']} marginBottom={['1rem', '1.5rem']}>
