@@ -1,3 +1,4 @@
+export * from './GoogleAnalytics';
 export * from './SingleStorePageLoader';
 export * from './SocialSoulStoreLoader';
 export * from './contentLoader';
