@@ -3,6 +3,7 @@ import { parseCurrency, truncateString } from '@/main/utils';
 import { Badge, Box, Button, Flex, HStack, Heading, Tag, Text } from '@chakra-ui/react';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type OfferCardProps = {
   data: OfferWithClicks;
@@ -14,6 +15,7 @@ const inter = Inter({ subsets: ['latin'] });
 /*eslint-disable @next/next/no-img-element*/
 export function OfferCard({ data, storeName }: OfferCardProps) {
   const store = storeName.toLocaleLowerCase().replace(' ', '-');
+  const router = useRouter();
   const productName = data.title.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f,.'‘’"“”+]/g, '').replace(/[\s/]/g, '-');
 
   const offerUrl = `/${store}/produto/${productName}/?oid=${data.id}&utm_click=1&rid=${data.resources_id}`
@@ -112,8 +114,12 @@ export function OfferCard({ data, storeName }: OfferCardProps) {
         </Flex>
       </Flex>
       <Button
+        zIndex={999}
         colorScheme='purple'
         borderRadius={['0 0 0.5rem 0.5rem']}
+        as={Link}
+        href={data.destination_link}
+        target='_blank'
       >
         Ver Oferta
       </Button>

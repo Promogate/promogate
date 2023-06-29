@@ -21,7 +21,7 @@ export function SliderOfferCard({ data, storeName }: OfferCardProps) {
   return (
     <Flex
       as={Link}
-      href={offerUrl}
+      href={data.destination_link}
       target='_blank'
       borderRadius={['lg']}
       padding={['1rem']}
