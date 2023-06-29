@@ -80,14 +80,12 @@ export default function Home({ store_name, offerData }: SingleStoreProps) {
         as='main'
         backgroundColor={'gray.50'}
       >
-
         <StoreHeader props={{
           store_image: offerData.data.store_image,
           store_name_display: offerData.data.store_name_display,
           store_name: offerData.data.store_name,
           social_media: offerData.data.social_media
         }} />
-
         <Grid
           gridTemplateColumns={['1fr', '9fr 3fr']}
           maxWidth={['1170px']}
@@ -96,7 +94,6 @@ export default function Home({ store_name, offerData }: SingleStoreProps) {
           gap={['1.5rem']}
         >
           <Box maxWidth={['815px']}>
-
             <Heading
               fontSize={['2xl']}
               fontFamily={montserrat.style.fontFamily}
@@ -144,7 +141,6 @@ export default function Home({ store_name, offerData }: SingleStoreProps) {
                 gap={['1rem']}
                 position={'relative'}
               >
-
                 {
                   offerData.data.resources.offers.map((offer: OfferWithClicks) => {
                     return <OfferCard key={offer.id} data={offer} storeName={offerData.data.store_name} />
@@ -274,11 +270,9 @@ export default function Home({ store_name, offerData }: SingleStoreProps) {
             </Grid>
           </Box>
         </Grid>
-
         <StoreFooterContent />
         <HomeFooter />
       </Box>
-
     </Fragment>
   )
 
