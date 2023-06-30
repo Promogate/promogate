@@ -30,6 +30,13 @@ export function StoreFooterContent() {
           usados para impulsionar as vendas, aumentar a visibilidade da marca, conquistar novos clientes, incentivar a
           fidelidade dos clientes existentes e até mesmo escoar estoques de produtos.
         </Text>
+        <Text
+          fontSize={['1rem']}
+        >
+          Todas as ofertas, cupons e produtos promovidos pelo site, são oferecidos pelas lojas anunciantes através dos 
+          seus programas de parceria/afiliados, que remunera os afiliados (nós) através de comissões pelas compras 
+          qualificadas efetuadas.
+        </Text>
         <Heading
           fontSize={['1.5rem']}
         >
