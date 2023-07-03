@@ -24,6 +24,7 @@ import { BsUpload } from 'react-icons/bs';
 import { TiDelete } from 'react-icons/ti';
 
 import { AWSUploadService } from '@/application/services';
+import { makeUniqueStoreName } from '@/application/utils/makeUniqueStoreName';
 import { api } from '@/config';
 import { withSSRAuth } from '@/utils';
 import { AxiosError } from 'axios';
@@ -68,6 +69,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
   const toast = useToast();
   const [localImageUrl, setLocalImageUrl] = useState(user.user_profile.store_image);
   const [sampleUrl, setSampleUrl] = useState(user.user_profile.store_name);
+  const [uniqueName, setUniqueName] = useState<string>(user.user_profile.store_name)
   const { authorization } = useContext(PromogateContext);
   const cookies = parseCookies();
   const query = useQueryClient();
@@ -84,14 +86,13 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
 
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<UpdateProfileBody>({
     defaultValues: {
-      store_name: user.user_profile.store_name,
       store_name_display: user.user_profile.store_name_display,
       facebook: user.user_profile.social_media?.facebook,
       instagram: user.user_profile.social_media?.instagram,
       whatsapp: user.user_profile.social_media?.whatsapp,
       telegram: user.user_profile.social_media?.telegram,
       twitter: user.user_profile.social_media?.twitter,
-    },
+    }
   });
 
   const updateMutation = useMutation(async (values: UpdateProfileBody) => {
@@ -127,19 +128,21 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
       const url = await getAWSImageUrl(user.id);
       await updateMutation.mutateAsync({
         ...values,
+        store_name: uniqueName,
         store_image: url
       })
     } else {
       await updateMutation.mutateAsync({
         ...values,
-        store_name: values.store_name
+        store_name: uniqueName
       })
     }
   }
 
-  const handleSampleUrl = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUniqueName = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSampleUrl(e.currentTarget.value.toLocaleLowerCase().replaceAll(' ', '-'));
+    const parsed = makeUniqueStoreName(e.currentTarget.value) as string;
+    setUniqueName(parsed);
   }
 
   return (
@@ -266,8 +269,8 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
                 </FormLabel>
                 <Input
                   type='text'
-                  {...register('store_name')}
-                  onChange={handleSampleUrl}
+                  value={uniqueName}
+                  onChange={handleUniqueName}
                 />
                 <Box
                   minWidth={{ xl: '100px' }}
@@ -279,7 +282,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
                     color={'gray.400'}
                   >
                     Como será a sua url:
-                    {` https://promogate.app/${sampleUrl}`}
+                    {` https://promogate.app/${uniqueName}`}
                   </Text>
                 </Box>
               </FormControl>

@@ -1,5 +1,6 @@
 import { PromogateContext } from '@/application/contexts';
 import { AWSUploadService } from '@/application/services';
+import { makeUniqueStoreName } from '@/application/utils/makeUniqueStoreName';
 import { api } from '@/config';
 import { MeResponse } from '@/domain/models';
 import {
@@ -65,7 +66,7 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<RegisterStoreProps>();
 
   const mutation = useMutation(async (values: RegisterStoreProps) => await createUserProfile({
-    store_name: values.store_name,
+    store_name: sampleUrl,
     store_name_display: values.store_name_display,
     store_image: values.store_image,
     user_id: user.id
@@ -79,7 +80,8 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
 
   const handleSampleUrl = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSampleUrl(e.currentTarget.value.toLowerCase().replace(/[\s]/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, ""))
+    const parsed = makeUniqueStoreName(e.currentTarget.value) as string;
+    setSampleUrl(parsed);
   }
 
   return (
@@ -193,7 +195,7 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
             </FormLabel>
             <Input
               type='text'
-              {...register('store_name')}
+              value={sampleUrl}
               onChange={handleSampleUrl}
             />
             <Box
