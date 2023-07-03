@@ -36,14 +36,32 @@ const s3Upload = new AWSUploadService();
 type SettingsPageProps = MeResponse
 
 type UpdateProfileBody = {
-  store_name?: string;
   store_image?: string;
+  store_name?: string;
+  store_name_display?: string;
   facebook?: string;
-  whatsapp?: string;
   instagram?: string;
+  whatsapp?: string;
   telegram?: string;
-  twitter?: string
+  twitter?: string;
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+  const cookies = parseCookies(ctx);
+
+  const { data } = await api.get<MeResponse>('/users/me', {
+    headers: {
+      Authorization: `Bearer ${cookies['promogate.token']}`
+    }
+  })
+
+  return {
+    props: {
+      status: data.status,
+      user: data.user
+    }
+  }
+})
 
 /*eslint-disable @next/next/no-img-element*/
 export default function SettingsPage({ status, user }: SettingsPageProps) {
@@ -66,7 +84,8 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
 
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<UpdateProfileBody>({
     defaultValues: {
-      store_name: user.user_profile.store_name.replaceAll('-', ' '),
+      store_name: user.user_profile.store_name,
+      store_name_display: user.user_profile.store_name_display,
       facebook: user.user_profile.social_media?.facebook,
       instagram: user.user_profile.social_media?.instagram,
       whatsapp: user.user_profile.social_media?.whatsapp,
@@ -108,7 +127,6 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
       const url = await getAWSImageUrl(user.id);
       await updateMutation.mutateAsync({
         ...values,
-        store_name: values.store_name,
         store_image: url
       })
     } else {
@@ -235,31 +253,48 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
                 )
               }
             </FormControl>
-            <FormControl>
-              <FormLabel
-                fontFamily={montserrat.style.fontFamily}
-              >
-                Nome da loja
-              </FormLabel>
-              <Input
-                type='text'
-                {...register('store_name')}
-                onChange={handleSampleUrl}
-              />
-              <Box
-                minWidth={{ xl: '100px' }}
-                padding={{ xl: '0.5rem 0' }}
-                minHeight={{ xl: '1.5rem' }}
-              >
-                <Text
-                  fontSize={{ xl: '0.725rem' }}
-                  color={'gray.400'}
+            <Grid
+              marginTop={['1rem']}
+              gridTemplateColumns={['1fr 1fr']}
+              gap={['1rem']}
+            >
+              <FormControl>
+                <FormLabel
+                  fontFamily={montserrat.style.fontFamily}
                 >
-                  Como será a sua url:
-                  {` https://promogate.app/${sampleUrl}`}
-                </Text>
-              </Box>
-            </FormControl>
+                  Usuário único da loja
+                </FormLabel>
+                <Input
+                  type='text'
+                  {...register('store_name')}
+                  onChange={handleSampleUrl}
+                />
+                <Box
+                  minWidth={{ xl: '100px' }}
+                  padding={{ xl: '0.5rem 0' }}
+                  minHeight={{ xl: '1.5rem' }}
+                >
+                  <Text
+                    fontSize={{ xl: '0.725rem' }}
+                    color={'gray.400'}
+                  >
+                    Como será a sua url:
+                    {` https://promogate.app/${sampleUrl}`}
+                  </Text>
+                </Box>
+              </FormControl>
+              <FormControl>
+                <FormLabel
+                  fontFamily={montserrat.style.fontFamily}
+                >
+                  Nome da loja
+                </FormLabel>
+                <Input
+                  type='text'
+                  {...register('store_name_display')}
+                />
+              </FormControl>
+            </Grid>
             <Grid
               margin={{ xl: '1rem 0' }}
               gap={{ xl: '0.5rem' }}
@@ -343,6 +378,7 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
               }}
               size={['lg']}
               marginTop={['1rem']}
+            // isLoading={isSubmitting}
             >
               Atualizar
             </Button>
@@ -352,20 +388,3 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
     </Fragment>
   )
 }
-
-export const getServerSideProps = withSSRAuth(async (ctx) => {
-  const cookies = parseCookies(ctx);
-
-  const { data } = await api.get<MeResponse>('/users/me', {
-    headers: {
-      Authorization: `Bearer ${cookies['promogate.token']}`
-    }
-  })
-
-  return {
-    props: {
-      status: data.status,
-      user: data.user
-    }
-  }
-}) 

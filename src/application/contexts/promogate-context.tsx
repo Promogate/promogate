@@ -13,6 +13,7 @@ import { featuredOffersState } from '../atoms/FeaturedAtom';
 
 type CreateProfileInput = {
   store_name: string;
+  store_name_display: string;
   store_image: string;
   user_id: string
 }
@@ -99,6 +100,7 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
   async function createUserProfile(input: CreateProfileInput): Promise<void> {
     api.post<CreateProfileOutput>(`/users/${input.user_id}/profile/create`, {
       storeName: input.store_name,
+      storeNameDisplay: input.store_name_display,
       storeImage: input.store_image
     }, {
       headers: {

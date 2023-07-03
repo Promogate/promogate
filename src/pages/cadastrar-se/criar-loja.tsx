@@ -37,6 +37,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 type RegisterStoreProps = {
   store_name: string,
+  store_name_display: string,
   store_image: string
 }
 
@@ -65,6 +66,7 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
 
   const mutation = useMutation(async (values: RegisterStoreProps) => await createUserProfile({
     store_name: values.store_name,
+    store_name_display: values.store_name_display,
     store_image: values.store_image,
     user_id: user.id
   }));
@@ -72,7 +74,7 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
   const handleRegisterStore: SubmitHandler<RegisterStoreProps> = async (values) => {
     const file = await fetch(localImageUrl).then(r => r.blob()).then(blobFile => new File([blobFile], `store_image.${user.id}`))
     const { url } = await s3Upload.uploadImage({ file, user: user.id })
-    await mutation.mutateAsync({ store_name: values.store_name, store_image: url })
+    await mutation.mutateAsync({...values , store_image: url })
   }
 
   const handleSampleUrl = (e: ChangeEvent<HTMLInputElement>) => {
@@ -187,7 +189,7 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
             <FormLabel
               fontFamily={inter.style.fontFamily}
             >
-              Nome da loja
+              Usuário único
             </FormLabel>
             <Input
               type='text'
@@ -207,6 +209,17 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
                 {`https://promogate.app/${sampleUrl}`}
               </Text>
             </Box>
+          </FormControl>
+          <FormControl>
+            <FormLabel
+              fontFamily={inter.style.fontFamily}
+            >
+              Nome da loja
+            </FormLabel>
+            <Input
+              type='text'
+              {...register('store_name_display')}
+            />
           </FormControl>
           <Button
             type='submit'
