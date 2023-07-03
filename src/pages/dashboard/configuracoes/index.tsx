@@ -108,13 +108,13 @@ export default function SettingsPage({ status, user }: SettingsPageProps) {
       const url = await getAWSImageUrl(user.id);
       await updateMutation.mutateAsync({
         ...values,
-        store_name: values.store_name?.replace(' ', '-'),
+        store_name: values.store_name,
         store_image: url
       })
     } else {
       await updateMutation.mutateAsync({
         ...values,
-        store_name: values.store_name?.replace(' ', '-')
+        store_name: values.store_name
       })
     }
   }

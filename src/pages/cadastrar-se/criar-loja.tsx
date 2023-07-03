@@ -77,7 +77,7 @@ export default function CreateStore({ status, user }: CreateStorePageProps) {
 
   const handleSampleUrl = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSampleUrl(e.currentTarget.value.toLowerCase().replace(/\s/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, ""))
+    setSampleUrl(e.currentTarget.value.toLowerCase().replace(/[\s]/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, ""))
   }
 
   return (
