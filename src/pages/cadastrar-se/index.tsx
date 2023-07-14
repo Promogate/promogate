@@ -35,7 +35,7 @@ const schema = yup.object({
     'Email é obrigatório.'
   ),
   agree_with_policies: yup.boolean().required('Aceitar as nossas políticas é obrigatório para efetuar o cadastro.').oneOf([true], "Você deve aceitar as políticas para efetuar o cadastro"),
-  password: yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/, 'Sua senha deve ao menos conter 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.'),
+  password: yup.string().min(8, 'Sua senha deve conter ao menos 8 caracteres'),
   passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'As senhas não combinam')
 })
 
