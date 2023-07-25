@@ -84,18 +84,18 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<OfferDataInput>({
     defaultValues: {
       description: offer.description,
-      destination_link: offer.destination_link,
+      destinationLink: offer.destination_link,
       image: offer.image,
-      old_price: parseCurrencyWithoutSign(offer.old_price),
+      oldPrice: parseCurrencyWithoutSign(offer.old_price),
       price: parseCurrencyWithoutSign(offer.price),
-      store_name: offer.store_name,
+      storeName: offer.store_name,
       title: offer.title,
-      expiration_date: offer.expiration_date
+      expirationDate: offer.expiration_date
     },
   });
 
   const mutation = useMutation(async (data: OfferDataInput) => {
-    const old_price = parseBRLCurrencytoInteger(data.old_price);
+    const old_price = parseBRLCurrencytoInteger(data.oldPrice);
     const price = parseBRLCurrencytoInteger(data.price);
     await api.put(`/resources/${user.user_profile.resources.id}/offer/${id}/update`, {
       ...data,
@@ -251,7 +251,7 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
                 <Input
                   type='text'
                   placeholder={parseCurrencyWithoutSign(offer.old_price)}
-                  {...register('old_price')}
+                  {...register('oldPrice')}
                 />
               </InputGroup>
             </FormControl>
@@ -271,7 +271,7 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
               <Input
                 type='text'
                 placeholder={offer.destination_link}
-                {...register('destination_link')}
+                {...register('destinationLink')}
               />
             </FormControl>
             <FormControl>
@@ -279,7 +279,7 @@ export default function EditOfferPage({ status, user, offer }: SingleOffersPageP
               <Input
                 type='text'
                 placeholder={offer.store_name}
-                {...register('store_name')}
+                {...register('storeName')}
               />
             </FormControl>
             <FormControl>
