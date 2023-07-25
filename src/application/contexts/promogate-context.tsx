@@ -129,7 +129,7 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
   }
 
   async function createOffer(input: OfferDataInput, userId: string): Promise<void> {
-    const old_price = parseBRLCurrencytoInteger(input.old_price);
+    const old_price = parseBRLCurrencytoInteger(input.oldPrice);
     const price = parseBRLCurrencytoInteger(input.price);
     await api.post(`/resources/${userId}/offer/create`, {
       ...input,

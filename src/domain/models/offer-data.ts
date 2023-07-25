@@ -2,10 +2,10 @@ export type OfferDataInput = {
   image: string;
   title: string;
   price: string;
-  old_price: string;
-  destination_link: string;
-  store_name: string;
-  expiration_date: string;
+  oldPrice: string;
+  destinationLink: string;
+  storeName: string;
+  expirationDate: string;
   description: string;
 }
 

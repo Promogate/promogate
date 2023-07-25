@@ -127,7 +127,7 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
                 <InputLeftAddon children='R$' />
                 <Input
                   type='text'
-                  {...register('old_price')}
+                  {...register('oldPrice')}
                 />
               </InputGroup>
             </FormControl>
@@ -145,14 +145,14 @@ export default function AddOffersPage({ status, user }: AddOffersPageProps) {
               <FormLabel>Destino (Link Afiliado)</FormLabel>
               <Input
                 type='text'
-                {...register('destination_link')}
+                {...register('destinationLink')}
               />
             </FormControl>
             <FormControl>
               <FormLabel>Nome da loja (Anunciante)</FormLabel>
               <Input
                 type='text'
-                {...register('store_name')}
+                {...register('storeName')}
               />
             </FormControl>
             <FormControl
