@@ -39,10 +39,10 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
     image: '',
     title: '',
     price: 0,
-    old_price: 0,
-    destination_link: '',
-    store_name: '',
-    store_image: '',
+    oldPrice: 0,
+    destinationLink: '',
+    storeName: '',
+    storeImage: '',
     description: '',
   });
   
@@ -224,10 +224,10 @@ export default function SingleSocialSoulStore({ status, user }: MeResponse) {
                                 title: offer.name,
                                 description: '',
                                 image: offer.thumbnail,
-                                store_name: offer.store.name,
-                                store_image: offer.store.thumbnail,
-                                destination_link: offer.link,
-                                old_price: offer.priceFrom ? offer.priceFrom : 0,
+                                storeName: offer.store.name,
+                                storeImage: offer.store.thumbnail,
+                                destinationLink: offer.link,
+                                oldPrice: offer.priceFrom ? offer.priceFrom : 0,
                                 price: offer.price
                               })}
                               onClick={triggerMutation}

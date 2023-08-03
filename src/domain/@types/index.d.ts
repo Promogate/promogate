@@ -134,10 +134,10 @@ export type SocialSoulOfferDataInput = {
   image: string;
   title: string;
   price: number;
-  old_price: number;
-  destination_link: string;
-  store_name: string;
-  store_image: string;
+  oldPrice: number;
+  destinationLink: string;
+  storeName: string;
+  storeImage: string;
   description: string;
 }
 
