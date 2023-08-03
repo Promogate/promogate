@@ -147,8 +147,8 @@ export function PromogateContextProvider({ children }: { children: ReactNode }) 
     await api.post(`/resources/${resourceId}/offer/create`, {
       ...input,
       price: input.price.toString(),
-      old_price: input.old_price ? input.old_price.toString() : '',
-      expiration_date: dayjs().add(30, 'days'),
+      oldPrice: input.oldPrice ? input.oldPrice.toString() : '',
+      expirationDate: dayjs().add(30, 'days'),
     }, {
       headers: {
         Authorization: `Bearer ${cookies['promogate.token']}`
