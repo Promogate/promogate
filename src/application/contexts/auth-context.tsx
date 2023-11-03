@@ -1,3 +1,5 @@
+"use client";
+
 import { api } from '@/config';
 import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
