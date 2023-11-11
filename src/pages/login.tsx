@@ -77,7 +77,7 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
           margin={['0 auto']}
         >
           <Image
-            src={'/promogate-logo.svg'}
+            src={'/promogate.svg'}
             alt={'Promogate logo'}
             fill
             priority
@@ -171,22 +171,6 @@ export default function LoginPage({ isLogged }: LoginPageProps) {
                   >
                     Entrar
                   </Button>
-                </Flex>
-                <Flex
-                  margin={['1rem 0 0']}
-                  fontFamily={inter.style.fontFamily}
-                  fontSize={{ xl: '0.825rem' }}
-                  gap={'2px'}
-                  alignItems={'center'}
-                >
-                  <Text>Ainda não é cadastrado?</Text>
-                  <Text
-                    as={Link} href={'/cadastrar-se'}
-                    fontWeight={'semibold'}
-                    color={'#571770'}
-                  >
-                    Cadastre-se
-                  </Text>
                 </Flex>
               </>
             )
