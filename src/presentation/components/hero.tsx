@@ -8,7 +8,7 @@ import {
   Montserrat,
   Open_Sans
 } from 'next/font/google';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const openSans = Open_Sans({ subsets: ['latin'], preload: true });
 const montserrat = Montserrat({ subsets: ['latin'], preload: true });
